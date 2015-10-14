@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="SourceFile">
+      <UniqueIdentifier>{71590735-c1db-459d-9759-7b3f52d00992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile">
+      <UniqueIdentifier>{938e2ab8-cad4-4782-8720-87677515d6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile\CatGameLib">
+      <UniqueIdentifier>{dd1a2080-3858-401f-9f00-5d649c31d9cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFile\CatGameLib">
+      <UniqueIdentifier>{57a3790b-03cd-4765-9935-91eefb42dd4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderFile">
+      <UniqueIdentifier>{683666ef-2823-4254-af37-e0f79e5bf58d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SourceFile\main.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\CatGameLib\LibMain.cpp">
+      <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\CatGameLib\LibShader.cpp">
+      <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\CatGameLib\LibSprite.cpp">
+      <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\CatGameLib\LibCircle.cpp">
+      <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\CatGameLib\LibBaseFunc.cpp">
+      <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SourceFile\CatGameLib\LibMain.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibDebug.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibShader.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\ExternalLib.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\CatGameLib.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibSprite.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibVector2.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibCircle.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibBasicFunc.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ShaderFile\Basic.fsh">
+      <Filter>ShaderFile</Filter>
+    </None>
+    <None Include="ShaderFile\Basic.vsh">
+      <Filter>ShaderFile</Filter>
+    </None>
+  </ItemGroup>
+</Project>

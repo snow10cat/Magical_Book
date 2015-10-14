@@ -55,30 +55,36 @@ int main()
 	// ライブラリ初期化
 	lib -> initLib();
 
-	auto test = LibSprite::create( "test.png");
+	auto test = LibSprite::create( "test2.png");
 
-	test -> setPosition( 640, 360);
-	test -> setScale( 1.0);
-	//test -> setAlpha( 128.0);
-
+	test -> setPosition( 1280 / 2, 720 / 2);
+	
 	auto fox = LibSprite::create( "Fox.png");
 
-	fox -> setRotation( 45);
+	fox -> setRotation( 405);
 
-	// fox -> setPosition( 1280 / 2, 720 / 2);
+	fox -> setPosition( 1280 / 2, 720 / 2);
 
 	fox -> setScale( 0.5f);
 
+	fox -> setAlpha( 128.0);
+
+	auto fox2 = LibSprite::create( "Fox3.png");
+
+	fox2 -> setPosition( 1280 / 2, 720 / 2);
+
+	fox2 -> setScale( 0.5f);
 	// メインループ
 	while( lib -> checkWindowState())
 	{
 		// 画面消去
 		lib -> clear();
 
+		fox2 -> draw();
 
 		fox -> draw();
 
-		// test -> draw();
+		test -> draw();
 
 		// 描画
 		lib -> draw();

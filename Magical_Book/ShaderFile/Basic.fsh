@@ -10,6 +10,6 @@ varying vec2 vary_uv;
 void main( void)
 {
 	vec4 color = texture2D( texture, vary_uv);
-	color.a = alpha / 255.0f;
+	color.a *= alpha;
 	gl_FragColor = color;
 }

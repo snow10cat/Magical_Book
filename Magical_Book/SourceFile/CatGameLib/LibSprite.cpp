@@ -14,7 +14,7 @@ LibSprite::LibSprite() : alpha( 255.0f),
 						 angle( 0.0f),
 						 position( 0.0f, 0.0f),
 						 scale( 1.0f, 1.0f),
-						 anchor( 0.0f, 0.0f)
+						 anchor( 0.5f, 0.5f)
 {
 }
 
@@ -79,6 +79,8 @@ void LibSprite::setScale( const LibVector2& scale)
 
 void LibSprite::draw( void)
 {
+	// renderflag
+
 	glBindTexture( GL_TEXTURE_2D, textureIDs[textureNumber]);
 
 	LibMain* libMain = LibMain::getInstance();
@@ -86,14 +88,18 @@ void LibSprite::draw( void)
 	LibVector2 worldPos = libMain -> screenPosToWorldPos( position);
 
 	LibVector2 worldSize;
-	worldSize.x = ( sizeX / libMain -> getScreenSize().x);
-	worldSize.y = ( sizeY / libMain -> getScreenSize().y);
+	worldSize.x = ( sizeX * scale.x / libMain -> getScreenSize().x) * 0.5f;
+	worldSize.y = ( sizeY * scale.y / libMain -> getScreenSize().y) * 0.5f;
+
+	LibVector2 worldAnchor;
+	worldAnchor.x = worldSize.x * ( anchor.x * 2 - 1);
+	worldAnchor.y = worldSize.y * ( anchor.y * 2 - 1);
 
 	GLfloat pos[] = {
-		( worldPos.x - worldSize.x) * scale.x, ( worldPos.y + worldSize.y) * scale.y,	// 左上
-		( worldPos.x - worldSize.x) * scale.x, ( worldPos.y - worldSize.y) * scale.y,	// 左下
-		( worldPos.x + worldSize.x) * scale.x, ( worldPos.y + worldSize.y) * scale.y,	// 右上
-		( worldPos.x + worldSize.x) * scale.x, ( worldPos.y - worldSize.y) * scale.y,	// 右下
+		( worldPos.x - worldSize.x - worldAnchor.x), ( worldPos.y + worldSize.y - worldAnchor.y),	// 左上
+		( worldPos.x - worldSize.x - worldAnchor.x), ( worldPos.y - worldSize.y - worldAnchor.y),	// 左下
+		( worldPos.x + worldSize.x - worldAnchor.x), ( worldPos.y + worldSize.y - worldAnchor.y),	// 右上
+		( worldPos.x + worldSize.x - worldAnchor.x), ( worldPos.y - worldSize.y - worldAnchor.y),	// 右下
 	};
 
 	const GLfloat uv[] = {
@@ -105,25 +111,23 @@ void LibSprite::draw( void)
 
 	if( angle.getRadian() != 0.0f)
 	{
-		float sin_f = sinf( angle.getRadian());
-		float cos_f = cosf( angle.getRadian());
+		float anglell = angle.getRadian();
+		float sin_f = sinf( -angle.getRadian());
+		float cos_f = cosf( -angle.getRadian());
 
 		for( int i = 0; i < 8; i += 2)
 		{
 			float dx = pos[i];
 			float dy = pos[i + 1];
 
-			pos[i] = (float)( dx * cos_f - dy * sin_f) + worldSize.x;
-			pos[i + 1] = (float)( dx * sin_f + dy * cos_f) + worldSize.y;
+			pos[i] = (float)( dx * cos_f - dy * sin_f);
+			pos[i + 1] = (float)( dx * sin_f + dy * cos_f);
 		}
 	}
 
-	if( alpha < 255.0f)
-	{
-		glEnable( GL_BLEND);
-		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glUniform1f( LibMain::getInstance() -> getNowShader() -> getUniformHandle( "alpha"), alpha);
-	}
+	glEnable( GL_BLEND);
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glUniform1f( LibMain::getInstance() -> getNowShader() -> getUniformHandle( "alpha"), alpha / 255.0f);
 
 	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributePosition(), 2, GL_FLOAT, false, 0, pos);
 	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributeUV(), 2, GL_FLOAT, false, 0, uv);

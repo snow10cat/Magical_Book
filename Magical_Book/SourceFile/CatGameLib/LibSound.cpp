@@ -87,7 +87,9 @@ void LibSound::loadFile( const char* fileName)
 	bufferIDs[loadCount] = alureCreateBufferFromFile( filePass.c_str());
 	if( bufferIDs[loadCount] == AL_NONE) 
 	{
-		std::cout << "Failed to load from file!" << std::endl;
+		string message = "can't load from ";
+		message += fileName;
+		LibDebug::errorMessageBox( message.c_str());
 	}
 
 	// Žw’è‚µ‚½”Ô†‚ð•Û‘¶

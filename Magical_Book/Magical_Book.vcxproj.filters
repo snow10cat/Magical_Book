@@ -16,7 +16,10 @@
     <Filter Include="ShaderFile">
       <UniqueIdentifier>{683666ef-2823-4254-af37-e0f79e5bf58d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceFile\scene">
+    <Filter Include="HeaderFile\Scene">
+      <UniqueIdentifier>{91fdc47c-cc69-4a95-8622-e4d11b88924d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFile\Scene">
       <UniqueIdentifier>{e1b06999-80b6-4661-9904-f8c62b00fe13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -39,8 +42,17 @@
     <ClCompile Include="SourceFile\CatGameLib\LibBasicFunc.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFile\scene\title.cpp">
-      <Filter>SourceFile\scene</Filter>
+    <ClCompile Include="SourceFile\scene\SceneManager.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\CatGameLib\LibSound.cpp">
+      <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\scene\Scene.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\scene\Title.cpp">
+      <Filter>SourceFile\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +82,18 @@
     </ClInclude>
     <ClInclude Include="SourceFile\CatGameLib\LibBasicFunc.h">
       <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\scene\SceneManager.h">
+      <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\scene\Title.h">
+      <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibSound.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\scene\Scene.h">
+      <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

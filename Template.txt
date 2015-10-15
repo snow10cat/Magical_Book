@@ -1,0 +1,30 @@
+
+.h
+
+#ifndef __MAGICAL_BOOK_ _H__
+#define __MAGICAL_BOOK_ _H__
+
+namespace MagicalBook
+{
+
+class 
+{
+public:
+
+private:
+
+};
+
+}
+
+#endif // __MAGICAL_BOOK_ _H__
+
+
+---------------------------------------------------------------------------------------------------
+
+.cpp
+
+#include ".h"
+
+using namespace MagicalBook;
+

@@ -2,6 +2,7 @@
 #ifndef __CAT_GAME_LIBRARY_SPRITE_H__
 #define __CAT_GAME_LIBRARY_SPRITE_H__
 
+#include "ExternalLib.h"
 #include "LibCircle.h"
 #include "LibVector2.h"
 

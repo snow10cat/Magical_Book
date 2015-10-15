@@ -122,24 +122,24 @@ void LibSprite::draw( void)
 
 	for( int i = 0; i < 8; i += 2)
 	{
-		float dx = pos[i] * scale.x;
-		float dy = pos[i + 1] * scale.y;
-
-		// 移動
-		pos[i]		+= position.x / screenWidth;
-		pos[i + 1]	+= position.y / screenHeight;
+		float dx = pos[i];
+		float dy = pos[i + 1];
 
 		// 回転
 		pos[i]		= dx * cos_f - dy * sin_f;
 		pos[i + 1]	= dx * sin_f + dy * cos_f;
 
+		// 移動
+		pos[i]		+= ( position.x * 2 - screenWidth);
+		pos[i + 1]	+= ( position.y * 2 - screenHeight);
+
 		// 拡縮
-		pos[i]		*= scale.x; 
+		pos[i]		*= scale.x;
 		pos[i + 1]	*= scale.y;
 
 		// ワールド変換
-		pos[i]		= pos[i] / libMain -> getScreenSize().x;
-		pos[i + 1]	= pos[i + 1] / libMain -> getScreenSize().y;
+		pos[i]		= pos[i] / screenWidth;
+		pos[i + 1]	= pos[i + 1] / screenHeight;
 
 	}
 

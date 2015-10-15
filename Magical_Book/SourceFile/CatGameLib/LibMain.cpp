@@ -184,7 +184,7 @@ void LibMain::clear( void)
 void LibMain::draw( void)
 {
 	glfwSwapBuffers( p -> windowHandle);
-	glfwWaitEvents();
+	glfwPollEvents();
 }
 
 LibShader* LibMain::loadShaderProgram( const char* vertFileName, const char* flagFileName)

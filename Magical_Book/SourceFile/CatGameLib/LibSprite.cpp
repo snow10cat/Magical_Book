@@ -83,9 +83,10 @@ void LibSprite::draw( void)
 
 	glBindTexture( GL_TEXTURE_2D, textureIDs[textureNumber]);
 
-	LibMain* libMain = LibMain::getInstance();
+	LibMain*	libMain		= LibMain::getInstance();
+	LibShader*	libShader	= libMain -> getNowShader();
 
-	LibVector2 worldPos = libMain -> screenPosToWorldPos( position);
+	LibVector2	worldPos	= libMain -> screenPosToWorldPos( position);
 
 	LibVector2 worldSize;
 	worldSize.x = ( sizeX * scale.x / libMain -> getScreenSize().x) * 0.5f;
@@ -96,10 +97,10 @@ void LibSprite::draw( void)
 	worldAnchor.y = worldSize.y * ( anchor.y * 2 - 1);
 
 	GLfloat pos[] = {
-		( worldPos.x - worldSize.x - worldAnchor.x), ( worldPos.y + worldSize.y - worldAnchor.y),	// 左上
-		( worldPos.x - worldSize.x - worldAnchor.x), ( worldPos.y - worldSize.y - worldAnchor.y),	// 左下
-		( worldPos.x + worldSize.x - worldAnchor.x), ( worldPos.y + worldSize.y - worldAnchor.y),	// 右上
-		( worldPos.x + worldSize.x - worldAnchor.x), ( worldPos.y - worldSize.y - worldAnchor.y),	// 右下
+		( -worldSize.x - worldAnchor.x),  ( worldSize.y - worldAnchor.y),	// 左上
+		( -worldSize.x - worldAnchor.x), ( -worldSize.y - worldAnchor.y),	// 左下
+		( worldSize.x - worldAnchor.x),  ( worldSize.y - worldAnchor.y),	// 右上
+		( worldSize.x - worldAnchor.x), ( -worldSize.y - worldAnchor.y),	// 右下
 	};
 
 	const GLfloat uv[] = {
@@ -109,28 +110,54 @@ void LibSprite::draw( void)
 		1, 1,
 	};
 
-	if( angle.getRadian() != 0.0f)
-	{
-		float anglell = angle.getRadian();
-		float sin_f = sinf( -angle.getRadian());
-		float cos_f = cosf( -angle.getRadian());
+	const float axis_x = 0.0f;
+	const float axis_y = 0.0f;
+	const float axis_z = 1.0f;
 
-		for( int i = 0; i < 8; i += 2)
-		{
-			float dx = pos[i];
-			float dy = pos[i + 1];
+	const float sin_f = sinf( angle.getRadian());
+	const float cos_f = cosf( angle.getRadian());
 
-			pos[i] = (float)( dx * cos_f - dy * sin_f);
-			pos[i + 1] = (float)( dx * sin_f + dy * cos_f);
-		}
-	}
+	GLfloat move[4][4] = { 0 };
+
+	move[3][0] = worldPos.x;
+	move[3][1] = worldPos.y;
+	move[3][3] = 1.0f;
+
+	GLfloat rot[4][4] = {
+		  ( axis_x * axis_x) * ( 1.0f - cos_f) + cos_f, 
+		  ( axis_x * axis_y) * ( 1.0f - cos_f) - axis_z * sin_f, 
+		  ( axis_x * axis_z) * ( 1.0f - cos_f) + axis_y * sin_f, 
+		  0,
+		  ( axis_y * axis_x) * ( 1.0f - cos_f) + axis_z * sin_f, 
+		  ( axis_y * axis_y) * ( 1.0f - cos_f) + cos_f, 
+		  ( axis_y * axis_z) * ( 1.0f - cos_f) - axis_x * sin_f, 
+		  0,
+		  ( axis_z * axis_x) * ( 1.0f - cos_f) - axis_y * sin_f, 
+		  ( axis_z * axis_y) * ( 1.0f - cos_f) + axis_x * sin_f, 
+		  ( axis_z * axis_z) * ( 1.0f - cos_f) + cos_f, 
+		  0,
+		  0,
+		  0,
+		  0,
+		  1
+	};
+
+	GLfloat _scale[4][4] = { 0 };
+
+	_scale[0][0] = scale.x;
+	_scale[1][1] = scale.y;
+
+
+	glUniformMatrix4fv( libShader -> getUniformHandle( "unif_translate"), 1, GL_FALSE, move[0]);
+	glUniformMatrix4fv( libShader -> getUniformHandle( "unif_rotate"), 1, GL_FALSE, rot[0]);
+	glUniformMatrix4fv( libShader -> getUniformHandle( "unif_scale"), 1, GL_FALSE, _scale[0]);
 
 	glEnable( GL_BLEND);
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glUniform1f( LibMain::getInstance() -> getNowShader() -> getUniformHandle( "alpha"), alpha / 255.0f);
+	glUniform1f( libShader -> getUniformHandle( "alpha"), alpha / 255.0f);
 
-	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributePosition(), 2, GL_FLOAT, false, 0, pos);
-	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributeUV(), 2, GL_FLOAT, false, 0, uv);
+	glVertexAttribPointer( libShader -> getAttributePosition(), 2, GL_FLOAT, false, 0, pos);
+	glVertexAttribPointer( libShader -> getAttributeUV(), 2, GL_FLOAT, false, 0, uv);
 	glDrawArrays( GL_TRIANGLE_STRIP, 0, 4);
 	glDisable( GL_BLEND);
 }

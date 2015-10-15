@@ -61,7 +61,7 @@ int main()
 	
 	auto fox = LibSprite::create( "Fox.png");
 
-	fox -> setRotation( 405);
+	fox -> setRotation( 0);
 
 	fox -> setPosition( 1280 / 2, 720 / 2);
 
@@ -74,6 +74,7 @@ int main()
 	fox2 -> setPosition( 1280 / 2, 720 / 2);
 
 	fox2 -> setScale( 0.5f);
+
 	// メインループ
 	while( lib -> checkWindowState())
 	{

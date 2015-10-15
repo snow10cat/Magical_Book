@@ -194,6 +194,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\CatGameLib\LibCircle.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibDebug.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h" />
+    <ClInclude Include="SourceFile\CatGameLib\LibMatrix4.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibShader.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibSprite.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibVector2.h" />

@@ -133,10 +133,6 @@ void LibMain::initLib( void)
 	startShaderProgram( loadShaderProgram( "Basic.vsh", "Basic.fsh"));
 	getNowShader() -> setAttributePosition( "attr_pos");
 	getNowShader() -> setAttributeUV( "attr_uv");
-	getNowShader() -> setUniformHandle( "unif_translate");
-	getNowShader() -> setUniformHandle( "unif_rotate");
-	getNowShader() -> setUniformHandle( "unif_scale");
-
 	getNowShader() -> setUniformTexture( "texture");
 	getNowShader() -> setUniformHandle( "alpha");
 

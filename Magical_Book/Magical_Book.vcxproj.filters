@@ -65,9 +65,6 @@
     <ClInclude Include="SourceFile\CatGameLib\LibBasicFunc.h">
       <Filter>HeaderFile\CatGameLib</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFile\CatGameLib\LibMatrix4.h">
-      <Filter>HeaderFile\CatGameLib</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShaderFile\Basic.fsh">

@@ -1,12 +1,29 @@
 
-#include "CatGameLib.h"
-#include "ExternalLib.h"
+#include "LibSprite.h"
 
 using namespace std;
 using namespace CatGameLib;
 
 int LibSprite::loadCount = 0;
 unsigned int LibSprite::textureIDs[LoadSpriteMax] = { 0 };
+
+LibSprite* LibSprite::create( const char* fileName)
+{
+	LibSprite* sprite = new (nothrow)LibSprite();
+
+	if( sprite == nullptr)
+	{
+		return nullptr;
+	}
+	sprite -> loadTexture( fileName);
+	return sprite;
+}
+
+void LibSprite::allRelease( void)
+{
+	glDeleteTextures( loadCount, textureIDs);
+	loadCount = 0;
+}
 
 LibSprite::LibSprite() : isRender( true),
 						 alpha( 255.0f),
@@ -21,18 +38,7 @@ LibSprite::LibSprite() : isRender( true),
 
 LibSprite::~LibSprite()
 {
-}
-
-LibSprite* LibSprite::create( const char* fileName)
-{
-	LibSprite* sprite( new LibSprite());
-
-	if( sprite == nullptr)
-	{
-		return nullptr;
-	}
-	sprite -> loadTexture( fileName);
-	return sprite;
+	glDeleteTextures( 1, &textureIDs[textureNumber]);
 }
 
 void LibSprite::setAlpha( float alpha)
@@ -104,10 +110,8 @@ void LibSprite::draw( void)
 	LibMain* libMain = LibMain::getInstance();
 
 	// 画像サイズとアンカーポイントから4点を生成
-
 	float w = sizeX * anchor.x;
 	float h = sizeY * anchor.y;
-
 	GLfloat pos[] = {
 		-w,			sizeY - h,
 		-w,		   -h,
@@ -122,24 +126,24 @@ void LibSprite::draw( void)
 
 	for( int i = 0; i < 8; i += 2)
 	{
-		float dx = pos[i] * scale.x;
-		float dy = pos[i + 1] * scale.y;
-
-		// 移動
-		pos[i]		+= position.x / screenWidth;
-		pos[i + 1]	+= position.y / screenHeight;
+		float dx = pos[i];
+		float dy = pos[i + 1];
 
 		// 回転
 		pos[i]		= dx * cos_f - dy * sin_f;
 		pos[i + 1]	= dx * sin_f + dy * cos_f;
 
+		// 移動
+		pos[i]		+= ( position.x * 2 - screenWidth);
+		pos[i + 1]	+= ( position.y * 2 - screenHeight);
+
 		// 拡縮
-		pos[i]		*= scale.x; 
+		pos[i]		*= scale.x;
 		pos[i + 1]	*= scale.y;
 
 		// ワールド変換
-		pos[i]		= pos[i] / libMain -> getScreenSize().x;
-		pos[i + 1]	= pos[i + 1] / libMain -> getScreenSize().y;
+		pos[i]		= pos[i] / screenWidth;
+		pos[i + 1]	= pos[i + 1] / screenHeight;
 
 	}
 
@@ -176,6 +180,8 @@ void LibSprite::draw( void)
 
 void LibSprite::loadTexture( const char* fileName)
 {
+	glGenTextures( 1, &textureIDs[loadCount]);
+
 	// 未使用のテクスチャ番号を指定
 	glBindTexture( GL_TEXTURE_2D, textureIDs[loadCount]);
 

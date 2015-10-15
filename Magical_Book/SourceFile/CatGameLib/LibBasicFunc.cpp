@@ -1,8 +1,5 @@
 
-#include <iostream>
-#include <cmath>
-
-#include "CatGameLib.h"
+#include "LibBasicFunc.h"
 
 using namespace CatGameLib;
 

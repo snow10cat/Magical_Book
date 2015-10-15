@@ -1,8 +1,8 @@
 
 #include "CatGameLib.h"
+#include "ExternalLib.h"
 
-#include <new>
-#include <cassert>
+#include "LibCircle.h"
 
 using namespace std;
 using namespace CatGameLib;

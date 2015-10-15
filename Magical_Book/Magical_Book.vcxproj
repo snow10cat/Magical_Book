@@ -184,9 +184,13 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\CatGameLib\LibCircle.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibMain.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibShader.cpp" />
+    <ClCompile Include="SourceFile\CatGameLib\LibSound.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSprite.cpp" />
     <ClCompile Include="SourceFile\main.cpp" />
-    <ClCompile Include="SourceFile\scene\title.cpp" />
+    <ClCompile Include="SourceFile\Scene\Game.cpp" />
+    <ClCompile Include="SourceFile\scene\Scene.cpp" />
+    <ClCompile Include="SourceFile\scene\SceneManager.cpp" />
+    <ClCompile Include="SourceFile\scene\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFile\CatGameLib\CatGameLib.h" />
@@ -196,8 +200,13 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\CatGameLib\LibDebug.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibShader.h" />
+    <ClInclude Include="SourceFile\CatGameLib\LibSound.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibSprite.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibVector2.h" />
+    <ClInclude Include="SourceFile\Scene\Game.h" />
+    <ClInclude Include="SourceFile\scene\Scene.h" />
+    <ClInclude Include="SourceFile\scene\SceneManager.h" />
+    <ClInclude Include="SourceFile\scene\Title.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ShaderFile\Basic.fsh" />

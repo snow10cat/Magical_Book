@@ -2,8 +2,8 @@
 #ifndef __CAT_GAME_LIBRARY_SPRITE_H__
 #define __CAT_GAME_LIBRARY_SPRITE_H__
 
-#include "LibCircle.h"
-#include "LibVector2.h"
+#include "CatGameLib.h"
+#include "ExternalLib.h"
 
 namespace CatGameLib
 {
@@ -11,20 +11,14 @@ namespace CatGameLib
 class LibSprite
 {
 public:
-	enum
-	{
-		LoadSpriteMax = 1024,
-	};
-
-	static unsigned int * getTextureIDs( void) { return textureIDs; }
-
 	static LibSprite* create( const char* fileName);
+	static void allRelease( void);
 
 	void setAlpha( float alpha);
 
 	void setAnchorPoint( float pos);
 	void setAnchorPoint( float x, float y);
-	void setAnchorPoint( const LibVector2& pos);
+	void setAnchorPoint( const CatGameLib::LibVector2& pos);
 
 	void setPosition( float x, float y);
 	void setPosition( const LibVector2& pos);
@@ -41,6 +35,11 @@ public:
 	~LibSprite();
 
 private:
+	enum
+	{
+		LoadSpriteMax = 1024,
+	};
+
 	static int loadCount;
 	static unsigned int textureIDs[LoadSpriteMax];
 

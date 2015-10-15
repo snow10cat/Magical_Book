@@ -1,12 +1,29 @@
 
-#include "CatGameLib.h"
-#include "ExternalLib.h"
+#include "LibSprite.h"
 
 using namespace std;
 using namespace CatGameLib;
 
 int LibSprite::loadCount = 0;
 unsigned int LibSprite::textureIDs[LoadSpriteMax] = { 0 };
+
+LibSprite* LibSprite::create( const char* fileName)
+{
+	LibSprite* sprite = new (nothrow)LibSprite();
+
+	if( sprite == nullptr)
+	{
+		return nullptr;
+	}
+	sprite -> loadTexture( fileName);
+	return sprite;
+}
+
+void LibSprite::allRelease( void)
+{
+	glDeleteTextures( loadCount, textureIDs);
+	loadCount = 0;
+}
 
 LibSprite::LibSprite() : isRender( true),
 						 alpha( 255.0f),
@@ -21,18 +38,7 @@ LibSprite::LibSprite() : isRender( true),
 
 LibSprite::~LibSprite()
 {
-}
-
-LibSprite* LibSprite::create( const char* fileName)
-{
-	LibSprite* sprite( new LibSprite());
-
-	if( sprite == nullptr)
-	{
-		return nullptr;
-	}
-	sprite -> loadTexture( fileName);
-	return sprite;
+	glDeleteTextures( 1, &textureIDs[textureNumber]);
 }
 
 void LibSprite::setAlpha( float alpha)
@@ -104,10 +110,8 @@ void LibSprite::draw( void)
 	LibMain* libMain = LibMain::getInstance();
 
 	// 画像サイズとアンカーポイントから4点を生成
-
 	float w = sizeX * anchor.x;
 	float h = sizeY * anchor.y;
-
 	GLfloat pos[] = {
 		-w,			sizeY - h,
 		-w,		   -h,
@@ -176,6 +180,8 @@ void LibSprite::draw( void)
 
 void LibSprite::loadTexture( const char* fileName)
 {
+	glGenTextures( 1, &textureIDs[loadCount]);
+
 	// 未使用のテクスチャ番号を指定
 	glBindTexture( GL_TEXTURE_2D, textureIDs[loadCount]);
 

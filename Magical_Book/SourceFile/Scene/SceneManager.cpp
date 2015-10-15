@@ -1,5 +1,6 @@
 
 #include "SceneManager.h"
+#include "Game.h"
 #include "Title.h"
 
 using namespace MagicalBook;
@@ -28,6 +29,7 @@ void SceneManager::createScene( SceneNumber number)
 		break;
 
 	case Game:
+		scene = new class::Game;
 		break;
 
 	case Pause:

@@ -2,8 +2,8 @@
 #ifndef __CAT_GAME_LIBRARY_SHADER_H__
 #define __CAT_GAME_LIBRARY_SHADER_H__
 
-#include <map>
-#include <string>
+#include "CatGameLib.h"
+#include "ExternalLib.h"
 
 namespace CatGameLib
 {

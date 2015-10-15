@@ -2,13 +2,13 @@
 #ifndef __CAT_GAME_LIBRARY_MAIN_H__
 #define __CAT_GAME_LIBRARY_MAIN_H__
 
-#include <memory>
-
-#include "LibShader.h"
-#include "LibVector2.h"
+#include "CatGameLib.h"
+#include "ExternalLib.h"
 
 namespace CatGameLib
 {
+
+class LibShader;
 
 class LibMain
 {
@@ -115,7 +115,7 @@ public:
 	 *	@param	vertFileName 頂点シェーダーファイル名
 	 *	@param	flagFileName ピクセルシェーダーファイル名
 	 */
-	CatGameLib::LibShader* loadShaderProgram( const char* vertFileName, const char* flagFileName);
+	LibShader* loadShaderProgram( const char* vertFileName, const char* flagFileName);
 
 	/**
 	 *	シェーダーファイルを利用する
@@ -123,7 +123,7 @@ public:
 	 * 	@author	minaka1412
 	 *	@param	shaderNumber	シェーダープログラムを識別する番号
 	 */
-	void startShaderProgram( CatGameLib::LibShader* shaderNumber);
+	void startShaderProgram( LibShader* shaderNumber);
 	
 	/**
 	 *	シェーダーファイルを利用する
@@ -131,9 +131,9 @@ public:
 	 * 	@author	minaka1412
 	 *	@param	shaderNumber	シェーダープログラムを識別する番号
 	 */
-	CatGameLib::LibShader* getNowShader( void);
+	LibShader* getNowShader( void);
 
-	CatGameLib::LibVector2 getScreenSize( void);
+	LibVector2 getScreenSize( void);
 
 	LibVector2 screenPosToWorldPos( const LibVector2& screenPos);
 

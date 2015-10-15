@@ -1,11 +1,5 @@
 
-#include <assert.h>
-
-#include <fstream>
-#include <iostream>
-
-#include "CatGameLib.h"
-#include "ExternalLib.h"
+#include "LibShader.h"
 
 using namespace std;
 using namespace CatGameLib;

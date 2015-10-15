@@ -2,8 +2,8 @@
 #ifndef __CAT_GAME_LIBRARY_BASIC_FUNC_H__
 #define __CAT_GAME_LIBRARY_BASIC_FUNC_H__
 
-#include <algorithm>
-#include <cassert>
+#include "CatGameLib.h"
+#include "ExternalLib.h"
 
 namespace CatGameLib
 {

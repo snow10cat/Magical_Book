@@ -1,11 +1,5 @@
 
-#include <assert.h>
-
-#include <string>
-#include <map>
-
-#include "CatGameLib.h"
-#include "ExternalLib.h"
+#include "LibMain.h"
 
 #ifdef DEBUG
 #elif _DEBUG
@@ -74,13 +68,21 @@ static LibMain* instance = LibMain::getInstance();
 
 LibMain::LibMain() : p( new Private())
 {
+	// GLFW初期化
 	if( glfwInit() == GL_FALSE)
 	{
 		LibDebug::errorMessageBox( "Can't initialize GLFW");
 	}
 
+	// OpenGLバージョンを設定 (OpenGL ES 2.0)
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint( GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+
+	// ALURE初期化
+	if( !alureInitDevice( NULL, NULL)) 
+	{
+		LibDebug::errorMessageBox( "Can't initialize ALURE!");
+	}
 }
 
 LibMain::~LibMain()
@@ -130,13 +132,12 @@ void LibMain::initLib( void)
 		LibDebug::errorMessageBox( "Can't initialize GLEW");
 	}
 
+	// デフォルトシェーダーの読み込みと設定
 	startShaderProgram( loadShaderProgram( "Basic.vsh", "Basic.fsh"));
 	getNowShader() -> setAttributePosition( "attr_pos");
 	getNowShader() -> setAttributeUV( "attr_uv");
 	getNowShader() -> setUniformTexture( "texture");
 	getNowShader() -> setUniformHandle( "alpha");
-
-	glGenTextures( LibSprite::LoadSpriteMax, LibSprite::getTextureIDs());
 }
 
 void LibMain::setClearColor( float red, float blue, float green, float alpha)
@@ -246,5 +247,9 @@ LibMain::Private::Private() : isLibInit( false),
 
 void LibMain::Private::endLib( void)
 {
+	// GLFWの終了処理
 	glfwTerminate();
+	
+	// ALUREの終了処理
+	alureShutdownDevice();
 }

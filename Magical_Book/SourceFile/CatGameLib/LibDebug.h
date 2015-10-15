@@ -2,7 +2,6 @@
 #ifndef __CAT_GAME_LIBRARY_DEBUG_H__
 #define __CAT_GAME_LIBRARY_DEBUG_H__
 
-#include <string>
 #include "ExternalLib.h"
 
 namespace CatGameLib

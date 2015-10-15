@@ -54,6 +54,9 @@
     <ClCompile Include="SourceFile\scene\Title.cpp">
       <Filter>SourceFile\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFile\Scene\Game.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h">
@@ -93,6 +96,9 @@
       <Filter>HeaderFile\CatGameLib</Filter>
     </ClInclude>
     <ClInclude Include="SourceFile\scene\Scene.h">
+      <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Scene\Game.h">
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
   </ItemGroup>

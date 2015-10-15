@@ -11,6 +11,10 @@
 #include "LibDebug.h"
 #endif // __CAT_GAME_LIBRARY_DEBUG_H__
 
+#ifndef __CAT_GAME_LIBRARY_INPUT_H__
+#include "LibInput.h"
+#endif // __CAT_GAME_LIBRARY_INPUT_H__
+
 #ifndef __CAT_GAME_LIBRARY_MAIN_H__
 #include "LibMain.h"
 #endif // __CAT_GAME_LIBRARY_MAIN_H__

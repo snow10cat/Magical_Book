@@ -182,6 +182,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
   <ItemGroup>
     <ClCompile Include="SourceFile\CatGameLib\LibBasicFunc.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibCircle.cpp" />
+    <ClCompile Include="SourceFile\CatGameLib\LibInput.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibMain.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibShader.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSound.cpp" />
@@ -198,6 +199,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\CatGameLib\LibBasicFunc.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibCircle.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibDebug.h" />
+    <ClInclude Include="SourceFile\CatGameLib\LibInput.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibShader.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibSound.h" />

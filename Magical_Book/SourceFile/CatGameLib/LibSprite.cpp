@@ -15,6 +15,7 @@ LibSprite* LibSprite::create( const char* fileName)
 	{
 		return nullptr;
 	}
+
 	sprite -> loadTexture( fileName);
 	return sprite;
 }
@@ -138,8 +139,8 @@ void LibSprite::draw( void)
 		pos[i + 1]	+= ( position.y * 2 - screenHeight);
 
 		// 拡縮
-		pos[i]		*= scale.x;
-		pos[i + 1]	*= scale.y;
+		pos[i]		*= scale.x * 2;
+		pos[i + 1]	*= scale.y * 2;
 
 		// ワールド変換
 		pos[i]		= pos[i] / screenWidth;

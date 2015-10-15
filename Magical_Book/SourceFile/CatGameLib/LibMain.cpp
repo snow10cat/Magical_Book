@@ -91,7 +91,8 @@ LibMain::~LibMain()
 
 void LibMain::initLib( void)
 {
-	GLFWmonitor*	monitor	= nullptr;
+	const GLFWvidmode* const videoMode	= glfwGetVideoMode( glfwGetPrimaryMonitor());
+	GLFWmonitor*			 monitor	= nullptr;
 
 	if( p -> screenMode == ScreenMode::FullScreen)
 	{
@@ -100,18 +101,22 @@ void LibMain::initLib( void)
 
 	if( p -> isScreenMonitorSize)
 	{
-		const GLFWvidmode* const mode = glfwGetVideoMode( glfwGetPrimaryMonitor());
-		glfwWindowHint( GLFW_RED_BITS,		mode -> redBits);
-		glfwWindowHint( GLFW_GREEN_BITS,	mode -> greenBits);
-		glfwWindowHint( GLFW_BLUE_BITS,		mode -> blueBits);
-		glfwWindowHint( GLFW_REFRESH_RATE,	mode -> refreshRate);
-		p -> screenWidth = mode -> width;
-		p -> screenHeight = mode -> height;
+		glfwWindowHint( GLFW_RED_BITS,		videoMode -> redBits);
+		glfwWindowHint( GLFW_GREEN_BITS,	videoMode -> greenBits);
+		glfwWindowHint( GLFW_BLUE_BITS,		videoMode -> blueBits);
+		glfwWindowHint( GLFW_REFRESH_RATE,	videoMode -> refreshRate);
+		p -> screenWidth = videoMode -> width;
+		p -> screenHeight = videoMode -> height;
 	}
 
 	atexit( Private::endLib);
 
+	// ウィンドウ作成
 	p -> windowHandle = glfwCreateWindow( p -> screenWidth, p -> screenHeight, p -> windowTitle.c_str(), monitor, nullptr);
+
+	// ウィンドウ位置設定 (モニターの中心)
+	glfwSetWindowPos( p -> windowHandle, ( videoMode -> width - p -> screenWidth) / 2,
+										 ( videoMode -> height - p -> screenHeight) / 2);
 
 	if( p -> windowHandle == nullptr)
 	{
@@ -138,6 +143,12 @@ void LibMain::initLib( void)
 	getNowShader() -> setAttributeUV( "attr_uv");
 	getNowShader() -> setUniformTexture( "texture");
 	getNowShader() -> setUniformHandle( "alpha");
+
+	// 入力コールバック関数の登録
+	glfwSetMouseButtonCallback( p -> windowHandle, LibInput::MouseButtonPushCallback);
+	glfwSetCursorPosCallback ( p -> windowHandle, LibInput::MouseCursorMoveCallback);
+	glfwSetCursorEnterCallback ( p -> windowHandle, LibInput::MouseCursorWindowInCallback);
+	glfwSetScrollCallback ( p -> windowHandle, LibInput::MouseWheelMoveCallback);
 }
 
 void LibMain::setClearColor( float red, float blue, float green, float alpha)
@@ -179,7 +190,9 @@ bool LibMain::checkWindowState( void)
 
 void LibMain::clear( void)
 {
+	glfwSetWindowSize( p -> windowHandle, p -> screenWidth, p -> screenHeight);
 	glClear( GL_COLOR_BUFFER_BIT);
+	LibInput::getInstance() -> update( p -> windowHandle);
 }
 
 void LibMain::draw( void)

@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)\ExternalLibrary\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\ExternalLibrary\include;;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\ExternalLibrary\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)\ExternalLibrary\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\ExternalLibrary\include;$(IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\ExternalLibrary\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -120,7 +120,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;libpng16.lib;opengl32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ALURE32.lib;glew32s.lib;glfw3.lib;libpng16.lib;OpenAL32.lib;opengl32.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
@@ -186,6 +186,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\CatGameLib\LibShader.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSprite.cpp" />
     <ClCompile Include="SourceFile\main.cpp" />
+    <ClCompile Include="SourceFile\scene\title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFile\CatGameLib\CatGameLib.h" />

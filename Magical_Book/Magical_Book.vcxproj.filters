@@ -16,6 +16,9 @@
     <Filter Include="ShaderFile">
       <UniqueIdentifier>{683666ef-2823-4254-af37-e0f79e5bf58d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceFile\scene">
+      <UniqueIdentifier>{e1b06999-80b6-4661-9904-f8c62b00fe13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFile\main.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="SourceFile\CatGameLib\LibBaseFunc.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\scene\title.cpp">
+      <Filter>SourceFile\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -28,11 +28,11 @@ public:
 	}
 	int degreeWrap( int x)
 	{
-		return LibBaseFunc::wrap( x, -halfDegree + 1, halfDegree + 1);
+		return LibBasicFunc::wrap( x, -halfDegree + 1, halfDegree + 1);
 	}
 	float radianWrap( float x)
 	{
-		return LibBaseFunc::wrap( x, -pi + degreeToRadian( 1), pi + degreeToRadian( 1));
+		return LibBasicFunc::wrap( x, -pi + degreeToRadian( 1), pi + degreeToRadian( 1));
 	}
 };
 

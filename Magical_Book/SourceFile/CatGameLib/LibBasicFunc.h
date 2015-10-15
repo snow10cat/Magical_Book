@@ -8,7 +8,7 @@
 namespace CatGameLib
 {
 
-class LibBaseFunc
+class LibBasicFunc
 {
 public:
 	template<class T>

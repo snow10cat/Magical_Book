@@ -22,6 +22,10 @@ public:
 
 	void setAlpha( float alpha);
 
+	void setAnchorPoint( float pos);
+	void setAnchorPoint( float x, float y);
+	void setAnchorPoint( const LibVector2& pos);
+
 	void setPosition( float x, float y);
 	void setPosition( const LibVector2& pos);
 
@@ -40,15 +44,16 @@ private:
 	static int loadCount;
 	static unsigned int textureIDs[LoadSpriteMax];
 
+	bool isRender;
 	int textureNumber;
 	GLuint sizeX;
 	GLuint sizeY;
 	float alpha;
 
 	LibCircle angle;
+	LibVector2 anchor;
 	LibVector2 position;
 	LibVector2 scale;
-	LibVector2 anchor;
 
 	LibSprite();
 

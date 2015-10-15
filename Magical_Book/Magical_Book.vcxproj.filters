@@ -33,7 +33,7 @@
     <ClCompile Include="SourceFile\CatGameLib\LibCircle.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFile\CatGameLib\LibBaseFunc.cpp">
+    <ClCompile Include="SourceFile\CatGameLib\LibBasicFunc.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
   </ItemGroup>

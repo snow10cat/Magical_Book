@@ -65,7 +65,7 @@ int main()
 
 	fox -> setPosition( 1280 / 2, 720 / 2);
 
-	fox -> setScale( 0.5f);
+	fox -> setScale( 1.0f);
 
 	fox -> setAlpha( 128.0);
 
@@ -73,7 +73,7 @@ int main()
 
 	fox2 -> setPosition( 1280 / 2, 720 / 2);
 
-	fox2 -> setScale( 0.5f);
+	fox2 -> setScale( 1.0f);
 	// メインループ
 	while( lib -> checkWindowState())
 	{

@@ -8,20 +8,21 @@
 namespace MagicalBook
 {
 
-class Title : public Scene
-{
-public:
-	Title();
-	~Title();
+	class Title : public Scene
+	{
+	public:
+		Title();
+		~Title();
 
-	void init( void) override;
-	void update( void) override;
+		void init(void) override;
+		void update(void) override;
 
-private:
-	CatGameLib::LibSprite* test;
-	CatGameLib::LibSprite* fox;
-	CatGameLib::LibSprite* fox2;
-};
+	private:
+
+		CatGameLib::LibSprite* floar;
+		CatGameLib::LibSprite* title_book;
+		CatGameLib::LibSprite* title_logo;
+	};
 
 }
 

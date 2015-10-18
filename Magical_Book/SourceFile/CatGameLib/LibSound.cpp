@@ -32,6 +32,11 @@ void LibSound::allRelease( void)
 	loadCount = 0;
 }
 
+void LibSound::allStop( void)
+{
+	alSourceStopv( loadCount, sourceIDs);
+}
+
 LibSound::LibSound() : sourceID( 0),
 					   bufferID( 0)
 {

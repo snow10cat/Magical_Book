@@ -10,6 +10,7 @@ class LibSound
 public:
 	static LibSound* create( const char* fileName);
 	static void allRelease( void);
+	static void allStop( void);
 
 	void setLoop( bool isLoop);
 	void setVolume( float vol);

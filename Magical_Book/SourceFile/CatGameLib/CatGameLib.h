@@ -31,6 +31,10 @@
 #include "LibSprite.h"
 #endif // __CAT_GAME_LIBRARY_SPRITE_H__
 
+#ifndef __CAT_GAME_LIBRARY_SPRITES_H__
+#include "LibSprites.h"
+#endif // __CAT_GAME_LIBRARY_SPRITES_H__
+
 #ifndef __CAT_GAME_LIBRARY_VECTOR2_H__
 #include "LibVector2.h"
 #endif // __CAT_GAME_LIBRARY_VECTOR2_H__

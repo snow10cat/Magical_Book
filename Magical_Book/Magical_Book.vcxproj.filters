@@ -60,6 +60,9 @@
     <ClCompile Include="SourceFile\CatGameLib\LibInput.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFile\CatGameLib\LibSprites.cpp">
+      <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h">
@@ -105,6 +108,9 @@
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceFile\CatGameLib\LibInput.h">
+      <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\CatGameLib\LibSprites.h">
       <Filter>HeaderFile\CatGameLib</Filter>
     </ClInclude>
   </ItemGroup>

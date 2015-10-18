@@ -1,6 +1,6 @@
 
-#ifndef __CAT_GAME_LIBRARY_SPRITE_H__
-#define __CAT_GAME_LIBRARY_SPRITE_H__
+#ifndef __CAT_GAME_LIBRARY_SPRITES_H__
+#define __CAT_GAME_LIBRARY_SPRITES_H__
 
 #include "CatGameLib.h"
 #include "ExternalLib.h"
@@ -8,13 +8,15 @@
 namespace CatGameLib
 {
 
-class LibSprite
+class LibSprites
 {
 public:
-	static LibSprite* create( const char* fileName);
+	static LibSprites* create( const char* fileName, int width, int height);
 	static void allRelease( void);
 
 	void setAlpha( float alpha);
+
+	void setAnimationSpeed( int speed);
 
 	void setAnchorPoint( float pos);
 	void setAnchorPoint( float x, float y);
@@ -32,6 +34,8 @@ public:
 
 	float getAlpha( void);
 		 
+	int getAnimationSpeed( void);
+		 
 	float getAnchorPointX( void);
 	float getAnchorPointY( void);
 	LibVector2 getAnchorPoint( void);
@@ -47,8 +51,12 @@ public:
 	float getScaleY( void);
 	LibVector2 getScale( void);
 
-	void draw( void);
-	~LibSprite();
+	int getSpriteCount( void);
+
+	void draw( int number);
+	void animation( void);
+
+	~LibSprites();
 
 private:
 	enum
@@ -57,9 +65,16 @@ private:
 	};
 
 	static int loadCount;
-	static unsigned int textureIDs[LoadSpriteMax];
+	static unsigned int allObjectTextureIDs[LoadSpriteMax];
 
-	unsigned int textureID;
+	std::vector<unsigned int> textureIDs;
+	int textureNumber;
+	int spriteCount;
+	unsigned int* pixelBuffer;
+
+	int animationSpeed;
+	int animationCount;
+	int animationNumber;
 
 	bool isRender;
 	GLuint sizeX;
@@ -71,12 +86,12 @@ private:
 	LibVector2 position;
 	LibVector2 scale;
 
-	LibSprite();
+	LibSprites();
 
-	void loadTexture( const char* fileName);
+	void createTexture( png::image<png::rgba_pixel>& image, int number, int posX, int posY);
 };
 
 }
 
 
-#endif // __CAT_GAME_LIBRARY_SPRITE_H__
+#endif // __CAT_GAME_LIBRARY_SPRITES_H__

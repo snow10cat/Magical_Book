@@ -26,7 +26,8 @@ void LibSprite::allRelease( void)
 	loadCount = 0;
 }
 
-LibSprite::LibSprite() : isRender( true),
+LibSprite::LibSprite() : textureID( 0),
+						 isRender( true),
 						 alpha( 255.0f),
 						 sizeX( 0.0f),
 						 sizeY( 0.0f),
@@ -39,7 +40,7 @@ LibSprite::LibSprite() : isRender( true),
 
 LibSprite::~LibSprite()
 {
-	glDeleteTextures( 1, &textureIDs[textureNumber]);
+	glDeleteTextures( 1, &textureID);
 }
 
 void LibSprite::setAlpha( float alpha)
@@ -103,6 +104,67 @@ void LibSprite::setScale( const LibVector2& scale)
 	this -> scale = scale;
 }
 
+
+float LibSprite::getAlpha( void)
+{
+	return alpha;
+}
+		 
+float LibSprite::getAnchorPointX( void)
+{
+	return anchor.x;
+}
+
+float LibSprite::getAnchorPointY( void)
+{
+	return anchor.y;
+}
+
+LibVector2 LibSprite::getAnchorPoint( void)
+{
+	return anchor;
+}
+		 
+float LibSprite::getPositionX( void)
+{
+	return position.x;
+}
+
+float LibSprite::getPositionY( void)
+{
+	return position.y;
+}
+
+LibVector2 LibSprite::getPosition( void)
+{
+	return position;
+}
+		 
+int LibSprite::getRotationDegree( void)
+{
+	return angle.getDegree();
+}
+
+float LibSprite::getRotationRadian( void)
+{
+	return angle.getRadian();
+}
+
+float LibSprite::getScaleX( void)
+{
+	return scale.x;
+}
+
+float LibSprite::getScaleY( void)
+{
+	return scale.y;
+}
+
+LibVector2 LibSprite::getScale( void)
+{
+	return scale;
+}
+
 void LibSprite::draw( void)
 {
 	// 描画フラグチェック
@@ -135,8 +197,8 @@ void LibSprite::draw( void)
 		pos[i + 1]	= dx * sin_f + dy * cos_f;
 
 		// 移動
-		pos[i]		+= ( position.x * 2 - screenWidth);
-		pos[i + 1]	+= ( position.y * 2 - screenHeight);
+		pos[i]		+= ( position.x - screenWidth * 0.5f);
+		pos[i + 1]	+= ( position.y - screenHeight * 0.5f);
 
 		// 拡縮
 		pos[i]		*= scale.x * 2;
@@ -157,7 +219,7 @@ void LibSprite::draw( void)
 	};
 
 	// テクスチャ設定
-	glBindTexture( GL_TEXTURE_2D, textureIDs[textureNumber]);
+	glBindTexture( GL_TEXTURE_2D, textureID);
 	
 	// アルファブレンドON
 	glEnable( GL_BLEND);
@@ -181,13 +243,12 @@ void LibSprite::draw( void)
 
 void LibSprite::loadTexture( const char* fileName)
 {
-	glGenTextures( 1, &textureIDs[loadCount]);
+	glGenTextures( 1, &textureID);
 
 	// 未使用のテクスチャ番号を指定
-	glBindTexture( GL_TEXTURE_2D, textureIDs[loadCount]);
+	glBindTexture( GL_TEXTURE_2D, textureID);
 
-	// 指定した番号を保存
-	textureNumber = loadCount;
+	textureIDs[loadCount] = textureID;
 
 	// カウント更新
 	loadCount++;

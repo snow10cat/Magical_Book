@@ -22,6 +22,7 @@ namespace MagicalBook
 		CatGameLib::LibSprite* floar;
 		CatGameLib::LibSprite* title_book;
 		CatGameLib::LibSprite* title_logo;
+		CatGameLib::LibSprites* player;
 	};
 
 }

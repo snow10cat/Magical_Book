@@ -149,6 +149,8 @@ void LibMain::initLib( void)
 	glfwSetCursorPosCallback ( p -> windowHandle, LibInput::MouseCursorMoveCallback);
 	glfwSetCursorEnterCallback ( p -> windowHandle, LibInput::MouseCursorWindowInCallback);
 	glfwSetScrollCallback ( p -> windowHandle, LibInput::MouseWheelMoveCallback);
+
+	LibInput::getInstance() -> setWindow( p -> windowHandle);
 }
 
 void LibMain::setClearColor( float red, float blue, float green, float alpha)
@@ -192,7 +194,7 @@ void LibMain::clear( void)
 {
 	glfwSetWindowSize( p -> windowHandle, p -> screenWidth, p -> screenHeight);
 	glClear( GL_COLOR_BUFFER_BIT);
-	LibInput::getInstance() -> update( p -> windowHandle);
+	LibInput::getInstance() -> update();
 }
 
 void LibMain::draw( void)

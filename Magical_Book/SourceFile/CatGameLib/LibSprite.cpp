@@ -1,4 +1,6 @@
 
+#include "CatGameLib.h"
+#include "ExternalLib.h"
 #include "LibSprite.h"
 
 using namespace std;
@@ -27,7 +29,7 @@ void LibSprite::allRelease( void)
 }
 
 LibSprite::LibSprite() : textureID( 0),
-						 isRender( true),
+						 isDraw( true),
 						 alpha( 255.0f),
 						 sizeX( 0.0f),
 						 sizeY( 0.0f),
@@ -43,6 +45,11 @@ LibSprite::~LibSprite()
 	glDeleteTextures( 1, &textureID);
 }
 
+void LibSprite::setDrawFlag( bool flag)
+{
+	isDraw = flag;
+}
+
 void LibSprite::setAlpha( float alpha)
 {
 	this -> alpha = LibBasicFunc::clamp( alpha, 0.0f, 255.0f);
@@ -50,20 +57,30 @@ void LibSprite::setAlpha( float alpha)
 
 void LibSprite::setAnchorPoint( float pos)
 {
-	anchor.x = LibBasicFunc::clamp( pos, 0.0f, 1.0f);
-	anchor.y = LibBasicFunc::clamp( pos, 0.0f, 1.0f);
+	anchor.x = pos;
+	anchor.y = pos;
 }
 
 void LibSprite::setAnchorPoint( float x, float y)
 {
-	anchor.x = LibBasicFunc::clamp( x, 0.0f, 1.0f);
-	anchor.y = LibBasicFunc::clamp( y, 0.0f, 1.0f);
+	anchor.x = x;
+	anchor.y = y;
 }
 
 void LibSprite::setAnchorPoint( const LibVector2& pos)
 {
-	anchor.x = LibBasicFunc::clamp( pos.x, 0.0f, 1.0f);
-	anchor.y = LibBasicFunc::clamp( pos.y, 0.0f, 1.0f);
+	anchor.x = pos.x;
+	anchor.y = pos.y;
+}
+
+void LibSprite::setAnchorPointX( float pos)
+{
+	anchor.x = pos;
+}
+
+void LibSprite::setAnchorPointY( float pos)
+{
+	anchor.y = pos;
 }
 
 void LibSprite::setPosition( float x, float y)
@@ -75,6 +92,16 @@ void LibSprite::setPosition( float x, float y)
 void LibSprite::setPosition( const LibVector2& pos)
 {
 	position = pos;
+}
+
+void LibSprite::setPositionX( float pos)
+{
+	position.x = pos;
+}
+
+void LibSprite::setPositionY( float pos)
+{
+	position.y = pos;
 }
 
 void LibSprite::setRotation( int angle)
@@ -104,6 +131,15 @@ void LibSprite::setScale( const LibVector2& scale)
 	this -> scale = scale;
 }
 
+void LibSprite::setScaleX( float scale)
+{
+	this -> scale.x = scale;
+}
+
+void LibSprite::setScaleY( float scale)
+{
+	this -> scale.y = scale;
+}
 
 float LibSprite::getAlpha( void)
 {
@@ -168,77 +204,9 @@ LibVector2 LibSprite::getScale( void)
 void LibSprite::draw( void)
 {
 	// 描画フラグチェック
-	if( !isRender) { return; }
+	if( !isDraw) { return; }
 
-	LibMain* libMain = LibMain::getInstance();
-
-	// 画像サイズとアンカーポイントから4点を生成
-	float w = sizeX * anchor.x;
-	float h = sizeY * anchor.y;
-	GLfloat pos[] = {
-		-w,			sizeY - h,
-		-w,		   -h,
-		 sizeX - w,  sizeY - h,
-		 sizeX - w, -h,
-	};
-
-	float sin_f = sinf( -angle.getRadian());
-	float cos_f = cosf( -angle.getRadian());
-	float screenWidth = libMain -> getScreenSize().x;
-	float screenHeight = libMain -> getScreenSize().y;
-
-	for( int i = 0; i < 8; i += 2)
-	{
-		float dx = pos[i];
-		float dy = pos[i + 1];
-
-		// 回転
-		pos[i]		= dx * cos_f - dy * sin_f;
-		pos[i + 1]	= dx * sin_f + dy * cos_f;
-
-		// 移動
-		pos[i]		+= ( position.x - screenWidth * 0.5f);
-		pos[i + 1]	+= ( position.y - screenHeight * 0.5f);
-
-		// 拡縮
-		pos[i]		*= scale.x * 2;
-		pos[i + 1]	*= scale.y * 2;
-
-		// ワールド変換
-		pos[i]		= pos[i] / screenWidth;
-		pos[i + 1]	= pos[i + 1] / screenHeight;
-
-	}
-
-	// UV座標
-	const GLfloat uv[] = {
-		0, 0,
-		0, 1,
-		1, 0,
-		1, 1,
-	};
-
-	// テクスチャ設定
-	glBindTexture( GL_TEXTURE_2D, textureID);
-	
-	// アルファブレンドON
-	glEnable( GL_BLEND);
-	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	// シェーダーのUniformにアルファ値を転送
-	glUniform1f( LibMain::getInstance() -> getNowShader() -> getUniformHandle( "alpha"), alpha / 255.0f);
-
-	// シェーダーに画像の座標を転送
-	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributePosition(), 2, GL_FLOAT, false, 0, pos);
-	
-	// シェーダーにUV座標を転送
-	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributeUV(), 2, GL_FLOAT, false, 0, uv);
-	
-	// 描画
-	glDrawArrays( GL_TRIANGLE_STRIP, 0, 4);
-	
-	// アルファブレンドOFF
-	glDisable( GL_BLEND);
+	drawTexture( textureID);
 }
 
 void LibSprite::loadTexture( const char* fileName)
@@ -291,4 +259,77 @@ void LibSprite::loadTexture( const char* fileName)
 	// バッファ解放
 	delete[] buf;
 	buf = nullptr;
+}
+
+void LibSprite::drawTexture( int number)
+{
+	LibMain* libMain = LibMain::getInstance();
+
+	// 画像サイズとアンカーポイントから4点を生成
+	float w = sizeX * anchor.x;
+	float h = sizeY * anchor.y;
+	GLfloat pos[] = {
+		-w,			sizeY - h,
+		-w,		   -h,
+		 sizeX - w,  sizeY - h,
+		 sizeX - w, -h,
+	};
+
+	float sin_f = sinf( -angle.getRadian());
+	float cos_f = cosf( -angle.getRadian());
+	float screenWidth = libMain -> getScreenSize().x;
+	float screenHeight = libMain -> getScreenSize().y;
+
+	for( int i = 0; i < 8; i += 2)
+	{
+		float dx = pos[i];
+		float dy = pos[i + 1];
+
+		// 回転
+		pos[i]		= dx * cos_f - dy * sin_f;
+		pos[i + 1]	= dx * sin_f + dy * cos_f;
+
+		// 移動
+		pos[i]		+= ( position.x - screenWidth * 0.5f) / scale.x;
+		pos[i + 1]	+= ( position.y - screenHeight * 0.5f) / scale.y;
+
+		// 拡縮
+		pos[i]		*= scale.x * 2;
+		pos[i + 1]	*= scale.y * 2;
+
+		// ワールド変換
+		pos[i]		= pos[i] / screenWidth;
+		pos[i + 1]	= pos[i + 1] / screenHeight;
+
+	}
+
+	// UV座標
+	const GLfloat uv[] = {
+		0, 0,
+		0, 1,
+		1, 0,
+		1, 1,
+	};
+
+	// テクスチャ設定
+	glBindTexture( GL_TEXTURE_2D, number);
+	
+	// アルファブレンドON
+	glEnable( GL_BLEND);
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	// シェーダーのUniformにアルファ値を転送
+	glUniform1f( LibMain::getInstance() -> getNowShader() -> getUniformHandle( "alpha"), alpha / 255.0f);
+
+	// シェーダーに画像の座標を転送
+	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributePosition(), 2, GL_FLOAT, false, 0, pos);
+	
+	// シェーダーにUV座標を転送
+	glVertexAttribPointer( LibMain::getInstance() -> getNowShader() -> getAttributeUV(), 2, GL_FLOAT, false, 0, uv);
+	
+	// 描画
+	glDrawArrays( GL_TRIANGLE_STRIP, 0, 4);
+	
+	// アルファブレンドOFF
+	glDisable( GL_BLEND);
 }

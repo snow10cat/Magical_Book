@@ -19,10 +19,10 @@ namespace MagicalBook
 
 	private:
 
-		CatGameLib::LibSprite* floar;
-		CatGameLib::LibSprite* title_book;
-		CatGameLib::LibSprite* title_logo;
-		CatGameLib::LibSprites* player;
+		CatGameLib::LibSprite*	floar;
+		CatGameLib::LibSprites*	title_book;
+		CatGameLib::LibSprite*	title_logo;
+		CatGameLib::LibSprites*	player;
 	};
 
 }

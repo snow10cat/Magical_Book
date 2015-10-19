@@ -188,6 +188,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\CatGameLib\LibSound.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSprite.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSprites.cpp" />
+    <ClCompile Include="SourceFile\Game\Map.cpp" />
     <ClCompile Include="SourceFile\main.cpp" />
     <ClCompile Include="SourceFile\Scene\Game.cpp" />
     <ClCompile Include="SourceFile\scene\Scene.cpp" />

@@ -22,6 +22,9 @@
     <Filter Include="SourceFile\Scene">
       <UniqueIdentifier>{e1b06999-80b6-4661-9904-f8c62b00fe13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceFile\Game">
+      <UniqueIdentifier>{b96f6d97-ef54-41e7-995d-ec4a6c18680f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFile\main.cpp">
@@ -62,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="SourceFile\CatGameLib\LibSprites.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Map.cpp">
+      <Filter>SourceFile\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

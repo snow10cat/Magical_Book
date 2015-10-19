@@ -5,8 +5,8 @@
 
 using namespace MagicalBook;
 
-SceneManager::SceneManager() : sceneNumber( Title),
-							   scene( nullptr)
+SceneManager::SceneManager() : sceneNumber(Title),
+							   scene(nullptr)
 {
 	scene = new class::Title;
 	scene -> init();
@@ -16,13 +16,13 @@ SceneManager::~SceneManager()
 {
 }
 
-void SceneManager::createScene( SceneNumber number)
+void SceneManager::createScene(SceneNumber number)
 {
 	// 今のシーンを消す
 	delete scene;
 
 	// 次のシーンを作る
-	switch( number)
+	switch(number)
 	{
 	case Title:
 		scene = new class::Title;
@@ -54,7 +54,7 @@ void SceneManager::createScene( SceneNumber number)
 	scene -> init();
 }
 
-void SceneManager::update( void)
+void SceneManager::update(void)
 {
 	scene -> update();
 }

@@ -10,7 +10,7 @@ Title::Title() : floar(nullptr),
 				 title_book(nullptr),
 				 title_logo(nullptr)
 {
-	floar = LibSprite::create("floar.png");
+	floar = LibSprite::create("background/floar.png");
 	//title_book = LibSprite::create("background/title.png");
 	title_logo = LibSprite::create("logo/title_logo.png");
 	player = LibSprites::create( "player/player_walk.png", 34, 68);
@@ -19,6 +19,7 @@ Title::Title() : floar(nullptr),
 Title::~Title()
 {
 }
+
 LibSound* sound;
 void Title::init(void)
 {
@@ -28,7 +29,7 @@ void Title::init(void)
 
 	floar->setPosition(1280 / 2, 720 / 2);
 	floar->setScale(1.0f);
-	//	fox -> setAlpha( 128.0);
+	//fox -> setAlpha( 128.0);
 
 	title_logo->setPosition(1280 / 2, 720 / 2);
 	title_logo->setScale(1.0f);
@@ -47,6 +48,7 @@ void Title::update(void)
 
 	if( LibInput::getInstance() -> getKeyboardState( LibInput::KeyBoardNumber::Key_Enter))
 	{
-		int i = 0;
+		sound -> stop();
+		SceneManager::getInstance()->createScene(SceneManager::SceneNumber::Game);
 	}
 }

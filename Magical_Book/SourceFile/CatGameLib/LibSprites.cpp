@@ -92,12 +92,18 @@ void LibSprites::animation( void)
 {
 	animationCount++;
 
-	if( animationCount % animationSpeed == 0)
+	if( animationSpeed != 0)
 	{
-		animationNumber++;
-		animationNumber %= getSpriteCount() - 1;
+		if( animationCount % animationSpeed != 0)
+		{
+			draw( animationNumber);
+			return;
+		}
 	}
-
+	
+	animationNumber++;
+	animationNumber %= getSpriteCount() - 1;
+	
 	draw( animationNumber);
 }
 

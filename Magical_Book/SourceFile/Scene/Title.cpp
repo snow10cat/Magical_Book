@@ -21,7 +21,6 @@ Title::Title() : floar(nullptr),
 	title_logo  = LibSprite::create("logo/title_logo.png");
 	title_start = LibSprite::create("logo/title_start.png");
 	title_end	= LibSprite::create("logo/title_end.png");
-	player		= LibSprites::create( "player/player_walk.png", 34, 68);
 }
 
 
@@ -35,9 +34,15 @@ void Title::init(void)
 {
 	input = LibInput::getInstance();
 
-	sound = LibSound::create("bgm/title.wav");
-	sound -> setVolume(1.0f);
-	sound -> play();
+	title_bgm = LibSound::create("bgm/title.wav");
+	title_bgm -> setVolume(1.0f);
+	title_bgm -> setLoop(true);
+
+	select_se = LibSound::create("se/select.wav");
+	select_se -> setVolume(1.0f);
+
+	game_in = LibSound::create("se/in.wav");
+	game_in -> setVolume(1.0f);
 
 	fadeout -> setPosition(sWHeaf, sHHeaf);
 	fadeout -> setScale(1.0f);
@@ -59,22 +64,10 @@ void Title::init(void)
 	title_end -> setScale(1.0f);
 
 	counter = 0;
+	flag = 0;
 	anime_number = 0;
 	size = 1;
-	title_work = Choose;
-
-	switch( sound -> getState())
-	{
-	case LibSound::Play:
-		break;
-	}
-
-	// ‚à‚µ‚­‚Í
-
-	if( sound -> getState() == LibSound::Play)
-	{
-
-	}
+	title_work = Select;
 }
 
 
@@ -83,9 +76,14 @@ void Title::update(void)
 {
 	floar -> draw();
 
+	if(title_bgm -> getState() != LibSound::Play)
+	{
+		title_bgm -> play();
+	}
+
 	switch (title_work)
 	{
-	case Choose:
+	case Select:
 		title_book -> draw(0);
 		title_logo -> draw();
 		title_start -> draw();
@@ -94,7 +92,7 @@ void Title::update(void)
 		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
 			counter++;
-			//SEÄ¶;
+			select_se -> play();
 		}
 		if (counter % 2 == 0)
 		{
@@ -147,6 +145,16 @@ void Title::update(void)
 		fadeout -> draw();
 		fadeout -> setAlpha(fadeout -> getAlpha() + 5);
 		
+		if(flag == 0)
+		{
+			game_in -> play();
+			flag = 1;
+		}
+		if(flag == 1 && game_in -> getState() != LibSound::Play)
+		{
+			title_work = Next;
+		}
+
 		if(size >= 1.8f)
 		{
 			size = 1.8f;
@@ -159,11 +167,10 @@ void Title::update(void)
 		if(fadeout -> getAlpha() == 255)
 		{
 			fadeout -> setAlpha(255);
-			title_work = Next;
 		}
 		break;
 	case Next:
-		sound -> allStop();
+		LibSound::allStop();
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
 		break;
 

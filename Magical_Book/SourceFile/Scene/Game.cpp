@@ -7,7 +7,7 @@ Game::Game() : test( nullptr),
 				 fox( nullptr),
 				 fox2( nullptr)
 {
-	test = CatGameLib::LibSprite::create( "background/floar.png");
+	test = CatGameLib::LibSprite::create( "background/gane_bg1.png");
 }
 
 Game::~Game()

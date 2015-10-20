@@ -59,6 +59,26 @@ void LibSound::setVolume( float vol)
 	alSourcef( sourceIDs[sourceID], AL_GAIN, LibBasicFunc::clamp( vol, 0.0f, 1.0f));
 }
 
+LibSound::SoundState LibSound::getState( void)
+{
+	ALint state = 0;
+	alGetSourcei( sourceIDs[sourceID], AL_SOURCE_STATE, &state);
+	switch( state)
+	{
+	case AL_PLAYING:
+		return SoundState::Play;
+
+	case AL_PAUSED:
+		return SoundState::Pause;
+
+	case AL_STOPPED:
+		return SoundState::Stop;
+
+	default:
+		return SoundState::Init;
+	}
+}
+
 void LibSound::play( void)
 {
 	alSourcePlay( sourceIDs[sourceID]);

@@ -8,12 +8,22 @@ namespace CatGameLib
 class LibSound
 {
 public:
+	enum SoundState
+	{
+		Play,
+		Pause,
+		Stop,
+		Init,
+	};
+
 	static LibSound* create( const char* fileName);
 	static void allRelease( void);
 	static void allStop( void);
 
 	void setLoop( bool isLoop);
 	void setVolume( float vol);
+
+	SoundState getState( void);
 
 	void play( void);
 	void pause( void);

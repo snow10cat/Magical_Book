@@ -17,24 +17,32 @@ namespace MagicalBook
 		void init(void) override;
 		void update(void) override;
 
-		int counter;
-		int title_work;
-
+		
 		enum TitleNumber
-	{
-		Init,
-		Choose,
-		Animation,
-		Fadeout,
-		Next,
-	};
-	private:
+		{
+			Choose,
+			Animation,
+			Fadeout,
+			Next,
+		};
+	private:	
 
-		CatGameLib::LibSprite*	floar;
+		int counter;
+		int anime_number;
+		int title_work;
+		float size;
+		
+		const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
+		const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
+
+		CatGameLib::LibInput* input;
+		CatGameLib::LibSound* sound;
+		CatGameLib::LibSprite* floar;
+		CatGameLib::LibSprite* fadeout;
 		CatGameLib::LibSprites*	title_book;
-		CatGameLib::LibSprite*	title_logo;
-		CatGameLib::LibSprite*	title_start;
-		CatGameLib::LibSprite*	title_end;
+		CatGameLib::LibSprite* title_logo;
+		CatGameLib::LibSprite* title_start;
+		CatGameLib::LibSprite* title_end;
 		CatGameLib::LibSprites*	player;
 	};
 

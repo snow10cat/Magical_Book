@@ -3,13 +3,19 @@
 #include "CatGameLib.h"
 #include "Title.h"
 
+
+#define BOOK_ANM_MAX 7
+
+
 using namespace CatGameLib;
 using namespace MagicalBook;
+
 
 Title::Title() : floar(nullptr),
 				 title_book(nullptr),
 				 title_logo(nullptr)
 {
+	fadeout		= LibSprite::create("background/bg.png");
 	floar		= LibSprite::create("background/floar.png");
 	title_book  = LibSprites::create("background/title.png", 1000, 500);
 	title_logo  = LibSprite::create("logo/title_logo.png");
@@ -18,117 +24,147 @@ Title::Title() : floar(nullptr),
 	player		= LibSprites::create( "player/player_walk.png", 34, 68);
 }
 
+
 Title::~Title()
 {
 }
 
-LibSound* sound;
 
 //‰Šú‰»
 void Title::init(void)
 {
+	input = LibInput::getInstance();
+
 	sound = LibSound::create("bgm/title.wav");
 	sound -> setVolume(1.0f);
 	sound -> play();
 
-	floar -> setPosition(1280 / 2, 720 / 2);
+	fadeout -> setPosition(sWHeaf, sHHeaf);
+	fadeout -> setScale(1.0f);
+	fadeout -> setAlpha(0.0f);
+
+	floar -> setPosition(sWHeaf, sHHeaf);
 	floar -> setScale(1.0f);
 
-	title_book -> setPosition(1280 / 2 - 250, 720 / 2);
-	title_book->setScale(1.0f);
-	title_book -> setAnimationSpeed(100);
+	title_book -> setPosition(sWHeaf - 250, sHHeaf);
+	title_book -> setScale(1.0f);
 
-	title_logo -> setPosition(1280 / 2 + 25, 720 / 2 + 150);
+	title_logo -> setPosition(sWHeaf + 25, sHHeaf + 150);
 	title_logo -> setScale(0.5f);
 
-	title_start -> setPosition(1280 / 2 + 25, 720 / 2 - 50);
+	title_start -> setPosition(sWHeaf + 25, sHHeaf - 50);
 	title_start -> setScale(1.0f);
 
-	title_end -> setPosition(1280 / 2 + 25, 720 / 2 - 150);
+	title_end -> setPosition(sWHeaf + 25, sHHeaf - 150);
 	title_end -> setScale(1.0f);
 
-	player -> setPosition(1020, 120);
-	player -> setAnimationSpeed(50);
+	counter = 0;
+	anime_number = 0;
+	size = 1;
+	title_work = Choose;
 
-	title_work = Init;
+	switch( sound -> getState())
+	{
+	case LibSound::Play:
+		break;
+	}
+
+	// ‚à‚µ‚­‚Í
+
+	if( sound -> getState() == LibSound::Play)
+	{
+
+	}
 }
+
 
 //XV
 void Title::update(void)
 {
 	floar -> draw();
 
-	player -> animation();
-	
 	switch (title_work)
 	{
-	case Init:
-		counter = 0;
-		title_work = Choose;
-		break;
 	case Choose:
 		title_book -> draw(0);
 		title_logo -> draw();
 		title_start -> draw();
 		title_end -> draw();
 
-		if (LibInput::getInstance()->getKeyboardState(LibInput::KeyBoardNumber::Key_Up) || LibInput::getInstance()->getKeyboardState(LibInput::KeyBoardNumber::Key_Down))
+		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
 			counter++;
 			//SEÄ¶;
 		}
-		if (counter % 3 == 0)
+		if (counter % 2 == 0)
 		{
 			//ƒQ[ƒ€–{•Ò
 			title_start -> setScale(1.0f);
-			title_end -> setScale(0.8f);
-			if (LibInput::getInstance()->getKeyboardState(LibInput::KeyBoardNumber::Key_Z))
+			title_end -> setScale(0.7f);
+			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 			{
+				counter = 0;
 				title_work = Animation;
 			}
 		}
-		if (counter % 3 == 1)
-		{
-			//ƒQ[ƒ€§ì
-			title_start -> setScale(0.8f);
-			title_end -> setScale(1.0f);
-			if (LibInput::getInstance()->getKeyboardState(LibInput::KeyBoardNumber::Key_Z))
-			{
-				title_work = Animation;
-			}
-		}
-		if (counter % 3 == 2)
+		if (counter % 2 == 1)
 		{
 			//ƒQ[ƒ€I—¹
+			title_start -> setScale(0.7f);
+			title_end -> setScale(1.0f);
+			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
+			{
+				title_work = Animation;
+			}
 		}
 		break;
 	case Animation:
-		title_book->animation();
-		//if ()
+		title_book -> draw(anime_number);
+		title_book -> setPositionX(title_book -> getPositionX() + 5);
 		
+		if(anime_number < BOOK_ANM_MAX)
+		{
+			counter++;
+			if(counter % 7 == 0)
+			{
+				anime_number++;
+			}
+		}
+
+		if (title_book -> getPositionX() >= sWHeaf)
+		{
+			title_book -> setPositionX(sWHeaf);
+			if(anime_number == BOOK_ANM_MAX)
+			{
+				title_work = Fadeout;
+			}
+		}
 		break;
 	case Fadeout:
-		if (LibInput::getInstance()->getKeyboardState(LibInput::KeyBoardNumber::Key_X))
+		title_book -> draw(BOOK_ANM_MAX);
+		title_book -> setScale(size);
+
+		fadeout -> draw();
+		fadeout -> setAlpha(fadeout -> getAlpha() + 5);
+		
+		if(size >= 1.8f)
 		{
+			size = 1.8f;
+		}
+		else
+		{
+			size += 0.01f;
+		}
+
+		if(fadeout -> getAlpha() == 255)
+		{
+			fadeout -> setAlpha(255);
 			title_work = Next;
 		}
-		
 		break;
 	case Next:
 		sound -> allStop();
-		if(LibInput::getInstance() -> getKeyboardState(LibInput::KeyBoardNumber::Key_Enter))
-		{
-			if (counter % 3 == 0)
-			{
-				SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
-			}
-			if (counter % 3 == 1)
-			{
-				//ƒQ[ƒ€§ì
-				SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
-			}
-			title_work = Init;
-		}
+		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
 		break;
 
 	}

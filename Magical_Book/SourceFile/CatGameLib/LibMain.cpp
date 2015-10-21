@@ -151,6 +151,7 @@ void LibMain::initLib( void)
 	glfwSetScrollCallback ( p -> windowHandle, LibInput::MouseWheelMoveCallback);
 
 	LibInput::getInstance() -> setWindow( p -> windowHandle);
+	LibInput::getInstance() -> initSystem();
 }
 
 void LibMain::setClearColor( float red, float blue, float green, float alpha)

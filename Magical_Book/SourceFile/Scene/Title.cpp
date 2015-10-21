@@ -1,4 +1,5 @@
 
+#include "../Game/SpriteManager.h"
 #include "SceneManager.h"
 #include "CatGameLib.h"
 #include "Title.h"
@@ -10,16 +11,13 @@
 using namespace CatGameLib;
 using namespace MagicalBook;
 
+SpriteManager* instance = SpriteManager::getInstance();
 
-Title::Title() : fadeout(nullptr),
-				 floar(nullptr),
-				 title_book(nullptr),
+Title::Title() : title_book(nullptr),
 				 title_logo(nullptr),
 				 title_start(nullptr),
 				 title_end(nullptr)
 {
-	fadeout		= LibSprite::create("background/bg.png");
-	floar		= LibSprite::create("background/floar.png");
 	title_book  = LibSprites::create("background/title.png", 1000, 500);
 	title_logo  = LibSprite::create("logo/title_logo.png");
 	title_start = LibSprite::create("logo/title_start.png");
@@ -47,12 +45,12 @@ void Title::init(void)
 	game_in = LibSound::create("se/in.wav");
 	game_in -> setVolume(1.0f);
 
-	fadeout -> setPosition(sWHeaf, sHHeaf);
-	fadeout -> setScale(1.0f);
-	fadeout -> setAlpha(0.0f);
+	instance ->getSprite("fadeout") -> setPosition(sWHeaf, sHHeaf);
+	instance ->getSprite("fadeout") -> setScale(1.0f);
+	instance ->getSprite("fadeout") -> setAlpha(0.0f);
 
-	floar -> setPosition(sWHeaf, sHHeaf);
-	floar -> setScale(1.0f);
+	instance ->getSprite("floar") -> setPosition(sWHeaf, sHHeaf);
+	instance ->getSprite("floar") -> setScale(1.0f);
 
 	title_book -> setPosition(sWHeaf - 250, sHHeaf);
 	title_book -> setScale(1.0f);
@@ -64,7 +62,7 @@ void Title::init(void)
 	title_start -> setScale(1.0f);
 
 	title_end -> setPosition(sWHeaf + 25, sHHeaf - 150);
-	title_end -> setScale(1.0f);
+	title_end -> setScale(0.7f);
 
 	counter = 0;
 	flag = 0;
@@ -77,7 +75,7 @@ void Title::init(void)
 //XV
 void Title::update(void)
 {
-	floar -> draw();
+	instance ->getSprite("floar") -> draw();
 
 	if(title_bgm -> getState() != LibSound::Play)
 	{
@@ -146,8 +144,8 @@ void Title::update(void)
 		title_book -> draw(BOOK_ANM_MAX);
 		title_book -> setScale(size);
 
-		fadeout -> draw();
-		fadeout -> setAlpha(fadeout -> getAlpha() + 5);
+		instance ->getSprite("fadeout") -> draw();
+		instance ->getSprite("fadeout") -> setAlpha(instance ->getSprite("fadeout") -> getAlpha() + 5);
 		
 		if(flag == 0)
 		{
@@ -168,9 +166,9 @@ void Title::update(void)
 			size += 0.01f;
 		}
 
-		if(fadeout -> getAlpha() == 255)
+		if(instance ->getSprite("fadeout") -> getAlpha() == 255)
 		{
-			fadeout -> setAlpha(255);
+			instance ->getSprite("fadeout") -> setAlpha(255);
 		}
 		break;
 	case Next:

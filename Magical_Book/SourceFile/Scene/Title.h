@@ -42,8 +42,6 @@ private:
 	CatGameLib::LibSound* select_se;
 	CatGameLib::LibSound* game_in;
 
-	CatGameLib::LibSprite* floar;
-	CatGameLib::LibSprite* fadeout;
 	CatGameLib::LibSprites*	title_book;
 	CatGameLib::LibSprite* title_logo;
 	CatGameLib::LibSprite* title_start;

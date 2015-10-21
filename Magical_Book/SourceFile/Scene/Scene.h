@@ -8,8 +8,8 @@ namespace MagicalBook
 class Scene
 {
 public:
-	virtual void init( void) = 0;
-	virtual void update( void) = 0;
+	virtual void init(void) = 0;
+	virtual void update(void) = 0;
 
 private:
 

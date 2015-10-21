@@ -20,7 +20,7 @@ namespace MagicalBook
 		
 		enum TitleNumber
 		{
-			Choose,
+			Select,
 			Animation,
 			Fadeout,
 			Next,
@@ -28,6 +28,7 @@ namespace MagicalBook
 	private:	
 
 		int counter;
+		int flag;
 		int anime_number;
 		int title_work;
 		float size;
@@ -36,7 +37,11 @@ namespace MagicalBook
 		const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 		CatGameLib::LibInput* input;
-		CatGameLib::LibSound* sound;
+
+		CatGameLib::LibSound* title_bgm;
+		CatGameLib::LibSound* select_se;
+		CatGameLib::LibSound* game_in;
+
 		CatGameLib::LibSprite* floar;
 		CatGameLib::LibSprite* fadeout;
 		CatGameLib::LibSprites*	title_book;

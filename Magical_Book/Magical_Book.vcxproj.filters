@@ -25,6 +25,9 @@
     <Filter Include="SourceFile\Game">
       <UniqueIdentifier>{b96f6d97-ef54-41e7-995d-ec4a6c18680f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HeaderFile\Game">
+      <UniqueIdentifier>{89677d0c-3769-4eb7-a1ac-f7701274ef56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFile\main.cpp">
@@ -67,6 +70,12 @@
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
     <ClCompile Include="SourceFile\Game\Map.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Scene\Stageselect.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Loadpicture.cpp">
       <Filter>SourceFile\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -118,6 +127,15 @@
     </ClInclude>
     <ClInclude Include="SourceFile\CatGameLib\LibSprites.h">
       <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Scene\Stageselect.h">
+      <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Loadpicture.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Map.h">
+      <Filter>HeaderFile\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

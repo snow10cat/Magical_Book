@@ -3,7 +3,7 @@
 #define __MAGICAL_BOOK_GAME_H__
 
 #include "Scene.h"
-#include "../CatGameLib/LibSprite.h"
+#include "CatGameLib.h"
 
 namespace MagicalBook
 {
@@ -18,7 +18,7 @@ public:
 	void update( void) override;
 
 private:
-	CatGameLib::LibSprite* test;
+	CatGameLib::LibSprites* books;
 	CatGameLib::LibSprite* fox;
 	CatGameLib::LibSprite* fox2;
 };

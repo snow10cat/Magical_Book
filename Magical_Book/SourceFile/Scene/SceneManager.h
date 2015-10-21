@@ -13,6 +13,7 @@ public:
 	enum SceneNumber
 	{
 		Title,
+		Stageselect,
 		Game,
 		Pause,
 		Editor,

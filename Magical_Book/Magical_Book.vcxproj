@@ -188,11 +188,13 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\CatGameLib\LibSound.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSprite.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSprites.cpp" />
+    <ClCompile Include="SourceFile\Game\Loadpicture.cpp" />
     <ClCompile Include="SourceFile\Game\Map.cpp" />
     <ClCompile Include="SourceFile\main.cpp" />
     <ClCompile Include="SourceFile\Scene\Game.cpp" />
     <ClCompile Include="SourceFile\scene\Scene.cpp" />
     <ClCompile Include="SourceFile\scene\SceneManager.cpp" />
+    <ClCompile Include="SourceFile\Scene\Stageselect.cpp" />
     <ClCompile Include="SourceFile\scene\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -208,9 +210,12 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\CatGameLib\LibSprite.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibSprites.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibVector2.h" />
+    <ClInclude Include="SourceFile\Game\Loadpicture.h" />
+    <ClInclude Include="SourceFile\Game\Map.h" />
     <ClInclude Include="SourceFile\Scene\Game.h" />
     <ClInclude Include="SourceFile\scene\Scene.h" />
     <ClInclude Include="SourceFile\scene\SceneManager.h" />
+    <ClInclude Include="SourceFile\Scene\Stageselect.h" />
     <ClInclude Include="SourceFile\scene\Title.h" />
   </ItemGroup>
   <ItemGroup>

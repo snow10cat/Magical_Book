@@ -40,7 +40,7 @@ void LibSound::allStop( void)
 LibSound::LibSound() : sourceID( 0),
 					   bufferID( 0)
 {
-	alSourcei( sourceIDs[sourceID], AL_LOOPING, false);
+	
 }
 
 LibSound::~LibSound()

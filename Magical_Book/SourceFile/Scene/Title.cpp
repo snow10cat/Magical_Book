@@ -35,9 +35,9 @@ void Title::init(void)
 {
 	input = LibInput::getInstance();
 
-	sound = LibSound::create("bgm/title.wav");
-	sound -> setVolume(1.0f);
-	sound -> play();
+//	sound = LibSound::create("bgm/title.wav");
+//	sound -> setVolume(1.0f);
+//	sound -> play();
 
 	fadeout -> setPosition(sWHeaf, sHHeaf);
 	fadeout -> setScale(1.0f);

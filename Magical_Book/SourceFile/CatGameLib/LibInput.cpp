@@ -13,7 +13,9 @@ static LibInput* instance = LibInput::getInstance();
 class LibInput::LibGamePad
 {
 public:
-	vector<LibVector2> stick;
+	int stickCount; 
+	vector<float> stickX;
+	vector<float> stickY;
 	vector<pair<bool,bool>> button;
 };
 
@@ -41,9 +43,6 @@ LibInput::LibInput() : initPair( false, false),
 					   connectGamePadCount( 0),
 					   window( nullptr)
 {
-	initKeyboardState();
-	initMouseState();
-	initGamePadState();
 }
 
 LibInput::~LibInput()
@@ -61,22 +60,22 @@ void LibInput::initKeyboardState( void)
 		keyboardState[i] = initPair;
 	}
 
-	keyboardState[Key_Space] = initPair;
-	keyboardState[Key_Esc] = initPair;
-	keyboardState[Key_Up] = initPair;
-	keyboardState[Key_Down] = initPair;
-	keyboardState[Key_Left] = initPair;
-	keyboardState[Key_Right] = initPair;
-	keyboardState[Key_LShift] = initPair;
-	keyboardState[Key_RShift] = initPair;
-	keyboardState[Key_LCtrl] = initPair;
-	keyboardState[Key_RCtrl] = initPair;
-	keyboardState[Key_LAlt] = initPair;
-	keyboardState[Key_RAlt] = initPair;
-	keyboardState[Key_LSuper] = initPair;
-	keyboardState[Key_RSuper] = initPair;
-	keyboardState[Key_Tab] = initPair;
-	keyboardState[Key_Enter] = initPair;
+	keyboardState[Key_Space]	= initPair;
+	keyboardState[Key_Esc]		= initPair;
+	keyboardState[Key_Up]		= initPair;
+	keyboardState[Key_Down]		= initPair;
+	keyboardState[Key_Left]		= initPair;
+	keyboardState[Key_Right]	= initPair;
+	keyboardState[Key_LShift]	= initPair;
+	keyboardState[Key_RShift]	= initPair;
+	keyboardState[Key_LCtrl]	= initPair;
+	keyboardState[Key_RCtrl]	= initPair;
+	keyboardState[Key_LAlt]		= initPair;
+	keyboardState[Key_RAlt]		= initPair;
+	keyboardState[Key_LSuper]	= initPair;
+	keyboardState[Key_RSuper]	= initPair;
+	keyboardState[Key_Tab]		= initPair;
+	keyboardState[Key_Enter]	= initPair;
 	keyboardState[Key_BackSpace] = initPair;
 }
 
@@ -90,17 +89,10 @@ void LibInput::initMouseState( void)
 
 void LibInput::initGamePadState( void)
 {
-	for( int i = 0; i < 20; i++)
-	{
-		int A = glfwJoystickPresent( i);
-		if( A)
-		{
-			int i = 0;
-		}
-	}
 	while( glfwJoystickPresent( connectGamePadCount) == GL_TRUE) 
-	{ connectGamePadCount++; }
-	gamePadState.resize( connectGamePadCount);
+	{ 
+		connectGamePadCount++;
+	}
 
 	for( int padNum = 0; padNum < connectGamePadCount; padNum++)
 	{
@@ -108,10 +100,12 @@ void LibInput::initGamePadState( void)
 		int stickCount = 0;
 		glfwGetJoystickAxes( padNum, &stickCount);
 
-		for( int i = 0; i < stickCount; i += 2)
+		stickCount /= 2;
+
+		for( int i = 0; i < stickCount; i++)
 		{
-			LibVector2 stick( 0.0f, 0.0f);
-			gamePadState[padNum] -> stick.push_back( stick);
+			gamePadState[padNum] -> stickX.push_back( 0.0f);
+			gamePadState[padNum] -> stickY.push_back( 0.0f);
 		}
 		
 		int buttonCount = 0;
@@ -127,6 +121,13 @@ void LibInput::initGamePadState( void)
 void LibInput::setWindow( GLFWwindow* window)
 {
 	this -> window = window;
+}
+
+void LibInput::initSystem( void)
+{
+	initKeyboardState();
+	initMouseState();
+	initGamePadState();
 }
 
 void LibInput::update( void)
@@ -162,13 +163,13 @@ void LibInput::update( void)
 	// ゲームパッド
 	for( int padNum = 0; padNum < connectGamePadCount; padNum++)
 	{
-		int stickCount = 0;
-		const float* stickArray = glfwGetJoystickAxes( padNum, &stickCount);
+		gamePadState[padNum] -> stickCount = 0;
+		const float* stickArray = glfwGetJoystickAxes( padNum, &gamePadState[padNum] -> stickCount);
 
-		for( int i = 0, j = 0; i < stickCount; i += 2, j++)
+		for( int i = 0, j = 0; i < gamePadState[padNum] -> stickCount; i += 2, j++)
 		{
-			gamePadState[padNum] -> stick[j].x = stickArray[i];
-			gamePadState[padNum] -> stick[j].y = stickArray[i + 1];
+			gamePadState[padNum] -> stickX[j] = stickArray[i] / 2.f + 0.5f;
+			gamePadState[padNum] -> stickY[j] = stickArray[i + 1] / 2.f + 0.5f;
 		}
 		
 		int buttonCount = 0;
@@ -240,4 +241,52 @@ bool LibInput::getMouseDownState( MouseNumber number)
 	}
 
 	return false;
+}
+
+int LibInput::getGamePadCount( void)
+{
+	return connectGamePadCount;
+}
+
+int LibInput::getGamePadStickCount( GamePadNumber padNumber)
+{
+	return gamePadState[padNumber] -> stickCount;
+}
+
+bool LibInput::getGamePadState( GamePadNumber padNumber, GamePadButtonNumber number)
+{
+	return gamePadState[padNumber] -> button[number].KEY_STATE_NOW;
+}
+
+bool LibInput::getGamePadUpState( GamePadNumber padNumber, GamePadButtonNumber number)
+{
+	if( gamePadState[padNumber] -> button[number].KEY_STATE_OLD && 
+	   !gamePadState[padNumber] -> button[number].KEY_STATE_NOW)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool LibInput::getGamePadDownState( GamePadNumber padNumber, GamePadButtonNumber number)
+{
+	if( !gamePadState[padNumber] -> button[number].KEY_STATE_OLD && 
+		 gamePadState[padNumber] -> button[number].KEY_STATE_NOW)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+LibVector2 LibInput::getGamePadStickVector( GamePadNumber padNumber, int stickNumber)
+{
+	float x = gamePadState[padNumber] -> stickX[stickNumber] * 2.f - 1.0f;
+	float y = gamePadState[padNumber] -> stickY[stickNumber] * 2.f - 1.0f;
+
+	if( x < 0.1f && x > -0.1f) { x = 0; }
+	if( y < 0.1f && y > -0.1f) { y = 0; }
+
+	return LibVector2( x, y);
 }

@@ -5,6 +5,9 @@
 #include "CatGameLib.h"
 #include "ExternalLib.h"
 
+#define PAD_NUM CatGameLib::LibInput::GamePadNumber
+#define PAD_BUTTON_NUM CatGameLib::LibInput::GamePadButtonNumber
+
 namespace CatGameLib
 {
 
@@ -84,6 +87,45 @@ public:
 		Mouse_Key_Num,
 	};
 
+	enum GamePadNumber
+	{
+		Pad_1 = 0,
+		Pad_2,
+		Pad_3,
+		Pad_4,
+		Pad_5,
+		Pad_6,
+		Pad_7,
+		Pad_8,
+		Pad_9,
+		Pad_10,
+		Pad_11,
+		Pad_12,
+		Pad_13,
+		Pad_14,
+		Pad_15,
+		Pad_16,
+	};
+
+	enum GamePadButtonNumber
+	{
+		Button_1 = 0,
+		Button_2,
+		Button_3,
+		Button_4,
+		Button_5,
+		Button_6,
+		Button_7,
+		Button_8,
+		Button_9,
+		Button_10,
+		Button_11,
+		Button_12,
+		Button_13,
+		Button_14,
+		Button_15,
+		Button_16,
+	};
 
 	static LibInput* getInstance( void)
 	{
@@ -100,6 +142,7 @@ public:
 	static void MouseWheelMoveCallback( GLFWwindow* window, double xpos, double ypos);
 
 	void setWindow( GLFWwindow* window);
+	void initSystem( void);
 	void update( void);
 
 
@@ -112,6 +155,13 @@ public:
 	bool getMouseDownState( MouseNumber number);
 	LibVector2 getMousePosition( void);
 	LibVector2 getMouseWheel( void);
+
+	int getGamePadCount( void);
+	int getGamePadStickCount( GamePadNumber padNumber);
+	bool getGamePadState( GamePadNumber padNumber, GamePadButtonNumber number);
+	bool getGamePadUpState( GamePadNumber padNumber, GamePadButtonNumber number);
+	bool getGamePadDownState( GamePadNumber padNumber, GamePadButtonNumber number);
+	LibVector2 getGamePadStickVector( GamePadNumber padNumber, int stickNumber);
 
 private:
 	class LibGamePad;

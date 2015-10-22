@@ -15,6 +15,7 @@ public:
 		Title,
 		Stageselect,
 		Game,
+		Edit,
 		Pause,
 		Editor,
 		Continue,

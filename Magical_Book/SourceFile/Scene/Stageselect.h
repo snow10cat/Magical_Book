@@ -19,8 +19,10 @@ public:
 
 	enum SelectNumber
 	{
-		Select,
+		ModeSelect,
 		Animation,
+		GameMode,
+		EditMode,
 		Fadeout,
 		Next,
 	};
@@ -39,6 +41,8 @@ private:
 	CatGameLib::LibInput* input;
 
 	CatGameLib::LibSprite* frame;
+	CatGameLib::LibSprite* play;
+	CatGameLib::LibSprite* make;
 };
 
 }

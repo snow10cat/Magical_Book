@@ -9,9 +9,11 @@ using namespace MagicalBook;
 
 static SpriteManager* instance = SpriteManager::getInstance();
 
-Stageselect::Stageselect() : frame(nullptr)
+Stageselect::Stageselect() : frame(nullptr),
+							 make(nullptr)
 {
 	frame = LibSprite::create("background/frame.png");
+	make = LibSprite::create("logo/make.png");
 }
 
 
@@ -42,11 +44,14 @@ void Stageselect::init(void)
 	frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
 	frame -> setScale(0.35f);
 
+	make -> setPosition(sWHeaf + 500, sHHeaf + 200);
+	make -> setScale(0.8f);
+
 	counter = 0;
 	flag = 0;
 	anime_number = 0;
 	size = 1;
-	select_work = Select;
+	select_work = ModeSelect;
 }
 
 
@@ -60,7 +65,31 @@ void Stageselect::update(void)
 	instance -> getSprite("game_bg3") -> draw();
 	instance -> getSprite("game_bg4") -> draw();
 
+
+	switch(select_work)
+	{
+	case ModeSelect:
+		break;
+
+	case Animation:
+		break;
+
+	case GameMode:
+		break;
+
+	case EditMode:
+		break;
+
+	case Fadeout:
+		break;
+
+	case Next:
+		break;
+	}
+
+
 	frame -> draw();
+	make -> draw();
 
 	if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
 	{
@@ -107,7 +136,7 @@ void Stageselect::update(void)
 			counter = 0;
 		}
 	}
-
+/*
 	if(flag == 0)
 	{
 		instance -> getSprite("game_bg1") -> setScale(0.35f);
@@ -140,4 +169,5 @@ void Stageselect::update(void)
 		instance -> getSprite("game_bg3") -> setScale(0.3f);
 		frame -> setPosition(sWHeaf + 90, sHHeaf - 140);
 	}
+	*/
 }

@@ -1,8 +1,10 @@
 
-#include "CatGameLib/CatGameLib.h"
+#include "CatGameLib.h"
+#include "Game/SpriteManager.h"
 #include "Scene/SceneManager.h"
 
 using namespace CatGameLib;
+using namespace MagicalBook;
 
 int main()
 {
@@ -23,6 +25,9 @@ int main()
 
 	// ライブラリ初期化
 	lib -> initLib();
+
+	// 共通スプライトファイル読み込み
+	SpriteManager::getInstance() -> loadSprite();
 
 	// メインループ
 	while( lib -> checkWindowState())

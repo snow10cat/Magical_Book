@@ -75,7 +75,7 @@
     <ClCompile Include="SourceFile\Scene\Stageselect.cpp">
       <Filter>SourceFile\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFile\Game\Loadpicture.cpp">
+    <ClCompile Include="SourceFile\Game\SpriteManager.cpp">
       <Filter>SourceFile\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,10 +131,10 @@
     <ClInclude Include="SourceFile\Scene\Stageselect.h">
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFile\Game\Loadpicture.h">
+    <ClInclude Include="SourceFile\Game\Map.h">
       <Filter>HeaderFile\Game</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFile\Game\Map.h">
+    <ClInclude Include="SourceFile\Game\SpriteManager.h">
       <Filter>HeaderFile\Game</Filter>
     </ClInclude>
   </ItemGroup>

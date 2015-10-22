@@ -14,8 +14,8 @@ public:
 	Game();
 	~Game();
 
-	void init( void) override;
-	void update( void) override;
+	void init(void) override;
+	void update(void) override;
 
 private:
 	CatGameLib::LibSprites* books;

@@ -3,6 +3,7 @@
 #define __CAT_GAME_LIBRARY_DEBUG_H__
 
 #include "ExternalLib.h"
+#include <functional>
 
 namespace CatGameLib
 {
@@ -34,6 +35,29 @@ public:
 		str += "\n";
 		OutputDebugString( str.c_str());
 	}
+
+	template < typename Func >
+	static void getFunctionTime( Func func )
+	{
+		glfwSetTime( 0.0);
+		
+		func();
+
+		auto time = glfwGetTime();
+		char str[256];
+		sprintf( str, "%f", time);
+		LibDebug::debugMessageLog( str);
+	}
+
+	static void showTime( void)
+	{
+		auto time = glfwGetTime();
+		char str[256];
+		sprintf( str, "%f", time);
+		LibDebug::debugMessageLog( str);
+		glfwSetTime( 0.0);
+	}
+
 };
 
 }

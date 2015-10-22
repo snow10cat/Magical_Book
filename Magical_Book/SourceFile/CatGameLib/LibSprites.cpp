@@ -7,7 +7,7 @@ using namespace std;
 using namespace CatGameLib;
 
 int LibSprites::allObjectLoadCount = 0;
-unsigned int LibSprites::allObjectTextureIDs[LoadSpriteMax] = { 0 };
+unsigned int LibSprites::allObjectTextureIDs[LoadSpriteMax * 8] = { 0 };
 
 LibSprites* LibSprites::create( const char* fileName, int width, int height)
 {
@@ -24,9 +24,9 @@ LibSprites* LibSprites::create( const char* fileName, int width, int height)
 
 	// png読み込み
 	png::image<png::rgba_pixel> image( filePass);
-
+	
 	int widthCount = image.get_width() / width;
-	int heightCount = image.get_height() / height;
+	int heightCount = image.get_width() / height;
 
 	sprites -> spriteCount = widthCount * heightCount;
 	sprites -> textureIDArray.resize( sprites -> spriteCount);
@@ -36,8 +36,8 @@ LibSprites* LibSprites::create( const char* fileName, int width, int height)
 	sprites -> sizeY = height;
 	
 	// バッファ確保
-	sprites -> pixelBuffer = new unsigned int[width * height];
-	
+	sprites -> pixelBuffer = new unsigned char[width * height * 4];
+
 	for( int y = 0; y < heightCount; y++)
 	{
 		for( int x = 0; x < widthCount; x++)
@@ -120,15 +120,9 @@ void LibSprites::createTexture( png::image<png::rgba_pixel>& image, int number, 
 	allObjectLoadCount++;
 
 	// 読み込み
-	for( int y = posY, bufY = 0; y < sizeY + posY; y++, bufY++)
+	for( int y = 0; y < sizeY; y++)
 	{
-		for( int x = posX, bufX = 0; x < sizeX + posX; x++, bufX++)
-		{
-			pixelBuffer[bufY * sizeX + bufX]  = image.get_pixel( x, y).alpha << 24;
-			pixelBuffer[bufY * sizeX + bufX] |= image.get_pixel( x, y).blue  << 16;
-			pixelBuffer[bufY * sizeX + bufX] |= image.get_pixel( x, y).green << 8;
-			pixelBuffer[bufY * sizeX + bufX] |= image.get_pixel( x, y).red;
-		}
+		memcpy( &pixelBuffer[sizeX * y * 4], &image[posY + y][posX], sizeX * 4);
 	}
 
 	// VRAMに転送

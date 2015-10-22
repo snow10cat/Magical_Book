@@ -24,12 +24,12 @@ public:
 
 private:
 	static int allObjectLoadCount;
-	static unsigned int allObjectTextureIDs[LoadSpriteMax];
+	static unsigned int allObjectTextureIDs[LoadSpriteMax * 8];
 
 	std::vector<unsigned int> textureIDArray;
 	int textureNumber;
 	int spriteCount;
-	unsigned int* pixelBuffer;
+	unsigned char* pixelBuffer;
 
 	int animationSpeed;
 	int animationCount;

@@ -224,14 +224,10 @@ void LibSprite::draw( void)
 	drawTexture( textureID);
 }
 
-#include <mmsystem.h>
-
-
-
 void LibSprite::loadTexture( const char* fileName)
 {
 	glGenTextures( 1, &textureID);
-
+			
 	// 未使用のテクスチャ番号を指定
 	glBindTexture( GL_TEXTURE_2D, textureID);
 
@@ -243,11 +239,7 @@ void LibSprite::loadTexture( const char* fileName)
 	// ファイルパス作成
 	string filePass = "ResourceFile/Graph/";
 	filePass += fileName;
-
-	DWORD time = GetTickCount();
-
-	time = GetTickCount() - time;
-
+			
 	// png読み込み
 	png::image<png::rgba_pixel> image( filePass);
 
@@ -256,23 +248,16 @@ void LibSprite::loadTexture( const char* fileName)
 	sizeY = image.get_height();
 
 	// バッファ確保
-	unsigned int* buf = new unsigned int[sizeX * sizeY];
+	unsigned char* textureBuf = new unsigned char[sizeX * sizeY * 4];
 
-	// 読み込み
-	for( int y = 0; y < sizeY; y++)
+	for( int i = 0; i < sizeY; i++)
 	{
-		for( int x = 0; x < sizeX; x++)
-		{
-			buf[y * sizeX + x]  = image.get_pixel( x, y).alpha << 24;
-			buf[y * sizeX + x] |= image.get_pixel( x, y).blue  << 16;
-			buf[y * sizeX + x] |= image.get_pixel( x, y).green << 8;
-			buf[y * sizeX + x] |= image.get_pixel( x, y).red;
-		}
+		memcpy( &textureBuf[sizeX * i * 4], &image[i][0], sizeX * 4);
 	}
 
 	// VRAMに転送
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, sizeX, sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
-
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, sizeX, sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureBuf);
+			
 	// 転送したテクスチャの設定
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -280,8 +265,8 @@ void LibSprite::loadTexture( const char* fileName)
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	// バッファ解放
-	delete[] buf;
-	buf = nullptr;
+	delete[] textureBuf;
+	textureBuf = nullptr;
 }
 
 void LibSprite::drawTexture( int number)

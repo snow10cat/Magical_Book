@@ -55,6 +55,10 @@ public:
 	float getScaleY( void);
 	LibVector2 getScale( void);
 
+	float getTextureSizeX( void);
+	float getTextureSizeY( void);
+	LibVector2 getTextureSize( void);
+
 	void draw( void);
 	~LibSprite();
 

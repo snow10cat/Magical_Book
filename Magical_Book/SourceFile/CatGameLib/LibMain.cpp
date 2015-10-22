@@ -44,14 +44,20 @@ public:
 	int				screenWidth;
 	int				screenHeight;
 
+	unsigned int	frameCount;
+
 	unsigned int	shaderProgramNumber;
 	unsigned int	nowShaderNumber;
 	unsigned int	attr_uv;
 	unsigned int	texture;
 
+	float			frameStartTime;
+
 	string			windowTitle;
 	ScreenMode		screenMode;
 	GLFWwindow*		windowHandle;
+
+	LibString*		fpsMessage;
 
 	float			clearColor[ColorNum];
 	vector<LibShader*> shaderProgram;
@@ -150,8 +156,17 @@ void LibMain::initLib( void)
 	glfwSetCursorEnterCallback ( p -> windowHandle, LibInput::MouseCursorWindowInCallback);
 	glfwSetScrollCallback ( p -> windowHandle, LibInput::MouseWheelMoveCallback);
 
+	// 入力取得モジュールを初期化
 	LibInput::getInstance() -> setWindow( p -> windowHandle);
 	LibInput::getInstance() -> initSystem();
+
+	// デバッグ文字列表示初期化
+	LibString::loadTexture();
+
+	// FPS表示用メッセージ作成
+	p -> fpsMessage = LibString::create( "");
+	p -> fpsMessage -> setPosition( 0 + 16, p -> screenHeight - 16);
+	p -> fpsMessage -> setScale( 0.5f);
 }
 
 void LibMain::setClearColor( float red, float blue, float green, float alpha)
@@ -193,15 +208,34 @@ bool LibMain::checkWindowState( void)
 
 void LibMain::clear( void)
 {
+	p -> frameCount++;
+	p -> frameStartTime = (float)glfwGetTime();
+
 	glfwSetWindowSize( p -> windowHandle, p -> screenWidth, p -> screenHeight);
+
 	glClear( GL_COLOR_BUFFER_BIT);
+
 	LibInput::getInstance() -> update();
 }
 
 void LibMain::draw( void)
 {
+	float frameTime = (float)glfwGetTime() - p -> frameStartTime;
+
+	char buf[256];
+	sprintf( buf, "%d", (int)( frameTime * 1000.0f));
+	p -> fpsMessage -> setString( buf);
+//	p -> fpsMessage -> draw();
+
+	if( frameTime > 0.016f) { return; }
+
 	glfwSwapBuffers( p -> windowHandle);
 	glfwPollEvents();
+	
+	for( ; frameTime < 0.016f; frameTime = (float)glfwGetTime() - p -> frameStartTime)
+	{
+		Sleep(1);
+	}
 }
 
 LibShader* LibMain::loadShaderProgram( const char* vertFileName, const char* flagFileName)
@@ -250,9 +284,11 @@ LibMain::Private::Private() : isLibInit( false),
 							  isScreenMonitorSize( false),
 							  screenWidth( DEFAULT_SCREEN_WIDTH),
 							  screenHeight( DEFAULT_SCREEN_HEIGHT),
+							  frameCount( 0),
 							  shaderProgramNumber( 0),
 							  windowHandle( nullptr),
 							  screenMode( ScreenMode::Window),
+							  frameStartTime( 0.0f),
 							  windowTitle( "MyCatGameLibMainrary")
 {
 	for( int i = 0; i < Private::ClearColor::ColorNum; i++)

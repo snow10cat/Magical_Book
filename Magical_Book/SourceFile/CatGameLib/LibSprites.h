@@ -3,9 +3,6 @@
 #define __CAT_GAME_LIBRARY_SPRITES_H__
 
 #include "CatGameLib.h"
-
-#ifndef __CAT_GAME_LIBRARY_SPRITE_H__
-#endif
 #include "LibSprite.h"
 
 namespace CatGameLib

@@ -201,6 +201,21 @@ LibVector2 LibSprite::getScale( void)
 	return scale;
 }
 
+float LibSprite::getTextureSizeX( void)
+{
+	return sizeX;
+}
+
+float LibSprite::getTextureSizeY( void)
+{
+	return sizeY;
+}
+
+LibVector2 LibSprite::getTextureSize( void)
+{
+	return LibVector2( sizeX, sizeY);
+}
+
 void LibSprite::draw( void)
 {
 	// 描画フラグチェック
@@ -208,6 +223,10 @@ void LibSprite::draw( void)
 
 	drawTexture( textureID);
 }
+
+#include <mmsystem.h>
+
+
 
 void LibSprite::loadTexture( const char* fileName)
 {
@@ -224,6 +243,10 @@ void LibSprite::loadTexture( const char* fileName)
 	// ファイルパス作成
 	string filePass = "ResourceFile/Graph/";
 	filePass += fileName;
+
+	DWORD time = GetTickCount();
+
+	time = GetTickCount() - time;
 
 	// png読み込み
 	png::image<png::rgba_pixel> image( filePass);
@@ -280,6 +303,7 @@ void LibSprite::drawTexture( int number)
 	float screenWidth = libMain -> getScreenSize().x;
 	float screenHeight = libMain -> getScreenSize().y;
 
+	// 4頂点のxy文で8回ループ
 	for( int i = 0; i < 8; i += 2)
 	{
 		float dx = pos[i];

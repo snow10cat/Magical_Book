@@ -1,6 +1,6 @@
 
-#ifndef __MAGICAL_BOOK_STSGESELECT_H__
-#define __MAGICAL_BOOK_STSGESELECT_H__
+#ifndef __MAGICAL_BOOK_MENUSELECT_H__
+#define __MAGICAL_BOOK_MENUSELECT_H__
 
 #include "Scene.h"
 #include "CatGameLib.h"
@@ -8,32 +8,23 @@
 namespace MagicalBook
 {
 
-class Stageselect : public Scene
+class MenuSelect : public Scene
 {
 public:
-	Stageselect();
-	~Stageselect();
+	MenuSelect();
+	~MenuSelect();
 
 	void init(void) override;
 	void update(void) override;
 
-	enum SelectNumber
+	enum MenuSelectNumber
 	{
 		Fadein,
 		ModeSelect,
 		Animation,
-		GameMode,
-		EditMode,
 		Back,
 		Fadeout,
 		Next,
-	};
-
-	enum EditSelect
-	{
-		StageSize,
-		StageBG,
-		StageBGM,
 	};
 
 private:

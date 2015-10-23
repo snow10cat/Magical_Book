@@ -84,6 +84,12 @@
     <ClCompile Include="SourceFile\Game\ResourceManager.cpp">
       <Filter>SourceFile\Game</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFile\Scene\EditSelect.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Scene\MenuSelect.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h">
@@ -148,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="SourceFile\Game\ResourceManager.h">
       <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Scene\EditSelect..h">
+      <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Scene\MenuSelect.h">
+      <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

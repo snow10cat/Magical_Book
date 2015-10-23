@@ -30,6 +30,7 @@ private:
 	int timer;
 	int counter;
 	int flag;
+	int volumeFlag;
 	int anime_number;
 	int title_work;
 	float size;
@@ -43,7 +44,6 @@ private:
 	CatGameLib::LibSound* title_bgm;
 	CatGameLib::LibSound* game_in;
 
-	CatGameLib::LibSprites*	title_book;
 	CatGameLib::LibSprite* title_logo;
 	CatGameLib::LibSprite* title_start;
 	CatGameLib::LibSprite* title_end;

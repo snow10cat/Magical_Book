@@ -31,7 +31,7 @@ void SceneManager::createScene(SceneNumber number)
 		scene = new class::Title;
 		break;
 
-	case Stageselect:
+	case StageSelect:
 		scene = new class::Stageselect;
 		break;
 
@@ -59,6 +59,7 @@ void SceneManager::createScene(SceneNumber number)
 		break;
 
 	default:
+		assert(!"•s³‚Èó‘Ô");
 		break;
 	}
 	

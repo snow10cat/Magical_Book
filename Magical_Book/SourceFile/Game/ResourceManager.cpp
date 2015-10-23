@@ -33,6 +33,8 @@ void ResourceManager::loadResource( void)
 	spriteArray["floar"] = LibSprite::create("background/floar.png");
 
 	spritesArray["books"] = CatGameLib::LibSprites::create("background/books.png", 1000, 500);
+	spritesArray["openBook"] = CatGameLib::LibSprites::create("background/open.png", 1000, 500);
+	spritesArray["closeBook"] = CatGameLib::LibSprites::create("background/close.png", 1000, 500);
 	spritesArray["mapchip"] = CatGameLib::LibSprites::create("mapchip/mapchip.png", 34, 34);
 
 	for(int i = 1; i <= BG_Count; i++)

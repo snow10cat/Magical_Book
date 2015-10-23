@@ -12,12 +12,10 @@ using namespace MagicalBook;
 ResourceManager* instance = ResourceManager::getInstance();
 
 
-Title::Title() : title_book(nullptr),
-				 title_logo(nullptr),
+Title::Title() : title_logo(nullptr),
 				 title_start(nullptr),
 				 title_end(nullptr)
 {
-	title_book  = LibSprites::create("background/title.png", 1000, 500);
 	title_logo  = LibSprite::create("logo/title_logo.png");
 	title_start = LibSprite::create("logo/title_start.png");
 	title_end	= LibSprite::create("logo/title_end.png");
@@ -53,8 +51,8 @@ void Title::init(void)
 	instance ->getSprite("floar") -> setPosition(sWHeaf, sHHeaf);
 	instance ->getSprite("floar") -> setScale(1.0f);
 
-	title_book -> setPosition(sWHeaf - 250, sHHeaf);
-	title_book -> setScale(1.0f);
+	instance -> getSprites("openBook") -> setPosition(sWHeaf - 250, sHHeaf);
+	instance -> getSprites("openBook") -> setScale(1.0f);
 
 	title_logo -> setPosition(sWHeaf + 25, sHHeaf + 150);
 	title_logo -> setScale(0.5f);
@@ -68,7 +66,8 @@ void Title::init(void)
 	timer = 0;
 	counter = 0;
 	flag = 0;
-	anime_number = 0;
+	volumeFlag = 0;
+	anime_number = BOOK_ANM_MIN;
 	size = 1;
 	Volume = 1;
 
@@ -86,7 +85,7 @@ void Title::update(void)
 		title_bgm -> play();
 	}
 
-	if(title_work >= Animation)
+	if(volumeFlag == 1)
 	{
 		Volume -= 0.02f;
 		title_bgm -> setVolume(Volume);
@@ -105,6 +104,9 @@ void Title::update(void)
 		break;
 	case Next:
 		next();
+		break;
+	default:
+		assert(!"•s³‚Èó‘Ô");
 		break;
 
 	}
@@ -147,6 +149,7 @@ void Title::bookAnimation(void)
 		counter++;
 		if(counter % 7 == 0)
 		{
+			counter = 0;
 			anime_number++;
 		}
 	}
@@ -154,7 +157,7 @@ void Title::bookAnimation(void)
 
 void Title::select(void)
 {
-	title_book -> draw(0);
+	instance -> getSprites("openBook") -> draw(anime_number);
 	title_logo -> draw();
 	title_start -> draw();
 	title_end -> draw();
@@ -207,13 +210,15 @@ void Title::select(void)
 
 void Title::animation(void)
 {
-	title_book -> draw(anime_number);
+	instance -> getSprites("openBook") -> draw(anime_number);
 	
+	volumeFlag = 1;
+
 	bookAnimation();
 
-	if (title_book -> getPositionX() > sWHeaf)
+	if (instance -> getSprites("openBook") -> getPositionX() >= sWHeaf)
 	{
-		title_book -> setPositionX(sWHeaf);
+		instance -> getSprites("openBook") -> setPositionX(sWHeaf);
 		if(anime_number == BOOK_ANM_MAX)
 		{
 			title_work = Fadeout;
@@ -221,18 +226,18 @@ void Title::animation(void)
 	}
 	else
 	{
-		title_book -> setPositionX(title_book -> getPositionX() + 5);
+		instance -> getSprites("openBook") -> setPositionX(instance -> getSprites("openBook") -> getPositionX() + 10);
 	}
 }
 
 void Title::fadeout(void)
 {
-	title_book -> draw(BOOK_ANM_MAX);
-	title_book -> setScale(size);
+	instance -> getSprites("openBook") -> draw(BOOK_ANM_MAX);
+	instance -> getSprites("openBook") -> setScale(size);
 
 	instance ->getSprite("fadeout") -> draw();
 	instance ->getSprite("fadeout") -> setAlpha(instance ->getSprite("fadeout") -> getAlpha() + 5);
-	if(instance ->getSprite("fadeout") -> getAlpha() == 255)
+	if(instance ->getSprite("fadeout") -> getAlpha() >= 255)
 	{
 		instance ->getSprite("fadeout") -> setAlpha(255);
 	}
@@ -253,7 +258,7 @@ void Title::fadeout(void)
 	}
 	else
 	{
-		size += 0.01f;
+		size += 0.02f;
 	}
 }
 

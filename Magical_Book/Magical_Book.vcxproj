@@ -193,7 +193,9 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\Game\ResourceManager.cpp" />
     <ClCompile Include="SourceFile\main.cpp" />
     <ClCompile Include="SourceFile\Scene\Edit.cpp" />
+    <ClCompile Include="SourceFile\Scene\EditSelect.cpp" />
     <ClCompile Include="SourceFile\Scene\Game.cpp" />
+    <ClCompile Include="SourceFile\Scene\MenuSelect.cpp" />
     <ClCompile Include="SourceFile\scene\Scene.cpp" />
     <ClCompile Include="SourceFile\scene\SceneManager.cpp" />
     <ClCompile Include="SourceFile\Scene\Stageselect.cpp" />
@@ -216,7 +218,9 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\Game\Map.h" />
     <ClInclude Include="SourceFile\Game\ResourceManager.h" />
     <ClInclude Include="SourceFile\Scene\Edit.h" />
+    <ClInclude Include="SourceFile\Scene\EditSelect..h" />
     <ClInclude Include="SourceFile\Scene\Game.h" />
+    <ClInclude Include="SourceFile\Scene\MenuSelect.h" />
     <ClInclude Include="SourceFile\scene\Scene.h" />
     <ClInclude Include="SourceFile\scene\SceneManager.h" />
     <ClInclude Include="SourceFile\Scene\Stageselect.h" />

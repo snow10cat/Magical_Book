@@ -3,7 +3,6 @@
 #include "../Game/ResourceManager.h"
 #include "CatGameLib.h"
 #include "SceneManager.h"
-#include "Stageselect.h"
 #include "MenuSelect.h"
 
 
@@ -15,28 +14,25 @@ using namespace MagicalBook;
 static ResourceManager* instance = ResourceManager::getInstance();
 
 
-Stageselect::Stageselect() : frame(nullptr),
+MenuSelect::MenuSelect() : frame(nullptr),
 							 play(nullptr),
 							 make(nullptr),
 							 back(nullptr),
 							 arrow_right(nullptr),
 							 arrow_left(nullptr)
 {
-	frame = LibSprite::create("background/frame.png");
 	play = LibSprite::create("logo/play.png");
 	make = LibSprite::create("logo/make.png");
 	back = LibSprite::create("logo/back.png");
-	arrow_right = LibSprite::create("logo/arrow_right.png");
-	arrow_left = LibSprite::create("logo/arrow_left.png");
 }
 
 
-Stageselect::~Stageselect()
+MenuSelect::~MenuSelect()
 {
 }
 
 
-void Stageselect::init(void)
+void MenuSelect::init(void)
 {
 	input = LibInput::getInstance();
 
@@ -55,29 +51,6 @@ void Stageselect::init(void)
 	instance -> getSprites("openBook") -> setPosition(sWHeaf + 300, sHHeaf);
 	instance -> getSprites("openBook") -> setScale(1.5f);
 
-	for( int i = 1; i <= ResourceManager::BG_Count; i++)
-	{
-		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back( instance -> getSprite( bgName.c_str()));
-		bgTextures[i - 1] -> setAlpha(0.0f);
-	}
-
-	bgTextures[ResourceManager::BG_Castle] -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	bgTextures[ResourceManager::BG_Castle] -> setScale(0.35f);
-
-	bgTextures[ResourceManager::BG_Table] -> setPosition(sWHeaf + 90, sHHeaf + 160);
-	bgTextures[ResourceManager::BG_Table] -> setScale(0.3f);
-
-	bgTextures[ResourceManager::BG_Gate] -> setPosition(sWHeaf - 210, sHHeaf - 140);
-	bgTextures[ResourceManager::BG_Gate] -> setScale(0.3f);
-
-	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 90, sHHeaf - 140);
-	bgTextures[ResourceManager::BG_Window] -> setScale(0.3f);
-
-	frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	frame -> setScale(0.35f);
-	frame -> setAlpha(0.0f);
-
 	play -> setPosition(sWHeaf - 100, sHHeaf + 200);
 	play -> setScale(1.3f);
 	play -> setAlpha(0.0f);
@@ -89,13 +62,6 @@ void Stageselect::init(void)
 	back -> setPosition(sWHeaf - 100, sHHeaf - 200);
 	back -> setScale(1.0f);
 	back -> setAlpha(0.0f);
-
-	arrow_right -> setPosition(sWHeaf + 150, sHHeaf - 310);
-	arrow_right -> setScale(0.3f);
-	arrow_right -> setAlpha(0.0f);
-	arrow_left -> setPosition(sWHeaf - 270, sHHeaf - 310);
-	arrow_left -> setScale(0.3f);
-	arrow_left -> setAlpha(0.0f);
 
 	timer = 0;
 	counter = 0;
@@ -111,7 +77,7 @@ void Stageselect::init(void)
 
 
 
-void Stageselect::update(void)
+void MenuSelect::update(void)
 {
 	if(select_bgm -> getState() != LibSound::Play)
 	{
@@ -137,18 +103,10 @@ void Stageselect::update(void)
 		fadein();
 		break;
 	case ModeSelect:
-		select_work = new class::MenuSelect;
-	//	modeSelect();
+		modeSelect();
 		break;
 	case Animation:
 		animation();
-		break;
-	case GameMode:
-		gameMode();
-	//	SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
-		break;
-	case EditMode:
-		editMode();
 		break;
 	case Back:
 		backAnimation();
@@ -166,7 +124,7 @@ void Stageselect::update(void)
 }
 
 
-void Stageselect::fadein(void)
+void MenuSelect::fadein(void)
 {
 	if(bookAnmFlag == 0)
 	{
@@ -190,7 +148,7 @@ void Stageselect::fadein(void)
 }
 
 
-void Stageselect::modeSelect(void)
+void MenuSelect::modeSelect(void)
 {
 	if(bookAnmFlag == 0)
 	{
@@ -355,7 +313,7 @@ void Stageselect::modeSelect(void)
 }
 
 
-void Stageselect::logoAnimation()
+void MenuSelect::logoAnimation()
 {
 	timer++;
 
@@ -385,7 +343,7 @@ void Stageselect::logoAnimation()
 }
 
 
-void Stageselect::animation(void)
+void MenuSelect::animation(void)
 {
 	books -> draw(anime_number);
 
@@ -397,7 +355,7 @@ void Stageselect::animation(void)
 		{
 			anime_number = BOOK_ANM_MIN;
 			anime_counter = 0;
-			select_work = GameMode;
+//			select_work = GameMode;
 		}
 	}
 	else if(counter == 1)
@@ -409,13 +367,13 @@ void Stageselect::animation(void)
 		else
 		{
 			books -> setPositionX(sWHeaf - 320);
-			select_work = EditMode;
+		//	select_work = EditMode;
 		}
 	}
 }
 
 
-void Stageselect::bookAnimation()
+void MenuSelect::bookAnimation()
 {
 	if(anime_number <= BOOK_ANM_MAX)
 	{
@@ -429,255 +387,7 @@ void Stageselect::bookAnimation()
 }
 
 
-void Stageselect::gameMode(void)
-{
-	gameModeDraw();
-	if(timer >= 10)
-	{
-		gameSelect();
-	}
-	else
-	{
-		timer++;
-	}
-}
-
-
-void Stageselect::gameSelect(void)
-{
-	const int counterNumber = CatGameLib::LibBasicFunc::wrap(counter, 0, 6);
-	const int even = counterNumber % 2;
-	const int odd = counterNumber % 2;
-
-	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 6);
-
-	if(flag != 6)
-	{
-		flag = counterNumber;
-
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up))
-		{
-			counter -= 2;
-		}
-		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
-		{
-			counter += 2;
-		}
-
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
-		{
-			if( counterNumber % 2)
-			{
-				counter--;
-			}
-			else
-			{
-				flag = 6;
-			}
-		}
-
-		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
-		{
-			if( counterNumber % 2)
-			{
-				flag = 6;
-			}
-			else
-			{
-				counter++;
-			}
-		}
-	}
-	else
-	{
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
-		{
-			if( counter % 2 == 0)
-			{
-				counter++;
-				flag = counter;
-			}
-			else
-			{
-				flag = counter;
-			}
-		}
-		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
-		{
-			if( counter % 2 == 0)
-			{
-				flag = counter;
-			}
-			else
-			{
-				counter--;
-				flag = counter;
-			}
-		}
-	}
-	
-	
-	if(flag == 6)
-	{
-		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
-		{	
-			counter = 0;
-			bookAnmFlag = 1;
-			anime_number = BOOK_ANM_MAX;
-		}
-
-		if(bookAnmFlag == 1)
-		{
-			backAnimation();
-			if(anime_number == BOOK_ANM_MIN)
-			{
-				bookAnmFlag = 0;
-				back -> setPosition(sWHeaf - 100, sHHeaf - 200);
-				select_work = ModeSelect;
-			}
-		}
-	}
-
-}
-
-
-void Stageselect::gameModeDraw(void)
-{
-	instance -> getSprites("books") -> draw(anime_number);
-
-	auto sizeResetFunc = [&](void)
-	{
-		instance -> getSprite("game_bg1") -> setScale(0.3f);
-		instance -> getSprite("game_bg2") -> setScale(0.3f);
-		instance -> getSprite("game_bg3") -> setScale(0.3f);
-		instance -> getSprite("game_bg4") -> setScale(0.3f);
-	};
-
-
-	if(anime_number == BOOK_ANM_MIN)
-	{
-		for( int i = 0; i < bgTextures.size() - 1; i++)
-		{
-			bgTextures[i] -> draw();
-
-			if(bgTextures[i] -> getAlpha() < 255)
-			{
-				bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
-			}
-		}
-
-		if( back-> getAlpha() < 255)
-		{
-			back -> setAlpha(back -> getAlpha() + 5);
-		}
-		back -> draw();
-
-		if( arrow_right-> getAlpha() < 255)
-		{
-			arrow_right -> setAlpha(arrow_right -> getAlpha() + 5);
-		}
-		arrow_right -> draw();
-
-		if( arrow_left-> getAlpha() < 255)
-		{
-			arrow_left -> setAlpha(arrow_left -> getAlpha() + 5);
-		}
-		arrow_left -> draw();
-
-		if( frame-> getAlpha() < 255)
-		{
-			frame -> setAlpha(frame -> getAlpha() + 5);
-		}
-		frame -> draw();
-	}
-
-	switch(flag)
-	{
-	case 0:
-		sizeResetFunc();
-		instance -> getSprite("game_bg1") -> setScale(0.35f);
-
-		arrow_left -> setScale(0.3f);
-		arrow_right -> setScale(0.3f);
-		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
-		break;
-	case 1:
-		sizeResetFunc();
-		instance -> getSprite("game_bg2") -> setScale(0.35f);
-
-		arrow_left -> setScale(0.3f);
-		arrow_right -> setScale(0.3f);
-		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf + 90, sHHeaf + 160);
-		break;
-	case 2:
-		sizeResetFunc();
-		instance -> getSprite("game_bg3") -> setScale(0.35f);
-
-		arrow_left -> setScale(0.3f);
-		arrow_right -> setScale(0.3f);
-		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf - 210, sHHeaf - 140);
-		break;
-	case 3:
-		sizeResetFunc();
-		instance -> getSprite("game_bg4") -> setScale(0.35f);
-
-		arrow_left -> setScale(0.3f);
-		arrow_right -> setScale(0.3f);
-		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf + 90, sHHeaf - 140);
-		break;
-	case 4:
-		sizeResetFunc();
-		arrow_left -> setScale(0.35f);
-		arrow_right -> setScale(0.3f);
-		back -> setScale(1.0f);
-		frame -> setScale(0.1f);
-		frame -> setPosition(sWHeaf - 270, sHHeaf - 310);
-		break;
-	case 5:
-		sizeResetFunc();
-		arrow_left -> setScale(0.3f);
-		arrow_right -> setScale(0.35f);
-		back -> setScale(1.0f);
-		frame ->setScale(0.1f);
-		frame -> setPosition(sWHeaf + 150, sHHeaf - 310);
-		break;
-	case 6:
-		sizeResetFunc();
-		arrow_left -> setScale(0.3f);
-		arrow_right -> setScale(0.3f);
-		back -> setScale(1.2f);
-		frame ->setScaleX(0.5f);
-		frame ->setScaleY(0.2f);
-		frame -> setPosition(sWHeaf + 500, sHHeaf - 300);
-		break;
-	default:
-		assert(!"•s³‚Èó‘Ô");
-		break;
-	}
-}
-
-
-void Stageselect::editMode(void)
-{
-	instance -> getSprites("books") -> draw(anime_number);
-}
-
-
-void Stageselect::editModeDraw(void)
-{
-	
-}
-
-
-void Stageselect::backAnimation(void)
+void MenuSelect::backAnimation(void)
 {
 	if(anime_number >= BOOK_ANM_MIN)
 	{
@@ -691,7 +401,7 @@ void Stageselect::backAnimation(void)
 }
 
 
-void Stageselect::closeAnimation(void)
+void MenuSelect::closeAnimation(void)
 {
 	if(anime_number >= BOOK_ANM_MIN)
 	{
@@ -705,7 +415,7 @@ void Stageselect::closeAnimation(void)
 }
 
 
-void Stageselect::fadeout(void)
+void MenuSelect::fadeout(void)
 {
 	instance ->getSprite("fadeout") -> draw();
 	instance ->getSprite("fadeout") -> setAlpha(instance ->getSprite("fadeout") -> getAlpha() + 5);
@@ -720,6 +430,7 @@ void Stageselect::fadeout(void)
 }
 
 
-void Stageselect::next(void)
+void MenuSelect::next(void)
 {
+	select_work = Animation;
 }

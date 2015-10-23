@@ -1,14 +1,17 @@
 
-#include "../Game/SpriteManager.h"
+#include "../Game/ResourceManager.h"
 #include "CatGameLib.h"
 #include "SceneManager.h"
 #include "Stageselect.h"
+
 
 using namespace std;
 using namespace CatGameLib;
 using namespace MagicalBook;
 
-static SpriteManager* instance = SpriteManager::getInstance();
+
+static ResourceManager* instance = ResourceManager::getInstance();
+
 
 Stageselect::Stageselect() : frame(nullptr),
 							 play(nullptr),
@@ -35,29 +38,33 @@ void Stageselect::init(void)
 {
 	input = LibInput::getInstance();
 
-	LibSprites* books = instance -> getSprites("books");
+	select_bgm = LibSound::create("bgm/gameselect.wav");
+	select_bgm -> setVolume(0.0f);
+	select_bgm -> setLoop(true);
+
+	books = instance -> getSprites("books");
 
 	instance -> getSprites("books") -> setPosition(sWHeaf + 300, sHHeaf);
 	instance -> getSprites("books") -> setScale(1.5f);
 
-	for( int i = 1; i <= SpriteManager::BG_Count; i++)
+	for( int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
 		bgTextures.push_back( instance -> getSprite( bgName.c_str()));
 		bgTextures[i - 1] -> setAlpha(0.0f);
 	}
 
-	bgTextures[SpriteManager::BG_Castle] -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	bgTextures[SpriteManager::BG_Castle] -> setScale(0.35f);
+	bgTextures[ResourceManager::BG_Castle] -> setPosition(sWHeaf - 210, sHHeaf + 160);
+	bgTextures[ResourceManager::BG_Castle] -> setScale(0.35f);
 
-	bgTextures[SpriteManager::BG_Table] -> setPosition(sWHeaf + 90, sHHeaf + 160);
-	bgTextures[SpriteManager::BG_Table] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Table] -> setPosition(sWHeaf + 90, sHHeaf + 160);
+	bgTextures[ResourceManager::BG_Table] -> setScale(0.3f);
 
-	bgTextures[SpriteManager::BG_Gate] -> setPosition(sWHeaf - 210, sHHeaf - 140);
-	bgTextures[SpriteManager::BG_Gate] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Gate] -> setPosition(sWHeaf - 210, sHHeaf - 140);
+	bgTextures[ResourceManager::BG_Gate] -> setScale(0.3f);
 
-	bgTextures[SpriteManager::BG_Window] -> setPosition(sWHeaf + 90, sHHeaf - 140);
-	bgTextures[SpriteManager::BG_Window] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 90, sHHeaf - 140);
+	bgTextures[ResourceManager::BG_Window] -> setScale(0.3f);
 
 	frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
 	frame -> setScale(0.35f);
@@ -83,6 +90,7 @@ void Stageselect::init(void)
 	flag = 0;
 	anime_number = 0;
 	anime_counter = 0;
+	Volume = 0;
 	size = 1.3;
 	select_work = ModeSelect;
 }
@@ -91,8 +99,22 @@ void Stageselect::init(void)
 
 void Stageselect::update(void)
 {
-	
-	
+	if(select_bgm -> getState() != LibSound::Play)
+	{
+		select_bgm -> play();
+	}
+
+	if(select_work >= Fadeout)
+	{
+		Volume -= 0.02f;
+		select_bgm -> setVolume(Volume);
+	}
+
+	if(Volume <= 1.0)
+	{
+		Volume += 0.02f;
+		select_bgm -> setVolume(Volume);
+	}
 	instance -> getSprite("floar") -> draw();
 
 	switch(select_work)
@@ -104,9 +126,9 @@ void Stageselect::update(void)
 		animation();
 		break;
 	case GameMode:
-	//	gameModeDraw();
-	//	gameMode();
-		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
+		gameModeDraw();
+		gameMode();
+	//	SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
 		break;
 	case EditMode:
 		editMode();
@@ -167,7 +189,7 @@ void Stageselect::bookAnimation()
 
 void Stageselect::modeSelect(void)
 {
-	instance -> getSprites("books") -> draw(0);
+	books -> draw(0);
 
 	play -> draw();
 	make -> draw();
@@ -223,7 +245,7 @@ void Stageselect::modeSelect(void)
 
 void Stageselect::animation(void)
 {
-	instance -> getSprites("books") -> draw(anime_number);
+	books -> draw(anime_number);
 
 	if(counter == 0)
 	{

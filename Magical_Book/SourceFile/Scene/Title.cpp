@@ -1,5 +1,5 @@
 
-#include "../Game/SpriteManager.h"
+#include "../Game/ResourceManager.h"
 #include "CatGameLib.h"
 #include "SceneManager.h"
 #include "Title.h"
@@ -9,7 +9,7 @@ using namespace CatGameLib;
 using namespace MagicalBook;
 
 
-SpriteManager* instance = SpriteManager::getInstance();
+ResourceManager* instance = ResourceManager::getInstance();
 
 
 Title::Title() : title_book(nullptr),
@@ -34,16 +34,18 @@ void Title::init(void)
 {
 	input = LibInput::getInstance();
 
+	//‰¹º
 	title_bgm = LibSound::create("bgm/title.wav");
 	title_bgm -> setVolume(1.0f);
 	title_bgm -> setLoop(true);
 
-	select_se = LibSound::create("se/select.wav");
-	select_se -> setVolume(1.0f);
+	instance -> getSound("menuSelect") -> setVolume(1.0f);
 
 	game_in = LibSound::create("se/in.wav");
 	game_in -> setVolume(1.0f);
 
+
+	//‰æ‘œ
 	instance ->getSprite("fadeout") -> setPosition(sWHeaf, sHHeaf);
 	instance ->getSprite("fadeout") -> setScale(1.0f);
 	instance ->getSprite("fadeout") -> setAlpha(0.0f);
@@ -163,7 +165,7 @@ void Title::select(void)
 		counter++;
 		flag = 0;
 		size = 1;
-		select_se -> play();
+		instance -> getSound("menuSelect") -> play();
 	}
 
 	if(counter >= 2)

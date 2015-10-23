@@ -45,12 +45,15 @@ private:
 	int anime_counter;
 	int select_work;
 	float size;
+	float Volume;
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 	CatGameLib::LibInput* input;
 	CatGameLib::LibSprites* books;
+
+	CatGameLib::LibSound* select_bgm;
 
 	CatGameLib::LibSprite* frame;
 	CatGameLib::LibSprite* play;

@@ -41,7 +41,6 @@ private:
 	CatGameLib::LibInput* input;
 
 	CatGameLib::LibSound* title_bgm;
-	CatGameLib::LibSound* select_se;
 	CatGameLib::LibSound* game_in;
 
 	CatGameLib::LibSprites*	title_book;

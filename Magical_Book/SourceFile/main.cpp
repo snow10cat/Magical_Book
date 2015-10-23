@@ -1,6 +1,6 @@
 
 #include "CatGameLib.h"
-#include "Game/SpriteManager.h"
+#include "Game/ResourceManager.h"
 #include "Scene/SceneManager.h"
 
 using namespace CatGameLib;
@@ -27,7 +27,7 @@ int main()
 	lib -> initLib();
 
 	// 共通スプライトファイル読み込み
-	SpriteManager::getInstance() -> loadSprite();
+	ResourceManager::getInstance() -> loadResource();
 
 	// メインループ
 	while( lib -> checkWindowState())

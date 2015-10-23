@@ -23,15 +23,26 @@ public:
 		Animation,
 		GameMode,
 		EditMode,
+		Back,
 		Fadeout,
 		Next,
 	};
 
+	enum EditSelect
+	{
+		StageSize,
+		StageBG,
+		StageBGM,
+	};
+
 private:
 
+	int timer;
 	int counter;
 	int flag;
+	int edit_select;
 	int anime_number;
+	int anime_counter;
 	int select_work;
 	float size;
 
@@ -39,10 +50,25 @@ private:
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 	CatGameLib::LibInput* input;
+	CatGameLib::LibSprites* books;
 
 	CatGameLib::LibSprite* frame;
 	CatGameLib::LibSprite* play;
 	CatGameLib::LibSprite* make;
+	CatGameLib::LibSprite* back;
+
+	std::vector<CatGameLib::LibSprite*> bgTextures;
+
+	void logoAnimation(void);
+	void bookAnimation(void);
+
+	void modeSelect(void);
+	void animation(void);
+	void gameMode(void);
+	void editMode(void);
+	void backAnimation(void);
+	void fadeout(void);
+	void next(void);
 };
 
 }

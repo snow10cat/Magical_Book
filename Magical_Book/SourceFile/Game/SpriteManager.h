@@ -11,6 +11,17 @@ namespace MagicalBook
 class SpriteManager
 {
 public:
+
+	enum BgName
+	{
+		BG_Castle,
+		BG_Table,
+		BG_Gate,
+		BG_Window,
+		BG_Throne,
+		BG_Count = BG_Throne + 1,
+	};
+
 	/**
 	 * ライブラリインスタンス取得
 	 *
@@ -32,15 +43,6 @@ public:
 	CatGameLib::LibSprites* getSprites(const std::string& fileName);
 
 private:
-	enum
-	{
-		BG_Castle,
-		BG_Table,
-		BG_Gate,
-		BG_Window,
-		BG_Throne,
-		BG_Count = BG_Throne + 1,
-	};
 
 	SpriteManager();
 	~SpriteManager();

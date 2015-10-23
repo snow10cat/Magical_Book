@@ -4,6 +4,9 @@
 
 #include "Scene.h"
 
+#define BOOK_ANM_MIN 0
+#define BOOK_ANM_MAX 7
+
 namespace MagicalBook
 {
 

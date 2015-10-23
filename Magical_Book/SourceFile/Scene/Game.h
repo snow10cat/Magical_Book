@@ -18,9 +18,7 @@ public:
 	void update(void) override;
 
 private:
-	CatGameLib::LibSprites* books;
-	CatGameLib::LibSprite* fox;
-	CatGameLib::LibSprite* fox2;
+	
 };
 
 }

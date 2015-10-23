@@ -13,12 +13,16 @@ static SpriteManager* instance = SpriteManager::getInstance();
 Stageselect::Stageselect() : frame(nullptr),
 							 play(nullptr),
 							 make(nullptr),
-							 back(nullptr)
+							 back(nullptr),
+							 arrow_right(nullptr),
+							 arrow_left(nullptr)
 {
 	frame = LibSprite::create("background/frame.png");
 	play = LibSprite::create("logo/play.png");
 	make = LibSprite::create("logo/make.png");
 	back = LibSprite::create("logo/back.png");
+	arrow_right = LibSprite::create("logo/arrow_right.png");
+	arrow_left = LibSprite::create("logo/arrow_left.png");
 }
 
 
@@ -65,6 +69,15 @@ void Stageselect::init(void)
 	make -> setPosition(sWHeaf - 100, sHHeaf - 100);
 	make -> setScale(1.0f);
 
+	back -> setPosition(sWHeaf + 500, sHHeaf - 300);
+	back -> setScale(1.0f);
+
+	arrow_right -> setPosition(sWHeaf + 150, sHHeaf - 310);
+	arrow_right -> setScale(0.3f);
+
+	arrow_left -> setPosition(sWHeaf - 270, sHHeaf - 310);
+	arrow_left -> setScale(0.3f);
+
 	timer = 0;
 	counter = 0;
 	flag = 0;
@@ -91,7 +104,8 @@ void Stageselect::update(void)
 		animation();
 		break;
 	case GameMode:
-		//gameMode();
+	//	gameModeDraw();
+	//	gameMode();
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
 		break;
 	case EditMode:
@@ -241,24 +255,9 @@ void Stageselect::animation(void)
 
 void Stageselect::gameMode(void)
 {
-	instance -> getSprites("books") -> draw(anime_number);
-
 	if(timer >= 10)
 	{
-		for( int i = 0; i < bgTextures.size() - 1; i++)
-		{
-			bgTextures[i] -> draw();
-
-			if(bgTextures[i] -> getAlpha() < 255)
-			{
-				bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
-			}
-		}
-		frame -> draw();
-		if( frame-> getAlpha() < 255)
-		{
-			frame -> setAlpha(frame -> getAlpha() + 5);
-		}
+		
 
 		
 		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
@@ -306,8 +305,38 @@ void Stageselect::gameMode(void)
 				counter = 0;
 			}
 		}
-	
-		if(flag == 0)
+	}
+	else
+	{
+		timer++;
+	}
+}
+
+
+void Stageselect::gameModeDraw(void)
+{
+	instance -> getSprites("books") -> draw(anime_number);
+
+	back -> draw();
+	arrow_right -> draw();
+	arrow_left -> draw();
+
+	for( int i = 0; i < bgTextures.size() - 1; i++)
+	{
+		bgTextures[i] -> draw();
+
+		if(bgTextures[i] -> getAlpha() < 255)
+		{
+			bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
+		}
+	}
+	frame -> draw();
+	if( frame-> getAlpha() < 255)
+	{
+		frame -> setAlpha(frame -> getAlpha() + 5);
+	}
+
+	if(flag == 0)
 		{
 			instance -> getSprite("game_bg1") -> setScale(0.35f);
 			instance -> getSprite("game_bg2") -> setScale(0.3f);
@@ -339,18 +368,18 @@ void Stageselect::gameMode(void)
 			instance -> getSprite("game_bg4") -> setScale(0.35f);
 			frame -> setPosition(sWHeaf + 90, sHHeaf - 140);
 		}
-
-	}
-	else
-	{
-		timer++;
-	}
 }
 
 
 void Stageselect::editMode(void)
 {
 	instance -> getSprites("books") -> draw(anime_number);
+}
+
+
+void Stageselect::editModeDraw(void)
+{
+
 }
 
 

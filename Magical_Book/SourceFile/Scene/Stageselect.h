@@ -56,6 +56,8 @@ private:
 	CatGameLib::LibSprite* play;
 	CatGameLib::LibSprite* make;
 	CatGameLib::LibSprite* back;
+	CatGameLib::LibSprite* arrow_right;
+	CatGameLib::LibSprite* arrow_left;
 
 	std::vector<CatGameLib::LibSprite*> bgTextures;
 
@@ -65,7 +67,9 @@ private:
 	void modeSelect(void);
 	void animation(void);
 	void gameMode(void);
+	void gameModeDraw(void);
 	void editMode(void);
+	void editModeDraw(void);
 	void backAnimation(void);
 	void fadeout(void);
 	void next(void);

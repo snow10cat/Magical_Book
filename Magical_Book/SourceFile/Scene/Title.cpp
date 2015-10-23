@@ -141,67 +141,66 @@ void Title::logoAnimation(void)
 void Title::bookAnimation(void)
 {
 	if(anime_number < BOOK_ANM_MAX)
+	{
+		counter++;
+		if(counter % 7 == 0)
 		{
-			counter++;
-			if(counter % 7 == 0)
-			{
-				anime_number++;
-			}
+			anime_number++;
 		}
+	}
 }
 
 void Title::select(void)
 {
 	title_book -> draw(0);
-		title_logo -> draw();
-		title_start -> draw();
-		title_end -> draw();
+	title_logo -> draw();
+	title_start -> draw();
+	title_end -> draw();
 
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
+	if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
+	{
+		timer = 0;
+		counter++;
+		flag = 0;
+		size = 1;
+		select_se -> play();
+	}
+
+	if(counter >= 2)
+	{
+		counter = 0;
+	}
+
+	if (counter % 2 == 0)
+	{
+		//ƒQ[ƒ€–{•Ò
+		title_start -> setScale(size);
+		title_end -> setScale(0.7f);
+	
+		logoAnimation();
+
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
 			timer = 0;
-			counter++;
-			flag = 0;
-			size = 1;
-			select_se -> play();
-		}
-
-		if(counter >= 2)
-		{
 			counter = 0;
+			size = 1;
+			flag = 0;
+			title_work = Animation;
 		}
+	}
+	else if (counter % 2 == 1)
+	{
+		//ƒQ[ƒ€I—¹
+		title_start -> setScale(0.7f);
+		title_end -> setScale(size);
 
-		if (counter % 2 == 0)
+		logoAnimation();
+
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
-			//ƒQ[ƒ€–{•Ò
-			title_start -> setScale(size);
-			title_end -> setScale(0.7f);
-		
-			logoAnimation();
-
-			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
-			{
-				timer = 0;
-				counter = 0;
-				size = 1;
-				flag = 0;
-				title_work = Animation;
-			}
+			exit(0);
 		}
-		else if (counter % 2 == 1)
-		{
-			//ƒQ[ƒ€I—¹
-			title_start -> setScale(0.7f);
-			title_end -> setScale(size);
-
-			logoAnimation();
-
-			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
-			{
-				exit(0);
-			}
-		}
-		
+	}	
 }
 
 void Title::animation(void)

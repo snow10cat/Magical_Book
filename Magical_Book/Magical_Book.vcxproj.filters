@@ -84,6 +84,9 @@
     <ClCompile Include="SourceFile\CatGameLib\LibString.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFile\Game\SoundManager.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="SourceFile\CatGameLib\LibString.h">
       <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\SoundManager.h">
+      <Filter>HeaderFile\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

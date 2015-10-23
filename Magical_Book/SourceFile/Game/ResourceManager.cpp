@@ -24,6 +24,9 @@ ResourceManager::~ResourceManager()
 void ResourceManager::loadResource( void)
 {
 	//âπê∫
+	soundArray["bgm1"] = LibSound::create( "bgm/stage1.wav");
+	soundArray["bgm2"] = LibSound::create( "bgm/stage2.wav");
+	soundArray["bgm3"] = LibSound::create( "bgm/stage3.wav");
 	soundArray["menuSelect"] = LibSound::create("se/select.wav");
 	soundArray["menuOk"] = LibSound::create( "se/page.wav");
 	soundArray["pageNext"] = LibSound::create( "se/page.wav");
@@ -31,6 +34,7 @@ void ResourceManager::loadResource( void)
 	//âÊëú
 	spriteArray["fadeout"] = LibSprite::create("background/fadeout.png");
 	spriteArray["floar"] = LibSprite::create("background/floar.png");
+	spriteArray["frame"] = LibSprite::create("background/frame.png");
 
 	spritesArray["books"] = CatGameLib::LibSprites::create("background/books.png", 1000, 500);
 	spritesArray["openBook"] = CatGameLib::LibSprites::create("background/open.png", 1000, 500);

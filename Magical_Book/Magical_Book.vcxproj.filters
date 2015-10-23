@@ -155,10 +155,10 @@
     <ClInclude Include="SourceFile\Game\ResourceManager.h">
       <Filter>HeaderFile\Game</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFile\Scene\EditSelect..h">
+    <ClInclude Include="SourceFile\Scene\MenuSelect.h">
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFile\Scene\MenuSelect.h">
+    <ClInclude Include="SourceFile\Scene\EditSelect.h">
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
   </ItemGroup>

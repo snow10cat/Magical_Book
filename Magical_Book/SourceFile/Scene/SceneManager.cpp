@@ -1,7 +1,9 @@
 
 #include "SceneManager.h"
 #include "Title.h"
+#include "MenuSelect.h"
 #include "Stageselect.h"
+#include "EditSelect.h"
 #include "Game.h"
 #include "Edit.h"
 
@@ -31,22 +33,27 @@ void SceneManager::createScene(SceneNumber number)
 		scene = new class::Title;
 		break;
 
+	case MenuSelect:
+		scene = new class::MenuSelect;
+		break;
+
 	case StageSelect:
 		scene = new class::Stageselect;
 		break;
-
-	case Edit:
-		scene = new class::Edit;
+	
+	case EditSelect:
+		scene = new class::EditSelect;
 		break;
 
 	case Game:
 		scene = new class::Game;
 		break;
 
-	case Pause:
+	case Edit:
+		scene = new class::Edit;
 		break;
 
-	case Editor:
+	case Pause:
 		break;
 
 	case Continue:

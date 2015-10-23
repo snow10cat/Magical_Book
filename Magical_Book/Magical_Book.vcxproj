@@ -218,7 +218,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\Game\Map.h" />
     <ClInclude Include="SourceFile\Game\ResourceManager.h" />
     <ClInclude Include="SourceFile\Scene\Edit.h" />
-    <ClInclude Include="SourceFile\Scene\EditSelect..h" />
+    <ClInclude Include="SourceFile\Scene\EditSelect.h" />
     <ClInclude Include="SourceFile\Scene\Game.h" />
     <ClInclude Include="SourceFile\Scene\MenuSelect.h" />
     <ClInclude Include="SourceFile\scene\Scene.h" />

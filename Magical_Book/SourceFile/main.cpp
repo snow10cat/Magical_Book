@@ -29,6 +29,8 @@ int main()
 	// 共通スプライトファイル読み込み
 	ResourceManager::getInstance() -> loadResource();
 
+	//SceneManager::getInstance() -> createScene( SceneManager::Edit);
+
 	// メインループ
 	while( lib -> checkWindowState())
 	{

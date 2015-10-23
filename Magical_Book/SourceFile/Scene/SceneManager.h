@@ -15,15 +15,16 @@ class SceneManager
 public:
 	enum SceneNumber
 	{
-		Title,
-		StageSelect,
-		Game,
-		Edit,
-		Pause,
-		Editor,
-		Continue,
-		Result,
-		Ending,
+		Title,			//タイトル
+		MenuSelect,		//メニュー画面
+		StageSelect,	//ステージメニュー
+		EditSelect,		//エディターメニュー
+		Game,			//ゲーム
+		Edit,			//エディット
+		Pause,			//ポーズ
+		Continue,		//コンティニュー
+		Result,			//
+		Ending,			//エンディング
 	};
 
 	static SceneManager* getInstance( void)

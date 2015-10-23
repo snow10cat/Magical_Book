@@ -21,6 +21,14 @@ public:
 		BG_Count = BG_Throne + 1,
 	};
 
+	enum BgmNum
+	{
+		BGM_1,
+		BGM_2,
+		BGM_3,
+		BGM_Count = BGM_3 + 1,
+	};
+
 	static ResourceManager* getInstance(void)
 	{
 		static ResourceManager* instance = nullptr;

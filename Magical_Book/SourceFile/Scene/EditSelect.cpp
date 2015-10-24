@@ -20,6 +20,11 @@ EditSelect::EditSelect() : size_section(nullptr),
 	size_section = CatGameLib::LibSprite::create( "logo/size_section.png");
 	bg_section = CatGameLib::LibSprite::create( "logo/bg_section.png");
 	music_section = CatGameLib::LibSprite::create( "logo/music_section.png");
+
+	size_logo[0] = CatGameLib::LibSprite::create( "logo/bgm1.png");
+	size_logo[1] = CatGameLib::LibSprite::create( "logo/bgm2.png");
+	size_logo[2] = CatGameLib::LibSprite::create( "logo/bgm3.png");
+
 	bgm_logo[0] = CatGameLib::LibSprite::create( "logo/bgm1.png");
 	bgm_logo[1] = CatGameLib::LibSprite::create( "logo/bgm2.png");
 	bgm_logo[2] = CatGameLib::LibSprite::create( "logo/bgm3.png");
@@ -36,8 +41,22 @@ void EditSelect::init( void)
 	instance -> getSprites("books") -> setPosition(sWHeaf - 320, sHHeaf);
 	instance -> getSprites("books") -> setScale(1.5f);
 
+
+	size_logo[0] -> setPosition(sWHeaf - 100, sHHeaf + 200);
+	size_logo[0] -> setScale(0.35f);
+	size_logo[0] -> setAlpha(0.0f);
+
+	size_logo[1] -> setPosition(sWHeaf + 50, sHHeaf + 200);
+	size_logo[1] -> setScale(0.25f);
+	size_logo[1] -> setAlpha(0.0f);
+
+	size_logo[2] -> setPosition(sWHeaf + 200, sHHeaf + 200);
+	size_logo[2] -> setScale(0.25f);
+	size_logo[2] -> setAlpha(0.0f);
+
+
 	bgm_logo[0] -> setPosition(sWHeaf - 100, sHHeaf - 210);
-	bgm_logo[0] -> setScale(0.3f);
+	bgm_logo[0] -> setScale(0.25f);
 	bgm_logo[0] -> setAlpha(0.0f);
 
 	bgm_logo[1] -> setPosition(sWHeaf + 50, sHHeaf - 210);
@@ -70,18 +89,21 @@ void EditSelect::init( void)
 	bgTextures[ResourceManager::BG_Throne] -> setPosition(sWHeaf + 200, sHHeaf - 30);
 	bgTextures[ResourceManager::BG_Throne] -> setScale(0.1f);
 
-	instance ->getSprite("frame") -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	instance ->getSprite("frame") -> setScale(0.35f);
-	instance ->getSprite("frame") -> setAlpha(0.0f);
+	instance -> getSprite("frame") -> setPosition(sWHeaf - 100, sHHeaf + 200);
+	instance -> getSprite("frame") -> setScale(0.15f);
+	instance -> getSprite("frame") -> setAlpha(0.0f);
 
 	size_section -> setPosition(sWHeaf - 100, sHHeaf + 300);
 	size_section -> setScale( 0.8f);
-	
+	size_section -> setAlpha(0.0f);
+
 	bg_section -> setPosition(sWHeaf - 100, sHHeaf + 80);
 	bg_section -> setScale( 0.7f);
+	bg_section -> setAlpha(0.0f);
 
 	music_section -> setPosition(sWHeaf - 100, sHHeaf - 140);
 	music_section -> setScale( 0.7f);
+	music_section -> setAlpha(0.0f);
 
 	timer = 0;
 	counter = 0;
@@ -100,12 +122,48 @@ void EditSelect::update( void)
 {
 	instance -> getSprite("floar") -> draw();
 	instance -> getSprites("books") -> draw(anime_number);
+
+	switch(editMode_work)
+	{
+	case :
+		break;
+
+	default:
+		assert(!"•s³‚Èó‘Ô");
+		break;
+	}
+
+	editModeDraw();	
+}
+
+void EditSelect::editModeDraw(void)
+{
+	if(size_section -> getAlpha() < 255)
+	{
+		size_section -> setAlpha(size_section -> getAlpha() + 5);
+	}
 	size_section -> draw();
+	
+	if(bg_section -> getAlpha() < 255)
+	{
+		bg_section -> setAlpha(bg_section -> getAlpha() + 5);
+	}
 	bg_section -> draw();
+	
+	if(music_section -> getAlpha() < 255)
+	{
+		music_section -> setAlpha(music_section -> getAlpha() + 5);
+	}
 	music_section -> draw();
 
 	for(int i = 0; i <= 2; i++)
 	{
+		if(size_logo[i] -> getAlpha() < 255)
+		{
+			size_logo[i] -> setAlpha(size_logo[i] -> getAlpha() + 5);
+		}
+		size_logo[i] -> draw();
+
 		if(bgm_logo[i] -> getAlpha() < 255)
 		{
 			bgm_logo[i] -> setAlpha(bgm_logo[i] -> getAlpha() + 5);

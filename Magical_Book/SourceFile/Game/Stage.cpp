@@ -80,7 +80,7 @@ void Stage::update(void)
 	{
 		rotateCount--;
 
-		for( int i = 0; i < collisionData.size(), i++)
+		for( int i = 0; i < collisionData.size(); i++)
 		{
 
 		}

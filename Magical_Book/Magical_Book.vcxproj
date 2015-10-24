@@ -191,7 +191,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\CatGameLib\LibString.cpp" />
     <ClCompile Include="SourceFile\Game\Character.cpp" />
     <ClCompile Include="SourceFile\Game\Enemy.cpp" />
-    <ClCompile Include="SourceFile\Game\Map.cpp" />
+    <ClCompile Include="SourceFile\Game\FileManager.cpp" />
     <ClCompile Include="SourceFile\Game\Player.cpp" />
     <ClCompile Include="SourceFile\Game\ResourceManager.cpp" />
     <ClCompile Include="SourceFile\Game\Stage.cpp" />
@@ -221,7 +221,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\CatGameLib\LibVector2.h" />
     <ClInclude Include="SourceFile\Game\Character.h" />
     <ClInclude Include="SourceFile\Game\Enemy.h" />
-    <ClInclude Include="SourceFile\Game\Map.h" />
+    <ClInclude Include="SourceFile\Game\FileManager.h" />
     <ClInclude Include="SourceFile\Game\Player.h" />
     <ClInclude Include="SourceFile\Game\ResourceManager.h" />
     <ClInclude Include="SourceFile\Game\Stage.h" />

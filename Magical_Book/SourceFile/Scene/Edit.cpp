@@ -16,9 +16,7 @@ Edit::~Edit()
 
 void Edit::init( void)
 {
-	/*test -> setPosition( 1280 / 2, 720 / 2);
 
-	test -> setScale( 1.0f);*/
 }
 
 void Edit::update( void)

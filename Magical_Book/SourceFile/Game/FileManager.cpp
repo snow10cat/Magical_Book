@@ -4,7 +4,20 @@
 #include<fstream>
 #include<sstream>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include"FileManager.h"
+
+
 using namespace std;
+using namespace CatGameLib;
+using namespace MagicalBook;
+
+
+void fileOutput()
+{
+}
+
 
 bool GetContents(const string& filename, vector<vector<string>>& table,
 				 const char delimiter = ',')
@@ -42,9 +55,7 @@ bool GetContents(const string& filename, vector<vector<string>>& table,
 }
 
 
-//読み込み
-
-int CsvRead(int argc, const char * argv[])
+static FileManager* readMapFile(const char* fileName)
 {
 	bool status = false;			//メソッドのステータス
 	string filename = "test.csv";	//ファイル名
@@ -55,7 +66,7 @@ int CsvRead(int argc, const char * argv[])
 	if(!status)
 	{
 		//取得に失敗した場合はエラー終了する
-		return -1;
+		return false;
 	}
 
 	//確認のためにコンソールに内容を出力する

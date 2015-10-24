@@ -19,7 +19,6 @@ public:
 
 	enum EditSelectNumber
 	{
-		Fadein,
 		ModeSelect,
 		Animation,
 		GameMode,
@@ -46,7 +45,7 @@ private:
 	int edit_select;
 	int anime_number;
 	int anime_counter;
-	int select_work;
+	int editMode_work;
 	float Volume;
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
@@ -61,6 +60,7 @@ private:
 	CatGameLib::LibSprite* bg_section;
 	CatGameLib::LibSprite* music_section;
 	CatGameLib::LibSprite* bgm_logo[3];
+	CatGameLib::LibSprite* size_logo[3];
 
 	CatGameLib::LibSprite* arrow_right;
 	CatGameLib::LibSprite* arrow_left;

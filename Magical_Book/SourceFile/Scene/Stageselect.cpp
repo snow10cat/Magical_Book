@@ -645,7 +645,7 @@ void Stageselect::gameModeDraw(void)
 		arrow_left -> setScale(0.3f);
 		arrow_right -> setScale(0.3f);
 		back -> setScale(1.2f);
-		instance ->getSprite("frame") ->setScaleX(0.4f);
+		instance ->getSprite("frame") ->setScaleX(0.35f);
 		instance ->getSprite("frame") ->setScaleY(0.12f);
 		instance ->getSprite("frame") -> setPosition(sWHeaf + 500, sHHeaf - 300);
 		break;

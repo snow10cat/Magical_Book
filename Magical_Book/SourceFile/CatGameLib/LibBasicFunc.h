@@ -5,6 +5,9 @@
 #include "CatGameLib.h"
 #include "ExternalLib.h"
 
+#define PI 3.141592f
+#define DEGREE_TO_RADIAN( deg) ( deg * PI / 180.0f)
+
 namespace CatGameLib
 {
 

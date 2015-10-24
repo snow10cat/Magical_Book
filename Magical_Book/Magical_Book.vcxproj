@@ -189,8 +189,12 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\CatGameLib\LibSprite.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibSprites.cpp" />
     <ClCompile Include="SourceFile\CatGameLib\LibString.cpp" />
+    <ClCompile Include="SourceFile\Game\Character.cpp" />
+    <ClCompile Include="SourceFile\Game\Enemy.cpp" />
     <ClCompile Include="SourceFile\Game\Map.cpp" />
+    <ClCompile Include="SourceFile\Game\Player.cpp" />
     <ClCompile Include="SourceFile\Game\ResourceManager.cpp" />
+    <ClCompile Include="SourceFile\Game\Stage.cpp" />
     <ClCompile Include="SourceFile\main.cpp" />
     <ClCompile Include="SourceFile\Scene\Edit.cpp" />
     <ClCompile Include="SourceFile\Scene\EditSelect.cpp" />
@@ -215,8 +219,12 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\CatGameLib\LibSprites.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibString.h" />
     <ClInclude Include="SourceFile\CatGameLib\LibVector2.h" />
+    <ClInclude Include="SourceFile\Game\Character.h" />
+    <ClInclude Include="SourceFile\Game\Enemy.h" />
     <ClInclude Include="SourceFile\Game\Map.h" />
+    <ClInclude Include="SourceFile\Game\Player.h" />
     <ClInclude Include="SourceFile\Game\ResourceManager.h" />
+    <ClInclude Include="SourceFile\Game\Stage.h" />
     <ClInclude Include="SourceFile\Scene\Edit.h" />
     <ClInclude Include="SourceFile\Scene\EditSelect..h" />
     <ClInclude Include="SourceFile\Scene\Game.h" />

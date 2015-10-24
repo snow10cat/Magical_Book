@@ -137,7 +137,7 @@ void Stageselect::update(void)
 		fadein();
 		break;
 	case ModeSelect:
-		select_work = new class::MenuSelect;
+//		select_work = new class::MenuSelect;
 	//	modeSelect();
 		break;
 	case Animation:

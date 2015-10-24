@@ -265,5 +265,5 @@ void Title::fadeout(void)
 void Title::next(void)
 {
 	LibSound::allStop();
-	SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Stageselect);
+//	SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Stageselect);
 }

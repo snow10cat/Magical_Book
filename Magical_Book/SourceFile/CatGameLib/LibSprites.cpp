@@ -24,9 +24,12 @@ LibSprites* LibSprites::create( const char* fileName, int width, int height)
 
 	// pngì«Ç›çûÇ›
 	png::image<png::rgba_pixel> image( filePass);
-	
+
 	int widthCount = image.get_width() / width;
 	int heightCount = image.get_height() / height;
+
+	sprites -> sizeX = image.get_width() / widthCount;
+	sprites -> sizeY = image.get_height() / heightCount;
 
 	sprites -> spriteCount = widthCount * heightCount;
 	sprites -> textureIDArray.resize( sprites -> spriteCount);

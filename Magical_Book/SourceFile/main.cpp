@@ -29,6 +29,8 @@ int main()
 	// 共通スプライトファイル読み込み
 	ResourceManager::getInstance() -> loadResource();
 
+	SceneManager::getInstance() -> createScene( SceneManager::Game);
+
 	// メインループ
 	while( lib -> checkWindowState())
 	{
@@ -36,7 +38,7 @@ int main()
 		lib -> clear();
 
 		// シーンアップデート
-		MagicalBook::SceneManager::getInstance() -> update();
+		SceneManager::getInstance() -> update();
 
 		// 描画
 		lib -> draw();

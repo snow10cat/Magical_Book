@@ -90,6 +90,18 @@
     <ClCompile Include="SourceFile\Scene\MenuSelect.cpp">
       <Filter>SourceFile\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFile\Game\Character.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Enemy.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Player.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Stage.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFile\CatGameLib\LibMain.h">
@@ -160,6 +172,18 @@
     </ClInclude>
     <ClInclude Include="SourceFile\Scene\MenuSelect.h">
       <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Player.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Character.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Enemy.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Stage.h">
+      <Filter>HeaderFile\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

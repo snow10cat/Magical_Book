@@ -126,17 +126,17 @@ void Title::logoAnimation(void)
 				flag = 1;
 				timer = 0;
 			}
-			
+
 			size += 0.01f;
 		}
 		else if(size >= 0.8 && flag == 1)
 		{
 			if(size <= 0.9)
-			{	
+			{
 				flag = 0;
 				timer = 0;
 			}
-			
+
 			size -= 0.01;
 		}
 	}
@@ -181,7 +181,7 @@ void Title::select(void)
 		//ƒQ[ƒ€–{•Ò
 		title_start -> setScale(size);
 		title_end -> setScale(0.7f);
-	
+
 		logoAnimation();
 
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
@@ -205,13 +205,13 @@ void Title::select(void)
 		{
 			exit(0);
 		}
-	}	
+	}
 }
 
 void Title::animation(void)
 {
 	instance -> getSprites("openBook") -> draw(anime_number);
-	
+
 	volumeFlag = 1;
 
 	bookAnimation();

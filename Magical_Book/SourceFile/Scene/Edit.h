@@ -37,7 +37,6 @@ private:
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 	CatGameLib::LibInput* input;
-
 	CatGameLib::LibSprite* frame;
 };
 

@@ -1,6 +1,6 @@
 
-#ifndef __MAGICAL_BOOK_STSGESELECT_H__
-#define __MAGICAL_BOOK_STSGESELECT_H__
+#ifndef __MAGICAL_BOOK_EDITSELECT_H__
+#define __MAGICAL_BOOK_EDITSELECT_H__
 
 #include "Scene.h"
 #include "CatGameLib.h"
@@ -8,16 +8,16 @@
 namespace MagicalBook
 {
 
-class Stageselect : public Scene
+class EditSelect : public Scene
 {
 public:
-	Stageselect();
-	~Stageselect();
+	EditSelect ();
+	~EditSelect ();
 
 	void init(void) override;
 	void update(void) override;
 
-	enum SelectNumber
+	enum EditSelectNumber
 	{
 		Fadein,
 		ModeSelect,
@@ -29,12 +29,12 @@ public:
 		Next,
 	};
 
-	enum EditSelect
+	/*enum EditSelect
 	{
 		StageSize,
 		StageBG,
 		StageBGM,
-	};
+	};*/
 
 private:
 
@@ -47,7 +47,6 @@ private:
 	int anime_number;
 	int anime_counter;
 	int select_work;
-	float size;
 	float Volume;
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
@@ -58,9 +57,10 @@ private:
 
 	CatGameLib::LibSound* select_bgm;
 
-	CatGameLib::LibSprite* play;
-	CatGameLib::LibSprite* make;
-	CatGameLib::LibSprite* back;
+	CatGameLib::LibSprite* size_section;
+	CatGameLib::LibSprite* bg_section;
+	CatGameLib::LibSprite* music_section;
+	CatGameLib::LibSprite* bgm_logo[3];
 
 	CatGameLib::LibSprite* arrow_right;
 	CatGameLib::LibSprite* arrow_left;
@@ -72,9 +72,8 @@ private:
 
 	void modeSelect(void);
 	void animation(void);
-	void gameMode(void);
-	void gameSelect(void);
-	void gameModeDraw(void);
+	void editMode(void);
+	void editModeDraw(void);
 	void backAnimation(void);
 	void closeAnimation(void);
 	void fadein(void);

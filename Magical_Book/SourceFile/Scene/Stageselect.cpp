@@ -15,14 +15,12 @@ using namespace MagicalBook;
 static ResourceManager* instance = ResourceManager::getInstance();
 
 
-Stageselect::Stageselect() : frame(nullptr),
-							 play(nullptr),
+Stageselect::Stageselect() : play(nullptr),
 							 make(nullptr),
 							 back(nullptr),
 							 arrow_right(nullptr),
 							 arrow_left(nullptr)
 {
-	frame = LibSprite::create("background/frame.png");
 	play = LibSprite::create("logo/play.png");
 	make = LibSprite::create("logo/make.png");
 	back = LibSprite::create("logo/back.png");
@@ -74,9 +72,9 @@ void Stageselect::init(void)
 	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 90, sHHeaf - 140);
 	bgTextures[ResourceManager::BG_Window] -> setScale(0.3f);
 
-	frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	frame -> setScale(0.35f);
-	frame -> setAlpha(0.0f);
+	instance ->getSprite("frame") -> setPosition(sWHeaf - 210, sHHeaf + 160);
+	instance ->getSprite("frame") -> setScale(0.35f);
+	instance ->getSprite("frame") -> setAlpha(0.0f);
 
 	play -> setPosition(sWHeaf - 100, sHHeaf + 200);
 	play -> setScale(1.3f);
@@ -86,7 +84,7 @@ void Stageselect::init(void)
 	make -> setScale(1.0f);
 	make -> setAlpha(0.0f);
 
-	back -> setPosition(sWHeaf - 100, sHHeaf - 200);
+	back -> setPosition(sWHeaf + 500, sHHeaf - 300);
 	back -> setScale(1.0f);
 	back -> setAlpha(0.0f);
 
@@ -106,7 +104,7 @@ void Stageselect::init(void)
 	anime_counter = 0;
 	Volume = 0;
 	size = 1.3;
-	select_work = Fadein;
+	select_work = GameMode;
 }
 
 
@@ -147,9 +145,6 @@ void Stageselect::update(void)
 		gameMode();
 	//	SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
 		break;
-	case EditMode:
-		editMode();
-		break;
 	case Back:
 		backAnimation();
 		break;
@@ -168,24 +163,18 @@ void Stageselect::update(void)
 
 void Stageselect::fadein(void)
 {
-	if(bookAnmFlag == 0)
-	{
-		books -> draw(0);
+	books -> draw(0);
 
-		play -> draw();
-		make -> draw();
-		back -> draw();
-	}
+	play -> draw();
+	make -> draw();
+	back -> draw();
 
 	instance ->getSprite("fadeout") -> draw();
 	instance ->getSprite("fadeout") -> setAlpha(instance ->getSprite("fadeout") -> getAlpha() - 5);
 	if(instance ->getSprite("fadeout") -> getAlpha() <= 0)
 	{
 		instance ->getSprite("fadeout") -> setAlpha(0);
-		if(bookAnmFlag == 0)
-		{
-			select_work = ModeSelect;
-		}
+		select_work = ModeSelect;
 	}
 }
 
@@ -287,7 +276,7 @@ void Stageselect::modeSelect(void)
 		}
 
 		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
-		{	
+		{
 			anime_number = BOOK_ANM_MAX;
 			counter = 0;
 			size = 1.5f;
@@ -325,7 +314,7 @@ void Stageselect::modeSelect(void)
 				size = 1.0f;
 			}
 		}
-		
+
 		if(size == 1.0)
 		{
 			if(anime_number == BOOK_ANM_MIN)
@@ -340,7 +329,7 @@ void Stageselect::modeSelect(void)
 					fadein();
 				}
 
-				
+
 				if(instance ->getSprite("fadeout") -> getAlpha() <= 0)
 				{
 					SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Title);
@@ -368,17 +357,17 @@ void Stageselect::logoAnimation()
 				flag = 1;
 				timer = 0;
 			}
-			
+
 			size += 0.01f;
 		}
 		else if(size >= 1.1 && flag == 1)
 		{
 			if(size <= 1.2)
-			{	
+			{
 				flag = 0;
 				timer = 0;
 			}
-			
+
 			size -= 0.01;
 		}
 	}
@@ -515,12 +504,12 @@ void Stageselect::gameSelect(void)
 			}
 		}
 	}
-	
-	
+
+
 	if(flag == 6)
 	{
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
-		{	
+		{
 			counter = 0;
 			bookAnmFlag = 1;
 			anime_number = BOOK_ANM_MAX;
@@ -533,7 +522,9 @@ void Stageselect::gameSelect(void)
 			{
 				bookAnmFlag = 0;
 				back -> setPosition(sWHeaf - 100, sHHeaf - 200);
-				select_work = ModeSelect;
+
+				LibSound::allStop();
+				SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::MenuSelect);
 			}
 		}
 	}
@@ -556,7 +547,7 @@ void Stageselect::gameModeDraw(void)
 
 	if(anime_number == BOOK_ANM_MIN)
 	{
-		for( int i = 0; i < bgTextures.size() - 1; i++)
+		for(int i = 0; i < bgTextures.size() - 1; i++)
 		{
 			bgTextures[i] -> draw();
 
@@ -566,29 +557,29 @@ void Stageselect::gameModeDraw(void)
 			}
 		}
 
-		if( back-> getAlpha() < 255)
+		if(back -> getAlpha() < 255)
 		{
 			back -> setAlpha(back -> getAlpha() + 5);
 		}
 		back -> draw();
 
-		if( arrow_right-> getAlpha() < 255)
+		if(arrow_right -> getAlpha() < 255)
 		{
 			arrow_right -> setAlpha(arrow_right -> getAlpha() + 5);
 		}
 		arrow_right -> draw();
 
-		if( arrow_left-> getAlpha() < 255)
+		if(arrow_left -> getAlpha() < 255)
 		{
 			arrow_left -> setAlpha(arrow_left -> getAlpha() + 5);
 		}
 		arrow_left -> draw();
 
-		if( frame-> getAlpha() < 255)
+		if(instance -> getSprite("frame") -> getAlpha() < 255)
 		{
-			frame -> setAlpha(frame -> getAlpha() + 5);
+			instance -> getSprite("frame") -> setAlpha(instance -> getSprite("frame") -> getAlpha() + 5);
 		}
-		frame -> draw();
+		instance -> getSprite("frame") -> draw();
 	}
 
 	switch(flag)
@@ -600,8 +591,8 @@ void Stageselect::gameModeDraw(void)
 		arrow_left -> setScale(0.3f);
 		arrow_right -> setScale(0.3f);
 		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
+		instance -> getSprite("frame") -> setScale(0.35f);
+		instance -> getSprite("frame") -> setPosition(sWHeaf - 210, sHHeaf + 160);
 		break;
 	case 1:
 		sizeResetFunc();
@@ -610,8 +601,8 @@ void Stageselect::gameModeDraw(void)
 		arrow_left -> setScale(0.3f);
 		arrow_right -> setScale(0.3f);
 		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf + 90, sHHeaf + 160);
+		instance ->getSprite("frame") -> setScale(0.35f);
+		instance ->getSprite("frame") -> setPosition(sWHeaf + 90, sHHeaf + 160);
 		break;
 	case 2:
 		sizeResetFunc();
@@ -620,8 +611,8 @@ void Stageselect::gameModeDraw(void)
 		arrow_left -> setScale(0.3f);
 		arrow_right -> setScale(0.3f);
 		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf - 210, sHHeaf - 140);
+		instance ->getSprite("frame") -> setScale(0.35f);
+		instance ->getSprite("frame") -> setPosition(sWHeaf - 210, sHHeaf - 140);
 		break;
 	case 3:
 		sizeResetFunc();
@@ -630,50 +621,38 @@ void Stageselect::gameModeDraw(void)
 		arrow_left -> setScale(0.3f);
 		arrow_right -> setScale(0.3f);
 		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
-		frame -> setPosition(sWHeaf + 90, sHHeaf - 140);
+		instance ->getSprite("frame") -> setScale(0.35f);
+		instance ->getSprite("frame") -> setPosition(sWHeaf + 90, sHHeaf - 140);
 		break;
 	case 4:
 		sizeResetFunc();
 		arrow_left -> setScale(0.35f);
 		arrow_right -> setScale(0.3f);
 		back -> setScale(1.0f);
-		frame -> setScale(0.1f);
-		frame -> setPosition(sWHeaf - 270, sHHeaf - 310);
+		instance ->getSprite("frame") -> setScale(0.1f);
+		instance ->getSprite("frame") -> setPosition(sWHeaf - 270, sHHeaf - 310);
 		break;
 	case 5:
 		sizeResetFunc();
 		arrow_left -> setScale(0.3f);
 		arrow_right -> setScale(0.35f);
 		back -> setScale(1.0f);
-		frame ->setScale(0.1f);
-		frame -> setPosition(sWHeaf + 150, sHHeaf - 310);
+		instance ->getSprite("frame") ->setScale(0.1f);
+		instance ->getSprite("frame") -> setPosition(sWHeaf + 150, sHHeaf - 310);
 		break;
 	case 6:
 		sizeResetFunc();
 		arrow_left -> setScale(0.3f);
 		arrow_right -> setScale(0.3f);
 		back -> setScale(1.2f);
-		frame ->setScaleX(0.5f);
-		frame ->setScaleY(0.2f);
-		frame -> setPosition(sWHeaf + 500, sHHeaf - 300);
+		instance ->getSprite("frame") ->setScaleX(0.4f);
+		instance ->getSprite("frame") ->setScaleY(0.12f);
+		instance ->getSprite("frame") -> setPosition(sWHeaf + 500, sHHeaf - 300);
 		break;
 	default:
 		assert(!"•s³‚Èó‘Ô");
 		break;
 	}
-}
-
-
-void Stageselect::editMode(void)
-{
-	instance -> getSprites("books") -> draw(anime_number);
-}
-
-
-void Stageselect::editModeDraw(void)
-{
-	
 }
 
 

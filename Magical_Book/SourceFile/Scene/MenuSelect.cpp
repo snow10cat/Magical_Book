@@ -15,11 +15,11 @@ static ResourceManager* instance = ResourceManager::getInstance();
 
 
 MenuSelect::MenuSelect() : frame(nullptr),
-							 play(nullptr),
-							 make(nullptr),
-							 back(nullptr),
-							 arrow_right(nullptr),
-							 arrow_left(nullptr)
+						   play(nullptr),
+						   make(nullptr),
+						   back(nullptr),
+						   arrow_right(nullptr),
+						   arrow_left(nullptr)
 {
 	play = LibSprite::create("logo/play.png");
 	make = LibSprite::create("logo/make.png");
@@ -36,7 +36,7 @@ void MenuSelect::init(void)
 {
 	input = LibInput::getInstance();
 
-	select_bgm = LibSound::create("bgm/gameselect.wav");
+	select_bgm = LibSound::create("bgm/menuselect.wav");
 	select_bgm -> setVolume(0.0f);
 	select_bgm -> setLoop(true);
 
@@ -67,6 +67,7 @@ void MenuSelect::init(void)
 	counter = 0;
 	flag = 0;
 	fadeFlag = 0;
+	volumeFlag = 0;
 	bookAnmFlag = 0;
 	anime_number = BOOK_ANM_MIN;
 	anime_counter = 0;
@@ -76,7 +77,6 @@ void MenuSelect::init(void)
 }
 
 
-
 void MenuSelect::update(void)
 {
 	if(select_bgm -> getState() != LibSound::Play)
@@ -84,13 +84,13 @@ void MenuSelect::update(void)
 		select_bgm -> play();
 	}
 
-	if(select_work >= Fadeout)
+	if(volumeFlag == 1)
 	{
 		Volume -= 0.02f;
 		select_bgm -> setVolume(Volume);
 	}
 
-	if(Volume <= 1.0 && select_work < Fadeout)
+	if(Volume <= 1.0 && volumeFlag == 0)
 	{
 		Volume += 0.02f;
 		select_bgm -> setVolume(Volume);
@@ -108,14 +108,11 @@ void MenuSelect::update(void)
 	case Animation:
 		animation();
 		break;
-	case Back:
-		backAnimation();
-		break;
 	case Fadeout:
 		fadeout();
 		break;
-
 	case Next:
+		next();
 		break;
 	default:
 		assert(!"•s³‚Èó‘Ô");
@@ -150,6 +147,8 @@ void MenuSelect::fadein(void)
 
 void MenuSelect::modeSelect(void)
 {
+	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 3);
+
 	if(bookAnmFlag == 0)
 	{
 		books -> draw(anime_number);
@@ -172,7 +171,15 @@ void MenuSelect::modeSelect(void)
 		}
 		back -> draw();
 
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
+		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up))
+		{
+			timer = 0;
+			counter--;
+			flag = 0;
+			size = 1.3;
+			instance -> getSound("menuSelect") -> play();
+		}
+		else if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
 			timer = 0;
 			counter++;
@@ -203,7 +210,6 @@ void MenuSelect::modeSelect(void)
 				play -> setAlpha(0.0f);
 				make -> setAlpha(0.0f);
 				back -> setAlpha(0.0f);
-				back -> setPosition(sWHeaf + 500, sHHeaf - 300);
 				select_work = Animation;
 			}
 		}
@@ -270,10 +276,9 @@ void MenuSelect::modeSelect(void)
 		{
 			closeAnimation();
 		}
-		counter++;
-		if(counter % 7 == 0)
+
+		if(anime_counter % 7 == 0)
 		{
-			counter = 0;
 			if(size > 1)
 			{
 				size -= 0.1f;
@@ -346,6 +351,9 @@ void MenuSelect::logoAnimation()
 void MenuSelect::animation(void)
 {
 	books -> draw(anime_number);
+	
+	volumeFlag = 1;
+
 
 	if(counter == 0)
 	{
@@ -355,7 +363,7 @@ void MenuSelect::animation(void)
 		{
 			anime_number = BOOK_ANM_MIN;
 			anime_counter = 0;
-//			select_work = GameMode;
+			select_work = Next;
 		}
 	}
 	else if(counter == 1)
@@ -367,7 +375,7 @@ void MenuSelect::animation(void)
 		else
 		{
 			books -> setPositionX(sWHeaf - 320);
-		//	select_work = EditMode;
+			select_work = Next;
 		}
 	}
 }
@@ -382,20 +390,6 @@ void MenuSelect::bookAnimation()
 		{
 			anime_counter = 0;
 			anime_number++;
-		}
-	}
-}
-
-
-void MenuSelect::backAnimation(void)
-{
-	if(anime_number >= BOOK_ANM_MIN)
-	{
-		anime_counter++;
-		if(anime_counter % 7 == 0)
-		{
-			anime_counter = 0;
-			anime_number--;
 		}
 	}
 }
@@ -422,15 +416,20 @@ void MenuSelect::fadeout(void)
 	if(instance ->getSprite("fadeout") -> getAlpha() >= 255)
 	{
 		instance ->getSprite("fadeout") -> setAlpha(255);
-		if(bookAnmFlag == 0)
-		{
-			select_work = Next;
-		}
 	}
 }
 
 
 void MenuSelect::next(void)
 {
-	select_work = Animation;
+	if(counter == 0)
+	{
+		LibSound::allStop();
+		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::StageSelect);
+	}
+	else if(counter == 1)
+	{
+		LibSound::allStop();
+		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::EditSelect);
+	}
 }

@@ -22,7 +22,6 @@ public:
 		Fadein,
 		ModeSelect,
 		Animation,
-		Back,
 		Fadeout,
 		Next,
 	};
@@ -33,6 +32,7 @@ private:
 	int counter;
 	int flag;
 	int fadeFlag;
+	int volumeFlag;
 	int bookAnmFlag;
 	int edit_select;
 	int anime_number;
@@ -63,12 +63,6 @@ private:
 
 	void modeSelect(void);
 	void animation(void);
-	void gameMode(void);
-	void gameSelect(void);
-	void gameModeDraw(void);
-	void editMode(void);
-	void editModeDraw(void);
-	void backAnimation(void);
 	void closeAnimation(void);
 	void fadein(void);
 	void fadeout(void);

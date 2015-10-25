@@ -36,6 +36,19 @@ public:
 		OutputDebugString( str.c_str());
 	}
 
+	/**
+	 *	エラーメッセージ出力 (コンソール)
+	 *
+	 * 	@author	minaka1412
+	 * 	@param	message		出力したい文字列
+	 */
+	static void debugMessageLog( int message)
+	{
+		std::string str = std::to_string( message);
+		str += "\n";
+		OutputDebugString( str.c_str());
+	}
+
 	template < typename Func >
 	static void getFunctionTime( Func func )
 	{

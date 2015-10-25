@@ -32,9 +32,9 @@ vector<int> collisionData;
 
 const static int stageChipCount[] = { 14, 16, 18 };
 
-Stage::Stage() : stageSize( 0),
-				 rotateCount( 0),
-				 stageAngle( 0)
+Stage::Stage() : chipCount( 0),
+				 stageAngle( 0),
+				 rotateCount( 0)
 {
 	chip = ResourceManager::getInstance() -> getSprites( "mapchip");
 	screenSize = LibMain::getInstance() -> getScreenSize();
@@ -46,23 +46,23 @@ Stage::Stage() : stageSize( 0),
 		ここでステージデータ読み込み
 	*/
 
-	stageWidth = 16;
-	stageHeight = 16;
+	stageSize.x = 16;
+	stageSize.y = 16;
 
-	const int firstPosX = (screenSize.x / 2) - ( (stageWidth / 2) * chipSize.x) + chipSize.x * chip -> getAnchorPointX();
-	const int firstPosY = (screenSize.y / 2) - ( (stageHeight / 2) * chipSize.y) + chipSize.y * chip -> getAnchorPointY();
+	drawStartingPos.x = (screenSize.x / 2) - ( (stageSize.x / 2) * chipSize.x) + chipSize.x * chip -> getAnchorPointX();
+	drawStartingPos.y = (screenSize.y / 2) - ( (stageSize.y / 2) * chipSize.y) + chipSize.y * chip -> getAnchorPointY();
 
-	stageSize = stageWidth * stageHeight;
+	chipCount = stageSize.x * stageSize.y;
 
-	chipPosition.resize( stageSize);
+	chipPosition.resize( chipCount);
 
-	for( int y = 0; y < stageHeight; y++)
+	for( int y = 0; y < stageSize.y; y++)
 	{
-		for( int x = 0, posX = stageWidth - 1; x < stageWidth; x++, posX--)
+		for( int x = 0, posX = stageSize.x - 1; x < stageSize.x; x++, posX--)
 		{
-			const int arrayNumber = y * stageWidth + x;
-			chipPosition[arrayNumber].x = firstPosX + posX * chipSize.x;
-			chipPosition[arrayNumber].y = firstPosY + y * chipSize.y;
+			const int arrayNumber = y * stageSize.x + x;
+			chipPosition[arrayNumber].x = drawStartingPos.x + posX * chipSize.x;
+			chipPosition[arrayNumber].y = drawStartingPos.y + y * chipSize.y;
 		}
 	}
 }
@@ -79,18 +79,27 @@ void Stage::update(void)
 	if( input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_F))
 	{
 		rotateCount--;
-
-		for( int i = 0; i < collisionData.size(); i++)
+		vector<int> buffer = collisionData;
+		for( int y = 0; y < stageSize.y; y++)
 		{
-
+			for( int x = 0; x < stageSize.x; x++)
+			{
+				int i = stageSize.y - 1 - x;
+				collisionData[y * stageSize.x + x] = buffer[(stageSize.y - 1 - x) * stageSize.x + y];
+			}
 		}
-
-		rotate( collisionData.rbegin(), collisionData.rbegin() + 1, collisionData.rend());
 	}
 	if( input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_D))
 	{
 		rotateCount++;
-		rotate( collisionData.begin(), collisionData.begin() + 1, collisionData.end());
+		vector<int> buffer = collisionData;
+		for( int y = 0, posY = stageSize.y - 1; y < stageSize.y; y++, posY--)
+		{
+			for( int x = 0, posX = stageSize.x - 1; x < stageSize.x; x++, posX--)
+			{
+				collisionData[y * stageSize.x + x] = buffer[(stageSize.y - 1 - posX) * stageSize.x + posY];
+			}
+		}
 	}
 	
 	int rotValue = 90 * rotateCount - stageAngle;
@@ -109,11 +118,11 @@ void Stage::update(void)
 	const float sin_f = sinf( angle.getRadian());
 	const float cos_f = cosf( angle.getRadian());
 
-	for( int y = 0; y < stageHeight; y++)
+	for( int y = 0; y < stageSize.y; y++)
 	{
-		for( int x = 0; x < stageWidth; x++)
+		for( int x = 0; x < stageSize.x; x++)
 		{
-			const int arrayNumber = y * stageWidth + x;
+			const int arrayNumber = y * stageSize.x + x;
 			const float posX = chipPosition[arrayNumber].x;
 			const float posY = chipPosition[arrayNumber].y;
 			const float cx = screenSize.x / 2;
@@ -129,9 +138,9 @@ void Stage::update(void)
 
 void Stage::draw(void)
 {
-	for ( int i = 0; i < stageSize; i++)
+	for ( int i = 0; i < chipCount; i++)
 	{
-		const int chipNumber = stageData[stageSize - i - 1];
+		const int chipNumber = stageData[chipCount - i - 1];
 		if( chipNumber < 0) { continue; }
 
 		chip -> setPosition( chipPosition[i]);
@@ -151,10 +160,10 @@ float Stage::getRotateRadian( void)
 
 int Stage::getChipNumbr( int x, int y)
 {
-	const int firstPosX = (screenSize.x / 2) - ( (stageWidth / 2) * chipSize.x);
-	const int firstPosY = (screenSize.y / 2) + ( (stageHeight / 2) * chipSize.y);
+	const int firstPosX = (screenSize.x / 2) - ( (stageSize.x / 2) * chipSize.x);
+	const int firstPosY = (screenSize.y / 2) + ( (stageSize.y / 2) * chipSize.y);
 
-	if( x < firstPosX || y > firstPosY || x  > firstPosX + chipSize.x * stageWidth || y < firstPosY - chipSize.y * stageHeight)
+	if( x < firstPosX || y > firstPosY || x  > firstPosX + chipSize.x * stageSize.x || y < firstPosY - chipSize.y * stageSize.y)
 	{
 		assert( !"Stage Array Out Access");
 		return -1;
@@ -163,5 +172,5 @@ int Stage::getChipNumbr( int x, int y)
 	int countX = (x - firstPosX) / chipSize.x;
 	int countY = (firstPosY - y) / chipSize.y;
 
-	return collisionData[countY * stageWidth + countX];
+	return collisionData[countY * stageSize.x + countX];
 }

@@ -44,6 +44,7 @@ public:
 private:
 	Scene* scene;
 	SceneNumber sceneNumber;
+	SceneNumber oldSceneNumber;
 
 	SceneManager();
 	~SceneManager();

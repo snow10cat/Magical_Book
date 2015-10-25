@@ -23,11 +23,13 @@ SceneManager::~SceneManager()
 
 void SceneManager::createScene(SceneNumber number)
 {
+	oldSceneNumber = sceneNumber;
+	sceneNumber = number;
 	// 今のシーンを消す
 	delete scene;
 
 	// 次のシーンを作る
-	switch(number)
+	switch(sceneNumber)
 	{
 	case Title:
 		scene = new class::Title;
@@ -76,4 +78,14 @@ void SceneManager::createScene(SceneNumber number)
 void SceneManager::update(void)
 {
 	scene -> update();
+}
+
+SceneManager::SceneNumber SceneManager::getSceneNumber(void)
+{
+	return sceneNumber;
+}
+
+SceneManager::SceneNumber SceneManager::getOldSceneNumber(void)
+{
+	return oldSceneNumber;
 }

@@ -24,21 +24,24 @@ public:
 	void update(void);
 	void draw(void);
 
+	void setBGNumber( );
+	void setMapData( const std::vector<unsigned char>& map);
+
 	int getRotateDegree( void);
 	float getRotateRadian( void);
 
 	int getChipNumbr( int x, int y);
 
 private:
-	int stageWidth;
-	int stageHeight;
-	int stageSize;
-	int rotateCount;
+	int chipCount;
 	int stageAngle;
-
+	int rotateCount;
+	
 	CatGameLib::LibSprites* chip;
 	CatGameLib::LibVector2 chipSize;
 	CatGameLib::LibVector2 screenSize;
+	CatGameLib::LibVector2 stageSize;
+	CatGameLib::LibVector2 drawStartingPos;
 	std::vector<CatGameLib::LibVector2> chipPosition;
 };
 

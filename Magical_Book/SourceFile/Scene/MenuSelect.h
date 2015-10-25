@@ -52,7 +52,6 @@ private:
 	CatGameLib::LibSprite* frame;
 	CatGameLib::LibSprite* play;
 	CatGameLib::LibSprite* make;
-	CatGameLib::LibSprite* back;
 	CatGameLib::LibSprite* arrow_right;
 	CatGameLib::LibSprite* arrow_left;
 

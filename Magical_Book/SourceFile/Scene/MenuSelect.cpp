@@ -14,16 +14,14 @@ using namespace MagicalBook;
 static ResourceManager* instance = ResourceManager::getInstance();
 
 
-MenuSelect::MenuSelect() : frame(nullptr),
+MenuSelect::MenuSelect() : select_bgm(nullptr),
 						   play(nullptr),
-						   make(nullptr),
-						   back(nullptr),
-						   arrow_right(nullptr),
-						   arrow_left(nullptr)
+						   make(nullptr)
 {
+	
+	select_bgm = LibSound::create("bgm/menuselect.wav");
 	play = LibSprite::create("logo/play.png");
 	make = LibSprite::create("logo/make.png");
-	back = LibSprite::create("logo/back.png");
 }
 
 
@@ -36,7 +34,6 @@ void MenuSelect::init(void)
 {
 	input = LibInput::getInstance();
 
-	select_bgm = LibSound::create("bgm/menuselect.wav");
 	select_bgm -> setVolume(0.0f);
 	select_bgm -> setLoop(true);
 
@@ -45,8 +42,8 @@ void MenuSelect::init(void)
 
 	books = instance -> getSprites("books");
 
-	instance -> getSprites("books") -> setPosition(sWHeaf + 300, sHHeaf);
-	instance -> getSprites("books") -> setScale(1.5f);
+	books -> setPosition(sWHeaf + 300, sHHeaf);
+	books -> setScale(1.5f);
 
 	instance -> getSprites("openBook") -> setPosition(sWHeaf + 300, sHHeaf);
 	instance -> getSprites("openBook") -> setScale(1.5f);
@@ -59,9 +56,9 @@ void MenuSelect::init(void)
 	make -> setScale(1.0f);
 	make -> setAlpha(0.0f);
 
-	back -> setPosition(sWHeaf - 100, sHHeaf - 200);
-	back -> setScale(1.0f);
-	back -> setAlpha(0.0f);
+	instance -> getSprite("back") -> setPosition(sWHeaf - 100, sHHeaf - 200);
+	instance -> getSprite("back") -> setScale(1.0f);
+	instance -> getSprite("back") -> setAlpha(0.0f);
 
 	timer = 0;
 	counter = 0;
@@ -89,18 +86,29 @@ void MenuSelect::update(void)
 		Volume -= 0.02f;
 		select_bgm -> setVolume(Volume);
 	}
-
-	if(Volume <= 1.0 && volumeFlag == 0)
+	else if(Volume <= 1.0 && volumeFlag == 0)
 	{
 		Volume += 0.02f;
 		select_bgm -> setVolume(Volume);
 	}
+
 	instance -> getSprite("floar") -> draw();
 
 	switch(select_work)
 	{
 	case Fadein:
-		fadein();
+		if(SceneManager::getInstance() -> getOldSceneNumber() == SceneManager::SceneNumber::Title)
+		{
+			fadein();
+		}
+		else
+		{
+			books -> draw(0);
+			play -> draw();
+			make -> draw();
+			instance -> getSprite("back") -> draw();
+			select_work = ModeSelect;
+		}
 		break;
 	case ModeSelect:
 		modeSelect();
@@ -129,7 +137,7 @@ void MenuSelect::fadein(void)
 
 		play -> draw();
 		make -> draw();
-		back -> draw();
+		instance -> getSprite("back") -> draw();
 	}
 
 	instance ->getSprite("fadeout") -> draw();
@@ -165,11 +173,11 @@ void MenuSelect::modeSelect(void)
 		}
 		make -> draw();
 
-		if(back-> getAlpha() < 255)
+		if(instance -> getSprite("back")-> getAlpha() < 255)
 		{
-			back -> setAlpha(back -> getAlpha() + 5);
+			instance -> getSprite("back") -> setAlpha(instance -> getSprite("back") -> getAlpha() + 5);
 		}
-		back -> draw();
+		instance -> getSprite("back") -> draw();
 
 		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up))
 		{
@@ -198,7 +206,7 @@ void MenuSelect::modeSelect(void)
 			//ゲーム本編
 			play -> setScale(size);
 			make -> setScale(1.0f);
-			back -> setScale(1.0f);
+			instance -> getSprite("back") -> setScale(1.0f);
 
 			logoAnimation();
 
@@ -209,7 +217,7 @@ void MenuSelect::modeSelect(void)
 				flag = 0;
 				play -> setAlpha(0.0f);
 				make -> setAlpha(0.0f);
-				back -> setAlpha(0.0f);
+				instance -> getSprite("back") -> setAlpha(0.0f);
 				select_work = Animation;
 			}
 		}
@@ -218,7 +226,7 @@ void MenuSelect::modeSelect(void)
 			//ゲームエディット
 			play -> setScale(1.0f);
 			make -> setScale(size);
-			back -> setScale(1.0f);
+			instance -> getSprite("back") -> setScale(1.0f);
 
 			logoAnimation();
 
@@ -229,7 +237,7 @@ void MenuSelect::modeSelect(void)
 				flag = 0;
 				play -> setAlpha(0.0f);
 				make -> setAlpha(0.0f);
-				back -> setAlpha(0.0f);
+				instance -> getSprite("back") -> setAlpha(0.0f);
 				select_work = Animation;
 			}
 		}
@@ -237,7 +245,7 @@ void MenuSelect::modeSelect(void)
 		{
 			play -> setScale(1.0f);
 			make -> setScale(1.0f);
-			back -> setScale(size);
+			instance -> getSprite("back") -> setScale(size);
 
 			logoAnimation();
 
@@ -248,14 +256,6 @@ void MenuSelect::modeSelect(void)
 				size = 1.5f;
 				bookAnmFlag = 1;
 			}
-		}
-
-		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
-		{	
-			anime_number = BOOK_ANM_MAX;
-			counter = 0;
-			size = 1.5f;
-			bookAnmFlag = 1;
 		}
 	}
 	else if(bookAnmFlag == 1)

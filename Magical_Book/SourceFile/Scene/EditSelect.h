@@ -19,34 +19,33 @@ public:
 
 	enum EditSelectNumber
 	{
-		ModeSelect,
+		logoFadein,
+		EditMenuSelect,
 		Animation,
-		GameMode,
-		EditMode,
 		Back,
-		Fadeout,
 		Next,
 	};
 
-	/*enum EditSelect
+	enum EditMenu
 	{
 		StageSize,
 		StageBG,
 		StageBGM,
-	};*/
+	};
 
 private:
 
-	int timer;
-	int counter;
+	int sizeCounter;
+	int bgCounter;
+	int bgmCounter;
 	int flag;
 	int fadeFlag;
 	int bookAnmFlag;
-	int edit_select;
 	int anime_number;
 	int anime_counter;
 	int editMode_work;
 	float Volume;
+	int volumeFlag;
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
@@ -54,29 +53,25 @@ private:
 	CatGameLib::LibInput* input;
 	CatGameLib::LibSprites* books;
 
-	CatGameLib::LibSound* select_bgm;
-
 	CatGameLib::LibSprite* size_section;
 	CatGameLib::LibSprite* bg_section;
 	CatGameLib::LibSprite* music_section;
 	CatGameLib::LibSprite* bgm_logo[3];
 	CatGameLib::LibSprite* size_logo[3];
 
-	CatGameLib::LibSprite* arrow_right;
-	CatGameLib::LibSprite* arrow_left;
-
 	std::vector<CatGameLib::LibSprite*> bgTextures;
 
-	void logoAnimation(void);
+	void logoFade(void);
 	void bookAnimation(void);
 
-	void modeSelect(void);
+	void sizeSelect(void);
+	void bgSelect(void);
+	void bgmSelect(void);
 	void animation(void);
-	void editMode(void);
-	void editModeDraw(void);
+	void editSetUp(void);
+	void editSetUpDraw(void);
 	void backAnimation(void);
 	void closeAnimation(void);
-	void fadein(void);
 	void fadeout(void);
 	void next(void);
 };

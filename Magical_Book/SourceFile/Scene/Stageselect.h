@@ -42,6 +42,7 @@ private:
 	int counter;
 	int flag;
 	int fadeFlag;
+	int volumeFlag;
 	int bookAnmFlag;
 	int edit_select;
 	int anime_number;
@@ -56,11 +57,8 @@ private:
 	CatGameLib::LibInput* input;
 	CatGameLib::LibSprites* books;
 
-	CatGameLib::LibSound* select_bgm;
-
 	CatGameLib::LibSprite* play;
 	CatGameLib::LibSprite* make;
-	CatGameLib::LibSprite* back;
 
 	CatGameLib::LibSprite* arrow_right;
 	CatGameLib::LibSprite* arrow_left;

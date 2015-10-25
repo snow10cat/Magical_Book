@@ -36,7 +36,7 @@ Stage::Stage() : chipCount( 0),
 				 stageAngle( 0),
 				 rotateCount( 0)
 {
-	chip = ResourceManager::getInstance() -> getSprites( "mapchip");
+	chip = ResourceManager::getInstance() -> getSprites("mapchip");
 	screenSize = LibMain::getInstance() -> getScreenSize();
 	chipSize = chip -> getTextureSizeX();
 

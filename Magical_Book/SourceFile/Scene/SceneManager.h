@@ -40,6 +40,8 @@ public:
 	void createScene( SceneNumber number);
 
 	void update( void);
+	SceneNumber getSceneNumber(void);
+	SceneNumber getOldSceneNumber(void);
 
 private:
 	Scene* scene;

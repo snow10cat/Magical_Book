@@ -19,14 +19,14 @@
     <Filter Include="HeaderFile\Scene">
       <UniqueIdentifier>{91fdc47c-cc69-4a95-8622-e4d11b88924d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceFile\Scene">
-      <UniqueIdentifier>{e1b06999-80b6-4661-9904-f8c62b00fe13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceFile\Game">
       <UniqueIdentifier>{b96f6d97-ef54-41e7-995d-ec4a6c18680f}</UniqueIdentifier>
     </Filter>
     <Filter Include="HeaderFile\Game">
       <UniqueIdentifier>{89677d0c-3769-4eb7-a1ac-f7701274ef56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFile\Scene">
+      <UniqueIdentifier>{e1b06999-80b6-4661-9904-f8c62b00fe13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +100,9 @@
       <Filter>SourceFile\Game</Filter>
     </ClCompile>
     <ClCompile Include="SourceFile\Game\FileManager.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\StageConfig.cpp">
       <Filter>SourceFile\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -183,6 +186,9 @@
       <Filter>HeaderFile\Game</Filter>
     </ClInclude>
     <ClInclude Include="SourceFile\Game\FileManager.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\StageConfig.h">
       <Filter>HeaderFile\Game</Filter>
     </ClInclude>
   </ItemGroup>

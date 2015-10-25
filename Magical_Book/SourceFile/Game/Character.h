@@ -32,7 +32,7 @@ protected:
 	CatGameLib::LibVector2 velocity;
 	CatGameLib::LibVector2 position;
 
-	void rotation( Stage* stage);
+	void rotation( int angle);
 	virtual void move( Stage* stage) = 0;
 };
 

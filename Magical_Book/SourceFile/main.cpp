@@ -15,7 +15,7 @@ int main()
 	lib -> setScreenSize( 1280, 720);
 
 	// スクリーンモード指???
-	lib -> setScreenMode( LibMain::ScreenMode::Window);
+	lib -> setScreenMode( LibMain::ScreenMode::FullScreen);
 
 	// ウィンドウタイトル??????
 	lib -> setWindowTitle( "Magical_Book");

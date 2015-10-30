@@ -27,11 +27,14 @@ public:
 	};
 private:	
 
+	int timer;
 	int counter;
 	int flag;
+	int volumeFlag;
 	int anime_number;
 	int title_work;
 	float size;
+	float Volume;
 	
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
@@ -39,13 +42,19 @@ private:
 	CatGameLib::LibInput* input;
 
 	CatGameLib::LibSound* title_bgm;
-	CatGameLib::LibSound* select_se;
 	CatGameLib::LibSound* game_in;
 
-	CatGameLib::LibSprites*	title_book;
 	CatGameLib::LibSprite* title_logo;
 	CatGameLib::LibSprite* title_start;
 	CatGameLib::LibSprite* title_end;
+
+	void logoAnimation(void);
+	void bookAnimation(void);
+
+	void select(void);
+	void animation(void);
+	void fadeout(void);
+	void next(void);
 };
 }
 

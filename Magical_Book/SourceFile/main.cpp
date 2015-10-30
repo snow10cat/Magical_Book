@@ -1,6 +1,6 @@
 
 #include "CatGameLib.h"
-#include "Game/SpriteManager.h"
+#include "Game/ResourceManager.h"
 #include "Scene/SceneManager.h"
 
 using namespace CatGameLib;
@@ -8,37 +8,39 @@ using namespace MagicalBook;
 
 int main()
 {
-	// ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
+	// ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒCƒ“ƒXƒ^ƒ“ƒXæ???
 	LibMain* const lib = LibMain::getInstance();
 
-	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚ºæŒ‡å®š
+	// ƒXƒNƒŠ[ƒ“ƒTƒCƒY??????
 	lib -> setScreenSize( 1280, 720);
 
-	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰æŒ‡å®š
-	lib -> setScreenMode( LibMain::ScreenMode::Window);
+	// ƒXƒNƒŠ[ƒ“ƒ‚[ƒhw???
+	lib -> setScreenMode( LibMain::ScreenMode::FullScreen);
 
-	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¿ã‚¤ãƒˆãƒ«æŒ‡å®š
+	// ƒEƒBƒ“ƒhƒEƒ^ƒCƒgƒ‹??????
 	lib -> setWindowTitle( "Magical_Book");
 
-	// èƒŒæ™¯è‰²æŒ‡å®š
+	// ”wŒiF??????
 	lib -> setClearColor( 200.0f, 200.0f, 200.0f, 255.0f);
 
-	// ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåˆæœŸåŒ–
+	// ƒ‰ƒCƒuƒ‰ƒŠ‰Šú???
 	lib -> initLib();
 
-	// å…±é€šã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
-	SpriteManager::getInstance() -> loadSprite();
+	// ‹¤’ÊƒXƒvƒ‰ƒCƒgƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+	ResourceManager::getInstance() -> loadResource();
 
-	// ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
+//	SceneManager::getInstance() -> createScene( SceneManager::Game);
+
+	// ƒƒCƒ“ƒ‹[???
 	while( lib -> checkWindowState())
 	{
-		// ç”»é¢æ¶ˆå»
+		// ‰æ–ÊÁ‹
 		lib -> clear();
 
-		// ã‚·ãƒ¼ãƒ³ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
-		MagicalBook::SceneManager::getInstance() -> update();
+		// ƒV[ƒ“ƒA???ƒvƒf[???
+		SceneManager::getInstance() -> update();
 
-		// æç”»
+		// •`‰æ
 		lib -> draw();
 	}
 

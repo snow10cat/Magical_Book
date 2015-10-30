@@ -1,29 +1,43 @@
 
 #include "CatGameLib.h"
 #include "Game.h"
+#include "../Game/Player.h"
 
 using namespace CatGameLib;
 using namespace MagicalBook;
 
-Game::Game() : books( nullptr),
-				 fox( nullptr),
-				 fox2( nullptr)
+Game::Game()
 {
-	//books = CatGameLib::LibSprite::create( "background/gane_bg1.png");
 }
 
 Game::~Game()
 {
+	delete stage;
+	stage = nullptr;
 }
 
 void Game::init( void)
 {
-	/*test -> setPosition( 1280 / 2, 720 / 2);
+	stage = new Stage();
+	characters.push_back( new Player());
 
-	test -> setScale( 1.0f);*/
+	for( int i = 0; i < characters.size(); i++)
+	{
+		characters[i] -> init();
+	}
 }
 
 void Game::update( void)
 {
-	//test -> draw();
+	stage -> update();
+	for( int i = 0; i < characters.size(); i++)
+	{
+		characters[i] -> update( stage);
+	}
+
+	stage -> draw();
+	for( int i = 0; i < characters.size(); i++)
+	{
+		characters[i] -> draw();
+	}
 }

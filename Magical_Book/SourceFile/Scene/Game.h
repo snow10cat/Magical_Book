@@ -2,8 +2,10 @@
 #ifndef __MAGICAL_BOOK_GAME_H__
 #define __MAGICAL_BOOK_GAME_H__
 
-#include "Scene.h"
 #include "CatGameLib.h"
+#include "Scene.h"
+#include "../Game/Character.h"
+#include "../Game/Stage.h"
 
 namespace MagicalBook
 {
@@ -18,9 +20,8 @@ public:
 	void update(void) override;
 
 private:
-	CatGameLib::LibSprites* books;
-	CatGameLib::LibSprite* fox;
-	CatGameLib::LibSprite* fox2;
+	std::vector<Character*> characters;
+	Stage* stage;
 };
 
 }

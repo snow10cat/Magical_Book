@@ -19,14 +19,14 @@
     <Filter Include="HeaderFile\Scene">
       <UniqueIdentifier>{91fdc47c-cc69-4a95-8622-e4d11b88924d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceFile\Scene">
-      <UniqueIdentifier>{e1b06999-80b6-4661-9904-f8c62b00fe13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceFile\Game">
       <UniqueIdentifier>{b96f6d97-ef54-41e7-995d-ec4a6c18680f}</UniqueIdentifier>
     </Filter>
     <Filter Include="HeaderFile\Game">
       <UniqueIdentifier>{89677d0c-3769-4eb7-a1ac-f7701274ef56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFile\Scene">
+      <UniqueIdentifier>{e1b06999-80b6-4661-9904-f8c62b00fe13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,20 +69,41 @@
     <ClCompile Include="SourceFile\CatGameLib\LibSprites.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFile\Game\Map.cpp">
-      <Filter>SourceFile\Game</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFile\Scene\Stageselect.cpp">
       <Filter>SourceFile\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFile\Game\SpriteManager.cpp">
-      <Filter>SourceFile\Game</Filter>
     </ClCompile>
     <ClCompile Include="SourceFile\Scene\Edit.cpp">
       <Filter>SourceFile\Scene</Filter>
     </ClCompile>
     <ClCompile Include="SourceFile\CatGameLib\LibString.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\ResourceManager.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Scene\EditSelect.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Scene\MenuSelect.cpp">
+      <Filter>SourceFile\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Character.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Enemy.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Player.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\Stage.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\FileManager.cpp">
+      <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Game\StageConfig.cpp">
+      <Filter>SourceFile\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,17 +158,38 @@
     <ClInclude Include="SourceFile\Scene\Stageselect.h">
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFile\Game\Map.h">
-      <Filter>HeaderFile\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFile\Game\SpriteManager.h">
-      <Filter>HeaderFile\Game</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFile\Scene\Edit.h">
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceFile\CatGameLib\LibString.h">
       <Filter>HeaderFile\CatGameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\ResourceManager.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Scene\MenuSelect.h">
+      <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Scene\EditSelect.h">
+      <Filter>HeaderFile\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Player.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Character.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Enemy.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\Stage.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\FileManager.h">
+      <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Game\StageConfig.h">
+      <Filter>HeaderFile\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

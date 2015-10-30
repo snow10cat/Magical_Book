@@ -1,7 +1,9 @@
 
 #include "SceneManager.h"
 #include "Title.h"
+#include "MenuSelect.h"
 #include "Stageselect.h"
+#include "EditSelect.h"
 #include "Game.h"
 #include "Edit.h"
 
@@ -21,32 +23,39 @@ SceneManager::~SceneManager()
 
 void SceneManager::createScene(SceneNumber number)
 {
+	oldSceneNumber = sceneNumber;
+	sceneNumber = number;
 	// 今のシーンを消す
 	delete scene;
 
 	// 次のシーンを作る
-	switch(number)
+	switch(sceneNumber)
 	{
 	case Title:
 		scene = new class::Title;
 		break;
 
-	case Stageselect:
-		scene = new class::Stageselect;
+	case MenuSelect:
+		scene = new class::MenuSelect;
 		break;
 
-	case Edit:
-		scene = new class::Edit;
+	case StageSelect:
+		scene = new class::Stageselect;
+		break;
+	
+	case EditSelect:
+		scene = new class::EditSelect;
 		break;
 
 	case Game:
 		scene = new class::Game;
 		break;
 
-	case Pause:
+	case Edit:
+		scene = new class::Edit;
 		break;
 
-	case Editor:
+	case Pause:
 		break;
 
 	case Continue:
@@ -59,6 +68,7 @@ void SceneManager::createScene(SceneNumber number)
 		break;
 
 	default:
+		assert(!"不正な状態");
 		break;
 	}
 	
@@ -68,4 +78,14 @@ void SceneManager::createScene(SceneNumber number)
 void SceneManager::update(void)
 {
 	scene -> update();
+}
+
+SceneManager::SceneNumber SceneManager::getSceneNumber(void)
+{
+	return sceneNumber;
+}
+
+SceneManager::SceneNumber SceneManager::getOldSceneNumber(void)
+{
+	return oldSceneNumber;
 }

@@ -216,9 +216,9 @@ void Title::animation(void)
 
 	bookAnimation();
 
-	if (instance -> getSprites("openBook") -> getPositionX() >= sWHeaf)
+	if (instance -> getSprites("openBook") -> getPositionX() >= sWHeaf + 250)
 	{
-		instance -> getSprites("openBook") -> setPositionX(sWHeaf);
+		instance -> getSprites("openBook") -> setPositionX(sWHeaf + 250);
 		if(anime_number == BOOK_ANM_MAX)
 		{
 			title_work = Fadeout;
@@ -252,13 +252,13 @@ void Title::fadeout(void)
 		title_work = Next;
 	}
 
-	if(size >= 1.8f)
+	if(size >= 1.5f)
 	{
-		size = 1.8f;
+		size = 1.5f;
 	}
 	else
 	{
-		size += 0.02f;
+		size += 0.01f;
 	}
 }
 

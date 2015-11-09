@@ -80,16 +80,7 @@ void Title::update(void)
 {
 	instance ->getSprite("floar") -> draw();
 
-	if(title_bgm -> getState() != LibSound::Play)
-	{
-		title_bgm -> play();
-	}
-
-	if(volumeFlag == 1)
-	{
-		Volume -= 0.02f;
-		title_bgm -> setVolume(Volume);
-	}
+	playSound();
 
 	switch (title_work)
 	{
@@ -109,6 +100,21 @@ void Title::update(void)
 		assert(!"•s³‚Èó‘Ô");
 		break;
 
+	}
+}
+
+
+void Title::playSound(void)
+{
+	if (title_bgm->getState() != LibSound::Play)
+	{
+		title_bgm->play();
+	}
+
+	if (volumeFlag == 1)
+	{
+		Volume -= 0.02f;
+		title_bgm->setVolume(Volume);
 	}
 }
 

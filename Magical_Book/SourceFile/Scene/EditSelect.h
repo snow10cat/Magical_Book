@@ -63,6 +63,7 @@ private:
 
 	void logoFade(void);
 	void bookAnimation(void);
+	void playSound(void);
 
 	void sizeSelect(void);
 	void bgSelect(void);

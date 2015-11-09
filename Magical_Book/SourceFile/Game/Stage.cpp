@@ -41,11 +41,11 @@ Stage::Stage() : chipCount( 0),
 
 	chipCount = stageSize.x * stageSize.y;
 
-	chipPosition.resize( chipCount);
+	chipPosition.resize(chipCount);
 
 	for( int y = 0; y < stageSize.y; y++)
 	{
-		for( int x = 0, posX = stageSize.x - 1; x < stageSize.x; x++, posX--)
+		for(int x = 0, posX = stageSize.x - 1; x < stageSize.x; x++, posX--)
 		{
 			const int arrayNumber = y * stageSize.x + x;
 			chipPosition[arrayNumber].x = drawStartingPos.x + posX * chipSize.x;
@@ -77,15 +77,15 @@ Stage::Stage() : chipCount( 0),
 		break;
 	}
 
-	books -> setPosition( screenSize.x * 0.5f, screenSize.y * 0.5f);
-	books -> setScale( 1.6f);
-	books -> setAnchorPointX( 0.3f);
+	books -> setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
+	books -> setScale(1.6f);
+	books -> setAnchorPointX(0.3f);
 
-	bg -> setPosition( screenSize.x * 0.5f, screenSize.y * 0.5f);
+	bg -> setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
 	bgAlpha = bg -> getAlpha();
-	bg -> setAlpha( 255.0f);
+	bg -> setAlpha(255.0f);
 
-	switch( (int)stageSize.x)
+	switch((int)stageSize.x)
 	{
 	case StageSize::Small:
 		bg -> setScale( 0.6f);
@@ -119,8 +119,8 @@ Stage::Stage() : chipCount( 0),
 
 Stage::~Stage()
 {
-	bg -> setAlpha( bgAlpha);
-	books -> setAnchorPointX( 0.5f);
+	bg -> setAlpha(bgAlpha);
+	books -> setAnchorPointX(0.5f);
 }
 
 void Stage::update(void)
@@ -202,8 +202,8 @@ void Stage::draw(void)
 		const int chipNumber = stageData[chipCount - i - 1];
 		if( chipNumber < 0) { continue; }
 
-		chip -> setPosition( chipPosition[i]);
-		chip -> draw( chipNumber);
+		chip -> setPosition(chipPosition[i]);
+		chip -> draw(chipNumber);
 	}
 }
 

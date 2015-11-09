@@ -19,21 +19,10 @@ public:
 
 	enum SelectNumber
 	{
-		Fadein,
-		ModeSelect,
-		Animation,
 		GameMode,
-		EditMode,
 		Back,
 		Fadeout,
 		Next,
-	};
-
-	enum EditSelect
-	{
-		StageSize,
-		StageBG,
-		StageBGM,
 	};
 
 private:
@@ -67,6 +56,7 @@ private:
 
 	void logoAnimation(void);
 	void bookAnimation(void);
+	void playSound(void);
 
 	void modeSelect(void);
 	void animation(void);

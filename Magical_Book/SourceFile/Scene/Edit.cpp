@@ -16,9 +16,13 @@ static StageConfig* stageConfig = StageConfig::getInstance();
 
 Edit::Edit() : chipTable(nullptr)
 {
-	
 	chip = instance -> getSprites("mapchip");
-	chipSize = chip -> getTextureSizeX();
+
+	player = instance -> getSprites("player");
+	enemy = instance -> getSprites("enemy");
+	gimmick = instance -> getSprites("gimmick");
+	door = instance -> getSprites("door");
+
 
 	edit_bgm = LibSound::create("bgm/edit.wav");
 
@@ -66,48 +70,78 @@ void Edit::init(void)
 	}
 
 	instance -> getSprite("back") -> setPosition(sWHeaf + 450, sHHeaf - 300);
-	instance -> getSprite("back") -> setScale( 0.8f);
+	instance -> getSprite("back") -> setScale(0.8f);
 	instance -> getSprite("back") -> setAlpha(0.0f);
+
+	player -> setPosition(sWHeaf + 350, sHHeaf + 68);
+	player -> setScale(1.0f);
+	player -> setAlpha(0.0f);
+
+	enemy -> setPosition(sWHeaf + 400, sHHeaf + 68);
+	enemy -> setScale(1.0f);
+	enemy -> setAlpha(0.0f);
+
+	gimmick -> setPosition(sWHeaf + 450, sHHeaf + 68);
+	gimmick -> setScale(1.0f);
+	gimmick -> setAlpha(0.0f);
+
+	door -> setPosition(sWHeaf + 500, sHHeaf + 68);
+	door -> setScale(1.0f);
+	door -> setAlpha(0.0f);
 
 	material_logo -> setPosition(sWHeaf +450, sHHeaf + 300);
 	material_logo -> setScale(1.5f);
 	material_logo -> setAlpha(0.0f);
 
-	chipTable -> setPosition(sWHeaf + 450, sHHeaf + 50);
+	chipTable -> setPosition(sWHeaf + 450, sHHeaf);
 	chipTable -> setScale( 1.0f);
 	chipTable -> setAlpha(0.0f);
 
-	chip -> setPosition(sWHeaf +450, sHHeaf + 300);
+	chip -> setPosition(sWHeaf + 350, sHHeaf + 220);
 	chip -> setScale( 1.0f);
 	chip -> setAlpha(0.0f);
+
+	chipCounter = 0;
 
 	Volume = 0;
 	volumeFlag = 0;
 	anime_number = BOOK_ANM_MIN;
+
+	edit_work = Fadein;
 }
 
 void Edit::update(void)
 {
-	if(edit_bgm -> getState() != LibSound::Play)
-	{
-		edit_bgm -> play();
-	}
-
-	if(volumeFlag == 1)
-	{
-		Volume -= 0.02f;
-		edit_bgm -> setVolume(Volume);
-	}
-	else if(Volume <= 1.0 && volumeFlag == 0)
-	{
-		Volume += 0.01f;
-		edit_bgm -> setVolume(Volume);
-	}
-
 	
-	pictFade();
+
+	playSound();
+
 	editDraw();
 
+	switch (edit_work)
+	{
+	case Fadein:
+		pictFade();
+		break;
+	case EditSelect:
+		break;
+	case Animation:
+	//	animation();
+		break;
+	case Back:
+	//	backAnimation();
+		break;
+	case Next:
+	//	next();
+		break;
+
+	default:
+		assert(!"•s³‚Èó‘Ô");
+		break;
+	}
+	
+	
+	//‚ ‚Æ‚ÅÁ‚·
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
 	{
 		LibSound::allStop();
@@ -115,6 +149,27 @@ void Edit::update(void)
 	}
 
 }
+
+
+void Edit::playSound(void)
+{
+	if (edit_bgm->getState() != LibSound::Play)
+	{
+		edit_bgm->play();
+	}
+
+	if (volumeFlag == 1)
+	{
+		Volume -= 0.02f;
+		edit_bgm->setVolume(Volume);
+	}
+	else if (Volume <= 1.0 && volumeFlag == 0)
+	{
+		Volume += 0.01f;
+		edit_bgm->setVolume(Volume);
+	}
+}
+
 
 void Edit::pictFade(void)
 {
@@ -131,6 +186,26 @@ void Edit::pictFade(void)
 	if(instance -> getSprite("back") -> getAlpha() < 255)
 	{
 		instance -> getSprite("back") -> setAlpha(instance -> getSprite("back") -> getAlpha() + 5);
+	}
+
+	if(player -> getAlpha() < 255)
+	{
+		player -> setAlpha(player -> getAlpha() + 5);
+	}
+
+	if(enemy -> getAlpha() < 255)
+	{
+		enemy -> setAlpha(enemy -> getAlpha() + 5);
+	}
+
+	if(gimmick -> getAlpha() < 255)
+	{
+		gimmick -> setAlpha(gimmick -> getAlpha() + 5);
+	}
+
+	if(door -> getAlpha() < 255)
+	{
+		door -> setAlpha(door -> getAlpha() + 5);
 	}
 
 	if(material_logo -> getAlpha() < 255)
@@ -158,8 +233,27 @@ void Edit::editDraw(void)
 	instance -> getSprite("back") -> draw();
 	material_logo -> draw();
 	chipTable -> draw();
-	/*for(int i = 1; i <= 36; i++)
+
+	chipCounter = 0;
+
+	for(int i = 1; i <= 36; i += 4)
 	{
+		chipCounter = CatGameLib::LibBasicFunc::wrap(chipCounter, 0, 5);
+
+		if(i <= 5 * 4)
+		{
+			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 200);
+		}
+		else if(i > 5 * 4 && i <= 36)
+		{
+			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 140);
+		}
+		chipCounter++;
+		
 		chip -> draw(i);
-	}*/
+	}
+	instance -> getSprites("player") -> draw(0);
+	instance -> getSprites("enemy") -> draw(0);
+	instance -> getSprites("gimmick") -> draw(0);
+	instance -> getSprites("door") -> draw(0);
 }

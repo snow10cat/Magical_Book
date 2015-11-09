@@ -50,6 +50,7 @@ private:
 
 	void logoAnimation(void);
 	void bookAnimation(void);
+	void playSound(void);
 
 	void select(void);
 	void animation(void);

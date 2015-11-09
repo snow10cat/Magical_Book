@@ -59,6 +59,7 @@ private:
 
 	void logoAnimation(void);
 	void bookAnimation(void);
+	void playSound(void);
 
 	void modeSelect(void);
 	void animation(void);

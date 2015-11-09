@@ -17,7 +17,7 @@ public:
 	void init(void) override;
 	void update(void) override;
 
-	enum EditSelectNumber
+	enum EditNumber
 	{
 		Fadein,
 		EditSelect,
@@ -35,15 +35,18 @@ public:
 
 private:
 
+	int chipCounter;
+
 	int sizeCounter;
 	int bgCounter;
 	int bgmCounter;
+
 	int flag;
 	int fadeFlag;
 	int bookAnmFlag;
 	int anime_number;
 	int anime_counter;
-	int editMode_work;
+	int edit_work;
 	float Volume;
 	int volumeFlag;
 
@@ -61,14 +64,17 @@ private:
 	CatGameLib::LibSprite* music_num[3];
 
 	CatGameLib::LibSprites* chip;
-	CatGameLib::LibVector2 chipSize;
-	CatGameLib::LibVector2 drawStartingPos;
+	CatGameLib::LibSprites* player;
+	CatGameLib::LibSprites* enemy;
+	CatGameLib::LibSprites* gimmick;
+	CatGameLib::LibSprites* door;
 	
 	std::vector<CatGameLib::LibVector2> chipPosition;
 	std::vector<CatGameLib::LibSprite*> bgTextures;
 
 	void pictFade(void);
 	void bookAnimation(void);
+	void playSound(void);
 
 	void sizeSelect(void);
 	void bgSelect(void);

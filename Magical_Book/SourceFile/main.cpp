@@ -29,7 +29,7 @@ int main()
 	// 共通スプライトファイル読み込み
 	ResourceManager::getInstance() -> loadResource();
 
-//	SceneManager::getInstance() -> createScene( SceneManager::Game);
+	SceneManager::getInstance() -> createScene( SceneManager::EditSelect);
 
 	// メインルー???
 	while( lib -> checkWindowState())

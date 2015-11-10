@@ -324,7 +324,7 @@ void EditSelect::sizeSelect(void)
 		instance -> getSprite("frame") -> setScale(0.15f);
 	};
 
-	if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
+	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
 		sizeCounter--;
 	}

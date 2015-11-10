@@ -20,17 +20,16 @@ public:
 	enum EditNumber
 	{
 		Fadein,
-		EditSelect,
+		EditSet,
 		Animation,
 		Back,
 		Next,
 	};
 
-	enum EditMenu
+	enum EditSelect
 	{
-		StageSize,
-		StageBG,
-		StageBGM,
+		MaterialSelect,
+		MaterialSet,
 	};
 
 private:
@@ -41,12 +40,21 @@ private:
 	int bgCounter;
 	int bgmCounter;
 
+	int materialCounter;
+	int materialRow;
+	
+	int materialSetRow;
+	int materialSetCol;
+
 	int flag;
 	int fadeFlag;
 	int bookAnmFlag;
 	int anime_number;
 	int anime_counter;
+
 	int edit_work;
+	int edit_set_work;
+
 	float Volume;
 	int volumeFlag;
 
@@ -59,6 +67,7 @@ private:
 	
 	CatGameLib::LibSprite* material_logo;
 	CatGameLib::LibSprite* chipTable;
+	CatGameLib::LibSprite* pointer;
 
 	CatGameLib::LibSprite* grid_size[3];
 	CatGameLib::LibSprite* music_num[3];
@@ -81,9 +90,11 @@ private:
 	void bgmSelect(void);
 	void animation(void);
 	void edit(void);
+	void materialSelect(void);
+	void materialSet(void);
 	void editDraw(void);
+	void editMaterialDraw(void);
 	void backAnimation(void);
-	void closeAnimation(void);
 	void fadeout(void);
 	void next(void);
 };

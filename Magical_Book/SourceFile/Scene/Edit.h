@@ -35,6 +35,7 @@ public:
 private:
 
 	int chipCounter;
+	int chipHave;
 
 	int sizeCounter;
 	int bgCounter;
@@ -67,11 +68,16 @@ private:
 	
 	CatGameLib::LibSprite* material_logo;
 	CatGameLib::LibSprite* chipTable;
+	CatGameLib::LibSprite* save;
+	CatGameLib::LibSprite* forward;
+	CatGameLib::LibSprite* modoru;
 	CatGameLib::LibSprite* pointer;
+	CatGameLib::LibSprite* back;
 
 	CatGameLib::LibSprite* grid_size[3];
 	CatGameLib::LibSprite* music_num[3];
-
+	
+	CatGameLib::LibSprites* books;
 	CatGameLib::LibSprites* chip;
 	CatGameLib::LibSprites* player;
 	CatGameLib::LibSprites* enemy;
@@ -85,15 +91,15 @@ private:
 	void bookAnimation(void);
 	void playSound(void);
 
-	void sizeSelect(void);
-	void bgSelect(void);
-	void bgmSelect(void);
 	void animation(void);
 	void edit(void);
+	
 	void materialSelect(void);
 	void materialSet(void);
+	
 	void editDraw(void);
-	void editMaterialDraw(void);
+	void editChipSetDraw(void);
+	
 	void backAnimation(void);
 	void fadeout(void);
 	void next(void);

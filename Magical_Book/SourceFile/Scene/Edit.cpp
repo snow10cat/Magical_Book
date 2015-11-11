@@ -16,14 +16,6 @@ static StageConfig* stageConfig = StageConfig::getInstance();
 
 Edit::Edit() : chipTable(nullptr)
 {
-	chip = instance -> getSprites("mapchip");
-
-	player = instance -> getSprites("player");
-	enemy = instance -> getSprites("enemy");
-	gimmick = instance -> getSprites("gimmick");
-	door = instance -> getSprites("door");
-
-
 	edit_bgm = LibSound::create("bgm/edit.wav");
 
 	material_logo = CatGameLib::LibSprite::create("logo/material.png");
@@ -44,11 +36,22 @@ void Edit::init(void)
 {
 	input = LibInput::getInstance();
 
+	books = instance -> getSprites("books");
+
+	chip = instance -> getSprites("mapchip");
+
+	player = instance -> getSprites("player");
+	enemy = instance -> getSprites("enemy");
+	gimmick = instance -> getSprites("gimmick");
+	door = instance -> getSprites("door");
+
+	back = instance -> getSprite("back");
+
 	edit_bgm -> setVolume(0.0f);
 	edit_bgm -> setLoop(true);
 
 
-	instance -> getSprites("books") -> setPosition(sWHeaf + 200, sHHeaf);
+	books -> setPosition(sWHeaf + 200, sHHeaf);
 
 	stageConfig -> setSizeNumber(stageConfig -> getSizeNumber());
 	stageConfig -> setBgNumber(stageConfig -> getBgNumber());
@@ -102,11 +105,12 @@ void Edit::init(void)
 	gimmick -> setScale(1.0f);
 	gimmick -> setAlpha(0.0f);
 
-	instance -> getSprite("back")->setPosition(sWHeaf + 450, sHHeaf - 300);
-	instance -> getSprite("back")->setScale(0.8f);
-	instance -> getSprite("back")->setAlpha(0.0f);
+	back -> setPosition(sWHeaf + 450, sHHeaf - 300);
+	back -> setScale(0.8f);
+	back -> setAlpha(0.0f);
 
 	chipCounter = 0;
+	chipHave = 0;
 
 	materialRow = 1;
 	materialCounter = 1;
@@ -125,8 +129,8 @@ void Edit::init(void)
 void Edit::update(void)
 {
 	playSound();
-
-	editMaterialDraw();
+	
+	editDraw();
 
 	switch (edit_work)
 	{
@@ -234,9 +238,9 @@ void Edit::pictFade(void)
 		gimmick -> setAlpha(gimmick -> getAlpha() + 5);
 	}
 
-	if (instance->getSprite("back")->getAlpha() < 255)
+	if (back -> getAlpha() < 255)
 	{
-		instance->getSprite("back")->setAlpha(instance->getSprite("back")->getAlpha() + 5);
+		back -> setAlpha(back -> getAlpha() + 5);
 	}
 	else
 	{
@@ -265,6 +269,27 @@ void Edit::edit(void)
 
 void Edit::materialSelect(void)
 {
+	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
+	{
+		chipHave = 1;
+		if(stageConfig -> getSizeNumber() == 0)
+		{
+			materialSetRow = 7;
+			materialSetCol = 7;
+		}
+		else if(stageConfig -> getSizeNumber() == 1)
+		{
+			materialSetRow = 8;
+			materialSetCol = 8;
+		}
+		else if(stageConfig -> getSizeNumber() == 2)
+		{
+			materialSetRow = 9;
+			materialSetCol = 9;
+		}
+		edit_set_work = MaterialSet;
+	}
+
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 	{
 		materialRow--;
@@ -312,17 +337,17 @@ void Edit::materialSelect(void)
 	if(materialRow % 4 == 0)
 	{
 		pointer -> setPosition(sWHeaf + 450, sHHeaf - 310);
-		instance -> getSprite("back") -> setScale(1.0f);
+		back -> setScale(1.0f);
 	}
 	else if(materialRow % 4 == 3)
 	{
 		pointer -> setPositionY(sHHeaf + 200-17 - (materialRow - 1 + 1) * 50);
-		instance -> getSprite("back") -> setScale(0.8f);
+		back -> setScale(0.8f);
 	}
 	else
 	{
 		pointer -> setPositionY(sHHeaf + 200-17 - (materialRow - 1) * 60);
-		instance -> getSprite("back") -> setScale(0.8f);
+		back -> setScale(0.8f);
 	}
 
 	if(materialRow == 1)
@@ -330,7 +355,6 @@ void Edit::materialSelect(void)
 		if(materialCounter % 6 == 0)
 		{
 			materialSetRow = 1;
-			materialSetCol = 1;
 			edit_set_work = MaterialSet;
 		}
 		else
@@ -345,12 +369,34 @@ void Edit::materialSelect(void)
 			if(materialCounter % 5 == 0)
 			{
 				materialSetRow = 1;
-				materialSetCol = 1;
 				edit_set_work = MaterialSet;
 			}
 			else
 			{
 				pointer -> setPositionX(sWHeaf + 350+17 + (materialCounter - 1) * 50);
+			}
+		}
+	}
+
+	if(chipHave == 0)
+	{
+		if(materialCounter == 4 || materialCounter == 5)
+		{
+			materialSetCol = 1;
+		}
+		else if(materialCounter == 1)
+		{
+			if(stageConfig -> getSizeNumber() == 0)
+			{
+				materialSetCol = 14;
+			}
+			else if(stageConfig -> getSizeNumber() == 1)
+			{
+				materialSetCol = 16;
+			}
+			else if(stageConfig -> getSizeNumber() == 2)
+			{
+				materialSetCol = 18;
 			}
 		}
 	}
@@ -402,11 +448,11 @@ void Edit::materialSet(void)
 		{
 			pointer -> setPositionY(sHHeaf - 35 * (materialSetRow - 7));
 		}
-
+		
 		if(materialSetCol % 15 == 0)
 		{	
 			materialRow = 1;
-			materialCounter = 1;
+			chipHave = 0;
 			edit_set_work = MaterialSelect;
 		}
 		else
@@ -428,7 +474,7 @@ void Edit::materialSet(void)
 		if(materialSetCol % 17 == 0)
 		{	
 			materialRow = 1;
-			materialCounter = 1;
+			chipHave = 0;
 			edit_set_work = MaterialSelect;
 		}
 		else
@@ -450,7 +496,7 @@ void Edit::materialSet(void)
 		if(materialSetCol % 19 == 0)
 		{	
 			materialRow = 1;
-			materialCounter = 1;
+			chipHave = 0;
 			edit_set_work = MaterialSelect;
 		}
 		else
@@ -458,16 +504,31 @@ void Edit::materialSet(void)
 			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetCol - 9));
 		}
 	}
+
+	if(materialSetCol == 1)
+	{
+		materialCounter = 5;
+	}
+	else if(materialSetCol == 14 || materialSetCol == 16 || materialSetCol == 18)
+	{
+		materialCounter = 1;
+	}
 }
 
 
 void Edit::editDraw(void)
 {
 	instance -> getSprite("floar") -> draw();
-	instance -> getSprites("books") -> draw(anime_number);
+	books -> draw(anime_number);
 	bgTextures[stageConfig -> getBgNumber()] -> draw();
 	grid_size[stageConfig -> getSizeNumber()] -> draw();
-	instance -> getSprite("back") -> draw();
+	
+	if(chipHave == 1)
+	{
+		chip -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+17);
+		chip -> draw(1);
+	}
+
 	material_logo -> draw();
 	chipTable -> draw();
 	
@@ -489,22 +550,19 @@ void Edit::editDraw(void)
 	}
 	chipCounter = 0;
 
-	instance -> getSprites("player") -> draw(0);
-	instance -> getSprites("enemy") -> draw(0);
-	instance -> getSprites("door") -> draw(0);
-	instance -> getSprites("gimmick") -> draw(0);
+	player -> draw(0);
+	enemy -> draw(0);
+	door -> draw(0);
+	gimmick -> draw(0);
 	
+	back -> draw();
+
 	pointer -> draw();
 }
 
 
-void Edit::editMaterialDraw(void)
+void Edit::editChipSetDraw(void)
 {
-	instance -> getSprite("floar") -> draw();
-	instance -> getSprites("books") -> draw(anime_number);
-	bgTextures[stageConfig -> getBgNumber()] -> draw();
-	grid_size[stageConfig -> getSizeNumber()] -> draw();
-	instance -> getSprite("back") -> draw();
 	material_logo -> draw();
 	chipTable -> draw();
 
@@ -531,5 +589,5 @@ void Edit::editMaterialDraw(void)
 	instance -> getSprites("door") -> draw(0);
 	instance -> getSprites("gimmick") -> draw(0);
 	
-	pointer -> draw();
+	back -> draw();
 }

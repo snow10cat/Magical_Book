@@ -34,7 +34,9 @@ public:
 
 private:
 
+	int chipNum;
 	int chipCounter;
+	int chipDirection;
 	int chipHave;
 
 	int sizeCounter;
@@ -69,8 +71,8 @@ private:
 	CatGameLib::LibSprite* material_logo;
 	CatGameLib::LibSprite* chipTable;
 	CatGameLib::LibSprite* save;
-	CatGameLib::LibSprite* forward;
-	CatGameLib::LibSprite* modoru;
+	CatGameLib::LibSprite* redo;
+	CatGameLib::LibSprite* undo;
 	CatGameLib::LibSprite* pointer;
 	CatGameLib::LibSprite* back;
 
@@ -83,6 +85,11 @@ private:
 	CatGameLib::LibSprites* enemy;
 	CatGameLib::LibSprites* gimmick;
 	CatGameLib::LibSprites* door;
+	
+	CatGameLib::LibSprites* materialPlayer;
+	CatGameLib::LibSprites* materialEnemy;
+	CatGameLib::LibSprites* materialGimmick;
+	CatGameLib::LibSprites* materialDoor;
 	
 	std::vector<CatGameLib::LibVector2> chipPosition;
 	std::vector<CatGameLib::LibSprite*> bgTextures;

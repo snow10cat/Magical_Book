@@ -35,6 +35,7 @@ public:
 private:
 
 	int chipNum;
+	int chipState;
 	int chipCounter;
 	int chipDirection;
 	int chipHave;
@@ -43,7 +44,9 @@ private:
 	int bgCounter;
 	int bgmCounter;
 
-	int materialCounter;
+//	int materialCounter;
+
+	int materialCol;
 	int materialRow;
 	
 	int materialSetRow;

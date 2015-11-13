@@ -105,7 +105,7 @@ void Edit::init(void)
 	chip -> setScale( 1.0f);
 	chip -> setAlpha(0.0f);
 
-	player -> setPosition(sWHeaf, sHHeaf);
+	player -> setPosition(sWHeaf + 350, sHHeaf + 68);
 	player -> setScale(1.0f);
 	player -> setAlpha(0.0f);
 
@@ -113,7 +113,7 @@ void Edit::init(void)
 	materialPlayer -> setScale(1.0f);
 	materialPlayer -> setAlpha(255.0f);
 
-	enemy -> setPosition(sWHeaf, sHHeaf);
+	enemy -> setPosition(sWHeaf + 400, sHHeaf + 68);
 	enemy -> setScale(1.0f);
 	enemy -> setAlpha(0.0f);
 
@@ -121,7 +121,7 @@ void Edit::init(void)
 	materialEnemy -> setScale(1.0f);
 	materialEnemy -> setAlpha(255.0f);
 
-	door -> setPosition(sWHeaf, sHHeaf);
+	door -> setPosition(sWHeaf + 450, sHHeaf + 68);
 	door -> setScale(1.0f);
 	door -> setAlpha(0.0f);
 
@@ -129,7 +129,7 @@ void Edit::init(void)
 	materialDoor -> setScale(1.0f);
 	materialDoor -> setAlpha(255.0f);
 
-	gimmick -> setPosition(sWHeaf, sHHeaf);
+	gimmick -> setPosition(sWHeaf + 500, sHHeaf + 68);
 	gimmick -> setScale(1.0f);
 	gimmick -> setAlpha(0.0f);
 
@@ -142,12 +142,13 @@ void Edit::init(void)
 	back -> setAlpha(0.0f);
 
 	chipNum = 1;
+	chipState = 0;
 	chipDirection = 0;
 	chipCounter = 0;
 	chipHave = 0;
 
 	materialRow = 1;
-	materialCounter = 1;
+	materialCol = 1;
 
 	materialSetRow = 1;
 	materialSetCol = 1;
@@ -323,23 +324,23 @@ void Edit::materialSelect(void)
 		if(materialRow == 1)
 		{
 			chipHave = 1;
-			if(materialCounter == 1)
+			if(materialCol == 1)
 			{
 				chipNum = 1;
 			}
-			else if(materialCounter == 2)
+			else if(materialCol == 2)
 			{
 				chipNum = 5;
 			}
-			else if(materialCounter == 3)
+			else if(materialCol == 3)
 			{
 				chipNum = 9;
 			}
-			else if(materialCounter == 4)
+			else if(materialCol == 4)
 			{
 				chipNum = 13;
 			}
-			else if(materialCounter == 5)
+			else if(materialCol == 5)
 			{
 				chipNum = 17;
 			}
@@ -347,25 +348,26 @@ void Edit::materialSelect(void)
 		else if(materialRow == 2)
 		{
 			chipHave = 1;
-			if(materialCounter == 1)
+			if(materialCol == 1)
 			{
 				chipNum = 21;
 			}
-			else if(materialCounter == 2)
+			else if(materialCol == 2)
 			{
 				chipNum = 25;
 			}
-			else if(materialCounter == 3)
+			else if(materialCol == 3)
 			{
 				chipNum = 29;
 			}
-			else if(materialCounter == 4)
+			else if(materialCol == 4)
 			{
 				chipNum = 33;
 			}
 		}
 		else if(materialRow == 3)
 		{
+			chipState = materialCol;
 			chipHave = 2;
 		}
 		edit_set_work = MaterialSet;
@@ -375,11 +377,11 @@ void Edit::materialSelect(void)
 	{
 		materialRow--;
 	}
-	if(materialRow == 1 && materialCounter == 5)
+	if(materialRow == 1 && materialCol == 5)
 	{
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
-			materialCounter--;
+			materialCol--;
 			materialRow++;
 		}
 	}
@@ -394,25 +396,25 @@ void Edit::materialSelect(void)
 	{
 		if(materialRow % 4 != 0)
 		{
-			materialCounter--;
+			materialCol--;
 		}
 	}
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 	{
 		if(materialRow % 4 != 0)
 		{
-			materialCounter++;
+			materialCol++;
 		}
 	}
 
 	materialRow = CatGameLib::LibBasicFunc::wrap(materialRow, 0, 4);
 	if(materialRow == 1)
 	{
-		materialCounter = CatGameLib::LibBasicFunc::wrap(materialCounter, 0, 6);
+		materialCol = CatGameLib::LibBasicFunc::wrap(materialCol, 0, 6);
 	}
 	else
 	{
-		materialCounter = CatGameLib::LibBasicFunc::wrap(materialCounter, 0, 5);
+		materialCol = CatGameLib::LibBasicFunc::wrap(materialCol, 0, 5);
 	}
 
 	if(materialRow % 4 == 0)
@@ -433,39 +435,39 @@ void Edit::materialSelect(void)
 
 	if(materialRow == 1)
 	{
-		if(materialCounter % 6 == 0)
+		if(materialCol % 6 == 0)
 		{
 			materialSetRow = 1;
 			edit_set_work = MaterialSet;
 		}
 		else
 		{
-			pointer -> setPositionX(sWHeaf + 350+17 + (materialCounter - 1) * 50);
+			pointer -> setPositionX(sWHeaf + 350+17 + (materialCol - 1) * 50);
 		}
 	}
 	else
 	{
 		if(materialRow % 4 != 0)
 		{
-			if(materialCounter % 5 == 0)
+			if(materialCol % 5 == 0)
 			{
 				materialSetRow = 1;
 				edit_set_work = MaterialSet;
 			}
 			else
 			{
-				pointer -> setPositionX(sWHeaf + 350+17 + (materialCounter - 1) * 50);
+				pointer -> setPositionX(sWHeaf + 350+17 + (materialCol - 1) * 50);
 			}
 		}
 	}
 
 	if(chipHave == 0)
 	{
-		if(materialCounter == 4 || materialCounter == 5)
+		if(materialCol == 4 || materialCol == 5)
 		{
 			materialSetCol = 1;
 		}
-		else if(materialCounter == 1)
+		else if(materialCol == 1)
 		{
 			if(stageConfig -> getSizeNumber() == 0)
 			{
@@ -487,19 +489,19 @@ void Edit::materialSelect(void)
 	}
 	else if(chipHave == 2)
 	{
-		if(materialCounter == 1)
+		if(materialCol == 1)
 		{
 			player -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
-		else if(materialCounter == 2)
+		else if(materialCol == 2)
 		{
 			enemy -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
-		else if(materialCounter == 3)
+		else if(materialCol == 3)
 		{
 			door -> setPosition(pointer -> getPositionX()-21, pointer -> getPositionY()+34);
 		}
-		else if(materialCounter == 4)
+		else if(materialCol == 4)
 		{
 			gimmick -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
@@ -561,19 +563,19 @@ void Edit::materialSet(void)
 	}
 	else if(chipHave == 2)
 	{
-		if(materialCounter == 1)
+		if(chipState == 1)
 		{
 			player -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
-		else if(materialCounter == 2)
+		else if(chipState == 2)
 		{
 			enemy -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
-		else if(materialCounter == 3)
+		else if(chipState == 3)
 		{
 			door -> setPosition(pointer -> getPositionX()-18, pointer -> getPositionY()+34);
 		}
-		else if(materialCounter == 4)
+		else if(chipState == 4)
 		{
 			gimmick -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
@@ -607,16 +609,7 @@ void Edit::materialSet(void)
 		}
 		
 		if(materialSetCol % 15 == 0)
-		{	
-			if(materialSetCol == 1)
-			{
-				materialCounter = 5;
-			}
-			else if(materialSetCol == 14 || materialSetCol == 16 || materialSetCol == 18)
-			{
-				materialCounter = 1;
-			}
-
+		{
 			materialRow = 1;
 			chipHave = 0;
 			chipDirection = 0;
@@ -639,16 +632,7 @@ void Edit::materialSet(void)
 		}
 
 		if(materialSetCol % 17 == 0)
-		{	
-			if(materialSetCol == 1)
-			{
-				materialCounter = 5;
-			}
-			else if(materialSetCol == 14 || materialSetCol == 16 || materialSetCol == 18)
-			{
-				materialCounter = 1;
-			}
-
+		{
 			materialRow = 1;
 			chipHave = 0;
 			chipDirection = 0;
@@ -671,16 +655,7 @@ void Edit::materialSet(void)
 		}
 
 		if(materialSetCol % 19 == 0)
-		{	
-			if(materialSetCol == 1)
-			{
-				materialCounter = 5;
-			}
-			else if(materialSetCol == 14 || materialSetCol == 16 || materialSetCol == 18)
-			{
-				materialCounter = 1;
-			}
-
+		{
 			materialRow = 1;
 			chipHave = 0;
 			chipDirection = 0;
@@ -690,6 +665,15 @@ void Edit::materialSet(void)
 		{
 			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetCol - 9));
 		}
+	}
+
+	if(materialSetCol == 1)
+	{
+		materialCol = 5;
+	}
+	else if(materialSetCol == 14 || materialSetCol == 16 || materialSetCol == 18)
+	{
+		materialCol = 1;
 	}
 }
 
@@ -707,19 +691,19 @@ void Edit::editDraw(void)
 	}
 	else if(chipHave == 2)
 	{
-		if(materialCounter == 1)
+		if(chipState == 1)
 		{
 			player -> draw(0);
 		}
-		else if(materialCounter == 2)
+		else if(chipState == 2)
 		{
 			enemy -> draw(0);
 		}
-		else if(materialCounter == 3)
+		else if(chipState == 3)
 		{
 			door -> draw(0);
 		}
-		else if(materialCounter == 4)
+		else if(chipState == 4)
 		{
 			gimmick -> draw(0);
 		}

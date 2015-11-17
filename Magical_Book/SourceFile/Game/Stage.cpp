@@ -17,8 +17,7 @@ Stage::Stage() : chipCount(0),
 				 rotateCount(0)
 {
 	screenSize = LibMain::getInstance() -> getScreenSize();
-	floor = ResourceManager::getInstance() -> getSprite("floar");
-	floor -> setPosition(screenSize.x * 0.5f, screenSize.y * 0.5f);
+	floor = ResourceManager::getInstance() -> getSprite("floor");
 	chip = ResourceManager::getInstance() -> getSprites("mapchip");
 	chipSize = chip -> getTextureSizeX();
 

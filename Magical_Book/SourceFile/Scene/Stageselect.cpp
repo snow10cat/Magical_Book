@@ -124,7 +124,7 @@ void Stageselect::update(void)
 		instance -> getSound("selectbgm") -> setVolume(Volume);
 	}
 
-	instance -> getSprite("floar") -> draw();
+	instance -> getSprite("floor") -> draw();
 
 	switch(select_work)
 	{

@@ -34,7 +34,7 @@ void ResourceManager::loadResource(void)
 
 	//‰æ‘œ
 	spriteArray["fadeout"] = LibSprite::create("background/fadeout.png");
-	spriteArray["floar"] = LibSprite::create("background/floar.png");
+	spriteArray["floor"] = LibSprite::create("background/floor.png");
 	spriteArray["frame"] = LibSprite::create("background/frame.png");
 	
 	spriteArray["back"] = LibSprite::create("logo/back.png");

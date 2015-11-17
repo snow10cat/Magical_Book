@@ -48,8 +48,8 @@ void Title::init(void)
 	instance ->getSprite("fadeout") -> setScale(1.0f);
 	instance ->getSprite("fadeout") -> setAlpha(0.0f);
 
-	instance ->getSprite("floar") -> setPosition(sWHeaf, sHHeaf);
-	instance ->getSprite("floar") -> setScale(1.0f);
+	instance ->getSprite("floor") -> setPosition(sWHeaf, sHHeaf);
+	instance ->getSprite("floor") -> setScale(1.0f);
 
 	instance -> getSprites("openBook") -> setPosition(sWHeaf - 250, sHHeaf);
 	instance -> getSprites("openBook") -> setScale(1.0f);
@@ -78,7 +78,7 @@ void Title::init(void)
 //XV
 void Title::update(void)
 {
-	instance ->getSprite("floar") -> draw();
+	instance ->getSprite("floor") -> draw();
 
 	playSound();
 

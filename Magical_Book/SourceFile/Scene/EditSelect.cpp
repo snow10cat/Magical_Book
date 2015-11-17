@@ -148,7 +148,7 @@ void EditSelect::update(void)
 		instance -> getSound("selectbgm") -> setVolume(Volume);
 	}
 
-	instance -> getSprite("floar") -> draw();
+	instance -> getSprite("floor") -> draw();
 	instance -> getSprites("books") -> draw(anime_number);
 
 	switch(editMode_work)

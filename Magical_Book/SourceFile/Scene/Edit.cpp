@@ -788,7 +788,7 @@ void Edit::materialSet(void)
 
 void Edit::editDraw(void)
 {
-	instance -> getSprite("floar") -> draw();
+	instance -> getSprite("floor") -> draw();
 	books -> draw(anime_number);
 	bgTextures[stageConfig -> getBgNumber()] -> draw();
 	grid_size[stageConfig -> getSizeNumber()] -> draw();

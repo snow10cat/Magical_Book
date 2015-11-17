@@ -92,7 +92,7 @@ void MenuSelect::update(void)
 		select_bgm -> setVolume(Volume);
 	}
 
-	instance -> getSprite("floar") -> draw();
+	instance -> getSprite("floor") -> draw();
 
 	switch(select_work)
 	{

@@ -179,7 +179,7 @@ void MenuSelect::modeSelect(void)
 		}
 		instance -> getSprite("back") -> draw();
 
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up))
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 		{
 			timer = 0;
 			counter--;

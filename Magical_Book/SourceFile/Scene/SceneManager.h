@@ -27,19 +27,19 @@ public:
 		Ending,			//エンディング
 	};
 
-	static SceneManager* getInstance( void)
+	static SceneManager* getInstance(void)
 	{
 		static SceneManager* instance = nullptr;
-		if( !instance) { instance = new SceneManager(); }
+		if(!instance) { instance = new SceneManager(); }
 		return instance;
 	}
 
-	SceneManager( const SceneManager&) = delete;
-	const SceneManager& operator=( const SceneManager&) = delete;
+	SceneManager(const SceneManager&) = delete;
+	const SceneManager& operator=(const SceneManager&) = delete;
 
-	void createScene( SceneNumber number);
+	void createScene(SceneNumber number);
 
-	void update( void);
+	void update(void);
 	SceneNumber getSceneNumber(void);
 	SceneNumber getOldSceneNumber(void);
 

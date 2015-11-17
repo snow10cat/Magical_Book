@@ -12,16 +12,16 @@ int main()
 	LibMain* const lib = LibMain::getInstance();
 
 	// スクリーンサイズ??????
-	lib -> setScreenSize( 1280, 720);
+	lib -> setScreenSize(1280, 720);
 
 	// スクリーンモード指???
-	lib -> setScreenMode( LibMain::ScreenMode::Window);
+	lib -> setScreenMode(LibMain::ScreenMode::Window);
 
 	// ウィンドウタイトル??????
-	lib -> setWindowTitle( "Magical_Book");
+	lib -> setWindowTitle("Magical_Book");
 
 	// 背景色??????
-	lib -> setClearColor( 200.0f, 200.0f, 200.0f, 255.0f);
+	lib -> setClearColor(200.0f, 200.0f, 200.0f, 255.0f);
 
 	// ライブラリ初期???
 	lib -> initLib();
@@ -29,10 +29,10 @@ int main()
 	// 共通スプライトファイル読み込み
 	ResourceManager::getInstance() -> loadResource();
 
-	SceneManager::getInstance() -> createScene( SceneManager::EditSelect);
+	SceneManager::getInstance() -> createScene(SceneManager::EditSelect);
 
 	// メインルー???
-	while( lib -> checkWindowState())
+	while(lib -> checkWindowState())
 	{
 		// 画面消去
 		lib -> clear();

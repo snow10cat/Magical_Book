@@ -15,7 +15,7 @@ public:
 	virtual void update(Stage* stage) = 0;
 	virtual void draw(void) = 0;
 
-	CatGameLib::LibVector2 getPosition( void);
+	CatGameLib::LibVector2 getPosition(void);
 
 protected:
 	enum CharacterState
@@ -32,8 +32,8 @@ protected:
 	CatGameLib::LibVector2 velocity;
 	CatGameLib::LibVector2 position;
 
-	void rotation( int angle);
-	virtual void move( Stage* stage) = 0;
+	void rotation(int angle);
+	virtual void move(Stage* stage) = 0;
 };
 
 }

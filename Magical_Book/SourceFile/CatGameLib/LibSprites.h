@@ -11,14 +11,14 @@ namespace CatGameLib
 class LibSprites : public LibSprite
 {
 public:
-	static LibSprites* create( const char* fileName, int width, int height);
-	static void allRelease( void);
+	static LibSprites* create(const char* fileName, int width, int height);
+	static void allRelease(void);
 
-	void setAnimationSpeed( int speed);
-	int getSpriteCount( void);
+	void setAnimationSpeed(int speed);
+	int getSpriteCount(void);
 
-	void draw( int number);
-	void animation( void);
+	void draw(int number);
+	void animation(void);
 
 	~LibSprites();
 
@@ -37,7 +37,7 @@ private:
 
 	LibSprites();
 
-	void createTexture( png::image<png::rgba_pixel>& image, int number, int posX, int posY);
+	void createTexture(png::image<png::rgba_pixel>& image, int number, int posX, int posY);
 };
 
 }

@@ -20,17 +20,17 @@ EditSelect::EditSelect() : size_section(nullptr),
 						   bg_section(nullptr),
 						   music_section(nullptr)
 {
-	size_section = CatGameLib::LibSprite::create( "logo/size_section.png");
-	bg_section = CatGameLib::LibSprite::create( "logo/bg_section.png");
-	music_section = CatGameLib::LibSprite::create( "logo/music_section.png");
+	size_section = CatGameLib::LibSprite::create("logo/size_section.png");
+	bg_section = CatGameLib::LibSprite::create("logo/bg_section.png");
+	music_section = CatGameLib::LibSprite::create("logo/music_section.png");
 
-	size_logo[0] = CatGameLib::LibSprite::create( "logo/S.png");
-	size_logo[1] = CatGameLib::LibSprite::create( "logo/M.png");
-	size_logo[2] = CatGameLib::LibSprite::create( "logo/L.png");
+	size_logo[0] = CatGameLib::LibSprite::create("logo/S.png");
+	size_logo[1] = CatGameLib::LibSprite::create("logo/M.png");
+	size_logo[2] = CatGameLib::LibSprite::create("logo/L.png");
 
-	bgm_logo[0] = CatGameLib::LibSprite::create( "logo/bgm1.png");
-	bgm_logo[1] = CatGameLib::LibSprite::create( "logo/bgm2.png");
-	bgm_logo[2] = CatGameLib::LibSprite::create( "logo/bgm3.png");
+	bgm_logo[0] = CatGameLib::LibSprite::create("logo/bgm1.png");
+	bgm_logo[1] = CatGameLib::LibSprite::create("logo/bgm2.png");
+	bgm_logo[2] = CatGameLib::LibSprite::create("logo/bgm3.png");
 }
 
 
@@ -39,7 +39,7 @@ EditSelect::~EditSelect()
 }
 
 
-void EditSelect::init( void)
+void EditSelect::init(void)
 {
 	input = LibInput::getInstance();
 
@@ -75,10 +75,10 @@ void EditSelect::init( void)
 	bgm_logo[2] -> setScale(0.25f);
 	bgm_logo[2] -> setAlpha(0.0f);
 
-	for( int i = 1; i <= ResourceManager::BG_Count; i++)
+	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back( instance -> getSprite( bgName.c_str()));
+		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
 		bgTextures[i - 1] -> setAlpha(0.0f);
 	}
 
@@ -102,19 +102,19 @@ void EditSelect::init( void)
 	instance -> getSprite("frame") -> setAlpha(0.0f);
 
 	size_section -> setPosition(sWHeaf - 100, sHHeaf + 300);
-	size_section -> setScale( 0.8f);
+	size_section -> setScale(0.8f);
 	size_section -> setAlpha(0.0f);
 
 	bg_section -> setPosition(sWHeaf - 100, sHHeaf + 80);
-	bg_section -> setScale( 0.7f);
+	bg_section -> setScale(0.7f);
 	bg_section -> setAlpha(0.0f);
 
 	music_section -> setPosition(sWHeaf - 100, sHHeaf - 140);
-	music_section -> setScale( 0.7f);
+	music_section -> setScale(0.7f);
 	music_section -> setAlpha(0.0f);
 
 	instance -> getSprite("back") -> setPosition(sWHeaf - 500, sHHeaf - 280);
-	instance -> getSprite("back") -> setScale( 0.7f);
+	instance -> getSprite("back") -> setScale(0.7f);
 	instance -> getSprite("back") -> setAlpha(0.0f);
 
 	sizeCounter = 1;
@@ -130,7 +130,7 @@ void EditSelect::init( void)
 }
 
 
-void EditSelect::update( void)
+void EditSelect::update(void)
 {
 	if(instance -> getSound("selectbgm") -> getState() != LibSound::Play)
 	{
@@ -313,14 +313,14 @@ void EditSelect::sizeSelect(void)
 
 	auto sizeSizeFunc = [&](void)
 	{
-		size_section -> setScale( 0.8f);
+		size_section -> setScale(0.8f);
 
 		for(int i = 0; i <= 2; i++)
 		{
 			size_logo[i] -> setScale(0.25f);
 		}
 		
-		instance -> getSprite("back") -> setScale( 0.7f);
+		instance -> getSprite("back") -> setScale(0.7f);
 		instance -> getSprite("frame") -> setScale(0.15f);
 	};
 
@@ -337,7 +337,7 @@ void EditSelect::sizeSelect(void)
 	{
 		if(sizeCounter % 4 != 0)
 		{
-			size_section -> setScale( 0.7f);
+			size_section -> setScale(0.7f);
 			flag = StageBG;
 		}
 		else
@@ -375,7 +375,7 @@ void EditSelect::sizeSelect(void)
 		else if(sizeCounter % 4 == 0)
 		{
 			sizeSizeFunc();
-			size_section -> setScale( 0.7f);
+			size_section -> setScale(0.7f);
 
 			instance -> getSprite("back") -> setScale(0.9f);
 			instance ->getSprite("frame") ->setScaleX(0.3f);
@@ -391,7 +391,7 @@ void EditSelect::bgSelect(void)
 
 	auto sizebgFunc = [&](void)
 	{
-		bg_section -> setScale( 0.8f);
+		bg_section -> setScale(0.8f);
 	
 		instance -> getSprite("game_bg1") -> setScale(0.1f);
 		instance -> getSprite("game_bg2") -> setScale(0.1f);
@@ -399,11 +399,11 @@ void EditSelect::bgSelect(void)
 		instance -> getSprite("game_bg4") -> setScale(0.1f);
 		instance -> getSprite("game_bg5") -> setScale(0.1f);
 		
-		instance -> getSprite("back") -> setScale( 0.7f);
+		instance -> getSprite("back") -> setScale(0.7f);
 		instance -> getSprite("frame") -> setScale(0.2f);
 	};
 
-	if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
+	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
 		bgCounter--;
 	}
@@ -415,7 +415,7 @@ void EditSelect::bgSelect(void)
 	{
 		if(bgCounter % 6 != 0)
 		{
-			bg_section -> setScale( 0.7f);
+			bg_section -> setScale(0.7f);
 			flag = StageBGM;
 		}
 		else
@@ -426,7 +426,7 @@ void EditSelect::bgSelect(void)
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
 	{
 		sizebgFunc();
-		bg_section -> setScale( 0.7f);
+		bg_section -> setScale(0.7f);
 		flag = StageSize;
 	}
 
@@ -481,7 +481,7 @@ void EditSelect::bgSelect(void)
 		{
 			sizebgFunc();
 			
-			bg_section -> setScale( 0.7f);
+			bg_section -> setScale(0.7f);
 
 			instance -> getSprite("back") -> setScale(0.9f);
 			instance ->getSprite("frame") ->setScaleX(0.3f);
@@ -498,18 +498,18 @@ void EditSelect::bgmSelect(void)
 
 	auto sizeBgmFunc = [&](void)
 	{
-		music_section -> setScale( 0.8f);
+		music_section -> setScale(0.8f);
 
 		for(int i = 0; i <= 2; i++)
 		{
 			bgm_logo[i] -> setScale(0.25f);
 		}
 		
-		instance -> getSprite("back") -> setScale( 0.7f);
+		instance -> getSprite("back") -> setScale(0.7f);
 		instance -> getSprite("frame") -> setScale(0.15f);
 	};
 
-	if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
+	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
 		bgmCounter--;
 	}
@@ -522,7 +522,7 @@ void EditSelect::bgmSelect(void)
 	{
 		if(bgmCounter % 4 != 0)
 		{
-			music_section -> setScale( 0.7f);
+			music_section -> setScale(0.7f);
 			editMode_work = Animation;
 		}
 		else
@@ -533,7 +533,7 @@ void EditSelect::bgmSelect(void)
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
 	{
 		sizeBgmFunc();
-		music_section -> setScale( 0.7f);
+		music_section -> setScale(0.7f);
 		flag = StageBG;
 	}
 
@@ -590,7 +590,7 @@ void EditSelect::bgmSelect(void)
 		else if(bgmCounter % 4 == 0)
 		{
 			sizeBgmFunc();
-			music_section -> setScale( 0.7f);
+			music_section -> setScale(0.7f);
 
 			instance -> getSprite("back") -> setScale(0.9f);
 			instance ->getSprite("frame") ->setScaleX(0.3f);
@@ -615,7 +615,7 @@ void EditSelect::editSetUpDraw(void)
 		bgm_logo[i] -> draw();
 	}
 
-	for( int i = 0; i < bgTextures.size(); i++)
+	for(int i = 0; i < bgTextures.size(); i++)
 	{
 		bgTextures[i] -> draw();
 	}

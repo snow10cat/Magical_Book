@@ -14,7 +14,7 @@ public:
 	/**
 	 *	シェーダー停止
 	 */
-	static void shaderOff( void);
+	static void shaderOff(void);
 
 	/**
 	 *	コンストラクタ
@@ -23,7 +23,7 @@ public:
 	 *	@param	vertFileName 頂点シェーダーファイル名
 	 *	@param	vertFileName ピクセルシェーダーファイル名
 	 */
-	LibShader( const char* vertFileName, const char* flagFileName);
+	LibShader(const char* vertFileName, const char* flagFileName);
 
 	/**
 	 *	デストラクタ
@@ -33,26 +33,26 @@ public:
 	~LibShader();
 
 	LibShader() = delete;
-	LibShader( const LibShader&) = delete;
-	const  LibShader& operator = ( const LibShader&) = delete;
+	LibShader(const LibShader&) = delete;
+	const  LibShader& operator = (const LibShader&) = delete;
 
 	/**
 	 *	シェーダープログラムのハンドルを取得
 	 *
 	 * 	@author	minaka1412
 	 */
-	int getProgramHandle( void);
+	int getProgramHandle(void);
 
-	void setAttributePosition( const char* valueName);
-	void setAttributeUV( const char* valueName);
-	void setUniformTexture( const char* valueName);
+	void setAttributePosition(const char* valueName);
+	void setAttributeUV(const char* valueName);
+	void setUniformTexture(const char* valueName);
 
-	void setAttributeHandle( const char* valueName);
-	void setUniformHandle( const char* valueName);
+	void setAttributeHandle(const char* valueName);
+	void setUniformHandle(const char* valueName);
 
-	unsigned int getAttributePosition( void);
-	unsigned int getAttributeUV( void);
-	unsigned int getUniformTexture( void);
+	unsigned int getAttributePosition(void);
+	unsigned int getAttributeUV(void);
+	unsigned int getUniformTexture(void);
 
 	/**
 	 *	頂点シェーダーのAttribute変数のハンドルを取得
@@ -60,14 +60,14 @@ public:
 	 *	@author
 	 *	@return	シェーダーの変数位置
 	 */
-	unsigned int getAttributeHandle( const char* valueName);
+	unsigned int getAttributeHandle(const char* valueName);
 	
 	/**
 	 *	頂点シェーダーのUniform変数のハンドルを取得
 	 *
 	 *	@return	シェーダーの変数位置
 	 */
-	unsigned int getUniformHandle( const char* valueName);
+	unsigned int getUniformHandle(const char* valueName);
 
 private:
 	/**
@@ -76,7 +76,7 @@ private:
 	 * 	@author	minaka1412
 	 *	@param	fileName シェーダーファイル名
 	 */
-	void loadShaderFile( const char* fileName);
+	void loadShaderFile(const char* fileName);
 
 	/**
 	 *	シェーダーコンパイル
@@ -85,7 +85,7 @@ private:
 	 *	@param	shaderID シェーダー識別ID
 	 *	@param	fileName シェーダーファイル名
 	 */
-	void shaderCompile( unsigned int shaderID, const char* fileName);
+	void shaderCompile(unsigned int shaderID, const char* fileName);
 
 	/**
 	 *	シェーダー読み込み
@@ -93,7 +93,7 @@ private:
 	 * 	@author	minaka1412
 	 *	@param	fileName シェーダーファイル名
 	 */
-	void shaderLink( const char* fileName);
+	void shaderLink(const char* fileName);
 
 	// シェーダープログラム識別ID
 	unsigned int program;

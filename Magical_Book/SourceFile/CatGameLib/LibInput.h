@@ -127,41 +127,41 @@ public:
 		Button_16,
 	};
 
-	static LibInput* getInstance( void)
+	static LibInput* getInstance(void)
 	{
 		static LibInput* instance = nullptr;
-		if( !instance) { instance = new LibInput(); }
+		if(!instance) { instance = new LibInput(); }
 		return instance;
 	}
-	LibInput( const LibInput&) = delete;
-	const LibInput& operator=( const LibInput&) = delete;
+	LibInput(const LibInput&) = delete;
+	const LibInput& operator=(const LibInput&) = delete;
 
-	static void MouseButtonPushCallback( GLFWwindow* window, int button, int action, int mods);
-	static void MouseCursorMoveCallback( GLFWwindow* window, double xpos, double ypos);
-	static void MouseCursorWindowInCallback( GLFWwindow* window, int flag);
-	static void MouseWheelMoveCallback( GLFWwindow* window, double xpos, double ypos);
+	static void MouseButtonPushCallback(GLFWwindow* window, int button, int action, int mods);
+	static void MouseCursorMoveCallback(GLFWwindow* window, double xpos, double ypos);
+	static void MouseCursorWindowInCallback(GLFWwindow* window, int flag);
+	static void MouseWheelMoveCallback(GLFWwindow* window, double xpos, double ypos);
 
-	void setWindow( GLFWwindow* window);
-	void initSystem( void);
-	void update( void);
+	void setWindow(GLFWwindow* window);
+	void initSystem(void);
+	void update(void);
 
 
-	bool getKeyboardState( KeyBoardNumber number);
-	bool getKeyboardUpState( KeyBoardNumber number);
-	bool getKeyboardDownState( KeyBoardNumber number);
+	bool getKeyboardState(KeyBoardNumber number);
+	bool getKeyboardUpState(KeyBoardNumber number);
+	bool getKeyboardDownState(KeyBoardNumber number);
 
-	bool getMouseState( MouseNumber number);
-	bool getMouseUpState( MouseNumber number);
-	bool getMouseDownState( MouseNumber number);
-	LibVector2 getMousePosition( void);
-	LibVector2 getMouseWheel( void);
+	bool getMouseState(MouseNumber number);
+	bool getMouseUpState(MouseNumber number);
+	bool getMouseDownState(MouseNumber number);
+	LibVector2 getMousePosition(void);
+	LibVector2 getMouseWheel(void);
 
-	int getGamePadCount( void);
-	int getGamePadStickCount( GamePadNumber padNumber);
-	bool getGamePadState( GamePadNumber padNumber, GamePadButtonNumber number);
-	bool getGamePadUpState( GamePadNumber padNumber, GamePadButtonNumber number);
-	bool getGamePadDownState( GamePadNumber padNumber, GamePadButtonNumber number);
-	LibVector2 getGamePadStickVector( GamePadNumber padNumber, int stickNumber);
+	int getGamePadCount(void);
+	int getGamePadStickCount(GamePadNumber padNumber);
+	bool getGamePadState(GamePadNumber padNumber, GamePadButtonNumber number);
+	bool getGamePadUpState(GamePadNumber padNumber, GamePadButtonNumber number);
+	bool getGamePadDownState(GamePadNumber padNumber, GamePadButtonNumber number);
+	LibVector2 getGamePadStickVector(GamePadNumber padNumber, int stickNumber);
 
 private:
 	class LibGamePad;
@@ -182,9 +182,9 @@ private:
 	LibInput();
 	~LibInput();
 
-	void initKeyboardState( void);
-	void initMouseState( void);
-	void initGamePadState( void);
+	void initKeyboardState(void);
+	void initMouseState(void);
+	void initGamePadState(void);
 };
 
 }

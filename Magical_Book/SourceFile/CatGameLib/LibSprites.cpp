@@ -9,11 +9,11 @@ using namespace CatGameLib;
 int LibSprites::allObjectLoadCount = 0;
 unsigned int LibSprites::allObjectTextureIDs[LoadSpriteMax * 8] = { 0 };
 
-LibSprites* LibSprites::create( const char* fileName, int width, int height)
+LibSprites* LibSprites::create(const char* fileName, int width, int height)
 {
 	LibSprites* sprites = new (nothrow)LibSprites();
 
-	if( sprites == nullptr)
+	if(sprites == nullptr)
 	{
 		return nullptr;
 	}
@@ -23,7 +23,7 @@ LibSprites* LibSprites::create( const char* fileName, int width, int height)
 	filePass += fileName;
 
 	// png読み込み
-	png::image<png::rgba_pixel> image( filePass);
+	png::image<png::rgba_pixel> image(filePass);
 
 	int widthCount = image.get_width() / width;
 	int heightCount = image.get_height() / height;
@@ -32,7 +32,7 @@ LibSprites* LibSprites::create( const char* fileName, int width, int height)
 	sprites -> sizeY = image.get_height() / heightCount;
 
 	sprites -> spriteCount = widthCount * heightCount;
-	sprites -> textureIDArray.resize( sprites -> spriteCount);
+	sprites -> textureIDArray.resize(sprites -> spriteCount);
 
 	// 画像サイズ設定
 	sprites -> sizeX = width;
@@ -41,11 +41,11 @@ LibSprites* LibSprites::create( const char* fileName, int width, int height)
 	// バッファ確保
 	sprites -> pixelBuffer = new unsigned char[width * height * 4];
 
-	for( int y = 0; y < heightCount; y++)
+	for(int y = 0; y < heightCount; y++)
 	{
-		for( int x = 0; x < widthCount; x++)
+		for(int x = 0; x < widthCount; x++)
 		{
-			sprites -> createTexture( image, y * widthCount + x, width * x, height * y);
+			sprites -> createTexture(image, y * widthCount + x, width * x, height * y);
 		}
 	}
 
@@ -56,50 +56,50 @@ LibSprites* LibSprites::create( const char* fileName, int width, int height)
 	return sprites;
 }
 
-void LibSprites::allRelease( void)
+void LibSprites::allRelease(void)
 {
-	glDeleteTextures( allObjectLoadCount, allObjectTextureIDs);
+	glDeleteTextures(allObjectLoadCount, allObjectTextureIDs);
 	allObjectLoadCount = 0;
 }
 
-LibSprites::LibSprites() : animationSpeed( 0),
-						   animationCount( 0),
-						   animationNumber( 0)
+LibSprites::LibSprites() : animationSpeed(0),
+						   animationCount(0),
+						   animationNumber(0)
 {
 }
 
 LibSprites::~LibSprites()
 {
-	glDeleteTextures( textureIDArray.size(), &textureIDArray[0]);
+	glDeleteTextures(textureIDArray.size(), &textureIDArray[0]);
 }
 
-void LibSprites::setAnimationSpeed( int speed)
+void LibSprites::setAnimationSpeed(int speed)
 {
 	animationSpeed = speed;
 }
 
-int LibSprites::getSpriteCount( void)
+int LibSprites::getSpriteCount(void)
 {
 	return spriteCount;
 }
 
-void LibSprites::draw( int number)
+void LibSprites::draw(int number)
 {
 	// 描画フラグチェック
-	if( !isDraw) { return; }
+	if(!isDraw) { return; }
 
-	drawTexture( textureIDArray[number]);
+	drawTexture(textureIDArray[number]);
 }
 
-void LibSprites::animation( void)
+void LibSprites::animation(void)
 {
 	animationCount++;
 
-	if( animationSpeed != 0)
+	if(animationSpeed != 0)
 	{
-		if( animationCount % animationSpeed != 0)
+		if(animationCount % animationSpeed != 0)
 		{
-			draw( animationNumber);
+			draw(animationNumber);
 			return;
 		}
 	}
@@ -107,15 +107,15 @@ void LibSprites::animation( void)
 	animationNumber++;
 	animationNumber %= getSpriteCount() - 1;
 	
-	draw( animationNumber);
+	draw(animationNumber);
 }
 
-void LibSprites::createTexture( png::image<png::rgba_pixel>& image, int number, int posX, int posY)
+void LibSprites::createTexture(png::image<png::rgba_pixel>& image, int number, int posX, int posY)
 {
-	glGenTextures( 1, &textureIDArray[number]);
+	glGenTextures(1, &textureIDArray[number]);
 
 	// 未使用のテクスチャ番号を指定
-	glBindTexture( GL_TEXTURE_2D, textureIDArray[number]);
+	glBindTexture(GL_TEXTURE_2D, textureIDArray[number]);
 
 	allObjectTextureIDs[allObjectLoadCount] = textureIDArray[number];
 
@@ -123,17 +123,17 @@ void LibSprites::createTexture( png::image<png::rgba_pixel>& image, int number, 
 	allObjectLoadCount++;
 
 	// 読み込み
-	for( int y = 0; y < sizeY; y++)
+	for(int y = 0; y < sizeY; y++)
 	{
-		memcpy( &pixelBuffer[sizeX * y * 4], &image[posY + y][posX], sizeX * 4);
+		memcpy(&pixelBuffer[sizeX * y * 4], &image[posY + y][posX], sizeX * 4);
 	}
 
 	// VRAMに転送
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, sizeX, sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sizeX, sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelBuffer);
 
 	// 転送したテクスチャの設定
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }

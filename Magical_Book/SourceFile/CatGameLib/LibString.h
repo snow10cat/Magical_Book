@@ -14,11 +14,11 @@ class LibSprites;
 class LibString : public LibSprite
 {
 public:
-	static LibString* create( const char* message);
-	static void loadTexture( void);
+	static LibString* create(const char* message);
+	static void loadTexture(void);
 
-	void setString( const char* message);
-	void draw( void);
+	void setString(const char* message);
+	void draw(void);
 
 private:
 	static LibSprites* sprites;

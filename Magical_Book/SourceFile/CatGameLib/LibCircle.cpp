@@ -16,207 +16,207 @@ public:
 	int Degree;
 	float Radian;
 
-	int radianToDegree( float angle)
+	int radianToDegree(float angle)
 	{
-		angle = radianWrap( angle);
-		return (int)( angle * halfDegree / pi + 0.9);
+		angle = radianWrap(angle);
+		return (int)(angle * halfDegree / pi + 0.9);
 	}
-	float degreeToRadian( int angle)
+	float degreeToRadian(int angle)
 	{
-		angle = degreeWrap( angle);
+		angle = degreeWrap(angle);
 		return angle * pi / halfDegree;
 	}
-	int degreeWrap( int x)
+	int degreeWrap(int x)
 	{
-		return LibBasicFunc::wrap( x, -halfDegree + 1, halfDegree + 1);
+		return LibBasicFunc::wrap(x, -halfDegree + 1, halfDegree + 1);
 	}
-	float radianWrap( float x)
+	float radianWrap(float x)
 	{
-		return LibBasicFunc::wrap( x, -pi + degreeToRadian( 1), pi + degreeToRadian( 1));
+		return LibBasicFunc::wrap(x, -pi + degreeToRadian(1), pi + degreeToRadian(1));
 	}
 };
 
 LibCircle::LibCircle()
 {
 	p = new(nothrow) Private();
-	assert( p != nullptr);
+	assert(p != nullptr);
 	*this = 0;
 }
 
-LibCircle::LibCircle( int angle)
+LibCircle::LibCircle(int angle)
 {
 	p = new(nothrow) Private();
-	assert( p != nullptr);
+	assert(p != nullptr);
 	*this = angle;
 }
 
-LibCircle::LibCircle( float angle)
+LibCircle::LibCircle(float angle)
 {
 	p = new(nothrow) Private();
-	assert( p != nullptr);
+	assert(p != nullptr);
 	*this = angle;
 }
 
-LibCircle::~LibCircle( void)
+LibCircle::~LibCircle(void)
 {
 	delete p;
 	p = nullptr;
 }
 
-LibCircle& LibCircle::operator=( int angle)
+LibCircle& LibCircle::operator=(int angle)
 {
-	assert( p != nullptr);
-	p -> Degree = p -> degreeWrap( angle);
-	p -> Radian = p -> degreeToRadian( p -> Degree);
+	assert(p != nullptr);
+	p -> Degree = p -> degreeWrap(angle);
+	p -> Radian = p -> degreeToRadian(p -> Degree);
 	return *this;
 }
 
-LibCircle& LibCircle::operator=( float angle)
+LibCircle& LibCircle::operator=(float angle)
 {
-	assert( p != nullptr);
-	p -> Radian = p -> radianWrap( angle);
-	p -> Degree = p -> radianToDegree( p -> Radian);
+	assert(p != nullptr);
+	p -> Radian = p -> radianWrap(angle);
+	p -> Degree = p -> radianToDegree(p -> Radian);
 	return *this;
 }
 
-LibCircle& LibCircle::operator=( const LibCircle& c)
+LibCircle& LibCircle::operator=(const LibCircle& c)
 {
-	assert( p != nullptr && c.p != nullptr);
-	if( this == &c) { return *this; }
+	assert(p != nullptr && c.p != nullptr);
+	if(this == &c) { return *this; }
 	this -> p -> Degree = c.p -> Degree;
 	this -> p -> Radian = c.p -> Radian;
 	return *this;
 }
 
-LibCircle& LibCircle::operator+=( int angle)
+LibCircle& LibCircle::operator+=(int angle)
 {
-	assert( p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree + angle);
-	p -> Radian = p -> degreeToRadian( p -> Degree);
+	assert(p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree + angle);
+	p -> Radian = p -> degreeToRadian(p -> Degree);
 	return *this;
 }
 
-LibCircle& LibCircle::operator+=( float angle)
+LibCircle& LibCircle::operator+=(float angle)
 {
-	assert( p != nullptr);
-	p -> Radian = p -> radianWrap( p -> Radian + angle);
-	p -> Degree = p -> radianToDegree( p -> Radian);
+	assert(p != nullptr);
+	p -> Radian = p -> radianWrap(p -> Radian + angle);
+	p -> Degree = p -> radianToDegree(p -> Radian);
 	return *this;
 }
 
-LibCircle& LibCircle::operator+=( const LibCircle& c)
+LibCircle& LibCircle::operator+=(const LibCircle& c)
 {
-	assert( p != nullptr && c.p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree + c.p -> Degree);
-	p -> Radian = p -> radianWrap( p -> Radian + c.p -> Radian);
+	assert(p != nullptr && c.p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree + c.p -> Degree);
+	p -> Radian = p -> radianWrap(p -> Radian + c.p -> Radian);
 	return *this;
 }
 
-int LibCircle::operator+( int angle)
+int LibCircle::operator+(int angle)
 {
-	assert( p != nullptr);
-	return p -> degreeWrap( p -> Degree + angle);
+	assert(p != nullptr);
+	return p -> degreeWrap(p -> Degree + angle);
 }
 
-float LibCircle::operator+( float angle)
+float LibCircle::operator+(float angle)
 {
-	assert( p != nullptr);
-	return p -> radianWrap( p -> Radian + angle);
+	assert(p != nullptr);
+	return p -> radianWrap(p -> Radian + angle);
 }
 
-LibCircle& LibCircle::operator-=( int angle)
+LibCircle& LibCircle::operator-=(int angle)
 {
-	assert( p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree - angle);
-	p -> Radian = p -> degreeToRadian( p -> Degree);
+	assert(p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree - angle);
+	p -> Radian = p -> degreeToRadian(p -> Degree);
 	return *this;
 }
 
-LibCircle& LibCircle::operator-=( float angle)
+LibCircle& LibCircle::operator-=(float angle)
 {
-	assert( p != nullptr);
-	p -> Radian = p -> radianWrap( p -> Radian - angle);
-	p -> Degree = p -> radianToDegree( p -> Radian);
+	assert(p != nullptr);
+	p -> Radian = p -> radianWrap(p -> Radian - angle);
+	p -> Degree = p -> radianToDegree(p -> Radian);
 	return *this;
 }
 
-LibCircle& LibCircle::operator-=( const LibCircle& c)
+LibCircle& LibCircle::operator-=(const LibCircle& c)
 {
-	assert( p != nullptr && c.p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree - c.p -> Degree);
-	p -> Radian = p -> radianWrap( p -> Radian - c.p -> Radian);
+	assert(p != nullptr && c.p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree - c.p -> Degree);
+	p -> Radian = p -> radianWrap(p -> Radian - c.p -> Radian);
 	return *this;
 }
 
-int LibCircle::operator-( int angle)
+int LibCircle::operator-(int angle)
 {
-	assert( p != nullptr);
-	return p -> degreeWrap( p -> Degree - angle);;
+	assert(p != nullptr);
+	return p -> degreeWrap(p -> Degree - angle);;
 }
 
-float LibCircle::operator-( float angle)
+float LibCircle::operator-(float angle)
 {
-	assert( p != nullptr);
-	return p -> radianWrap( p -> Radian - angle);
+	assert(p != nullptr);
+	return p -> radianWrap(p -> Radian - angle);
 }
 
-LibCircle& LibCircle::operator*=( int val)
+LibCircle& LibCircle::operator*=(int val)
 {
-	assert( p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree * val);
-	p -> Radian = p -> degreeToRadian( p -> Degree);
+	assert(p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree * val);
+	p -> Radian = p -> degreeToRadian(p -> Degree);
 	return *this;
 }
 
-LibCircle& LibCircle::operator*=( float val)
+LibCircle& LibCircle::operator*=(float val)
 {
-	assert( p != nullptr);
-	p -> Radian = p -> radianWrap( p -> Radian * val);
-	p -> Degree = p -> radianToDegree( p -> Radian);
+	assert(p != nullptr);
+	p -> Radian = p -> radianWrap(p -> Radian * val);
+	p -> Degree = p -> radianToDegree(p -> Radian);
 	return *this;
 }
 
 
-LibCircle& LibCircle::operator*=( const LibCircle& c)
+LibCircle& LibCircle::operator*=(const LibCircle& c)
 {
-	assert( p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree * c.p -> Degree);
-	p -> Radian = p -> radianWrap( p -> Radian * c.p -> Radian);
+	assert(p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree * c.p -> Degree);
+	p -> Radian = p -> radianWrap(p -> Radian * c.p -> Radian);
 	return *this;
 }
 
-LibCircle& LibCircle::operator/=( int val)
+LibCircle& LibCircle::operator/=(int val)
 {
-	assert( p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree / val);
-	p -> Radian = p -> degreeToRadian( p -> Degree);
+	assert(p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree / val);
+	p -> Radian = p -> degreeToRadian(p -> Degree);
 	return *this;
 }
 
-LibCircle& LibCircle::operator/=( float val)
+LibCircle& LibCircle::operator/=(float val)
 {
-	assert( p != nullptr);
-	p -> Radian = p -> radianWrap( p -> Radian / val);
-	p -> Degree = p -> radianToDegree( p -> Radian);
+	assert(p != nullptr);
+	p -> Radian = p -> radianWrap(p -> Radian / val);
+	p -> Degree = p -> radianToDegree(p -> Radian);
 	return *this;
 }
 
-LibCircle& LibCircle::operator/=( const LibCircle& c)
+LibCircle& LibCircle::operator/=(const LibCircle& c)
 {
-	assert( p != nullptr);
-	p -> Degree = p -> degreeWrap( p -> Degree / c.p -> Degree);
-	p -> Radian = p -> radianWrap( p -> Radian / c.p -> Radian);
+	assert(p != nullptr);
+	p -> Degree = p -> degreeWrap(p -> Degree / c.p -> Degree);
+	p -> Radian = p -> radianWrap(p -> Radian / c.p -> Radian);
 	return *this;
 }
 
-int LibCircle::getDegree( void)
+int LibCircle::getDegree(void)
 {
-	assert( p != nullptr);
+	assert(p != nullptr);
 	return p -> Degree;
 }
 
-float LibCircle::getRadian( void)
+float LibCircle::getRadian(void)
 {
-	assert( p != nullptr);
+	assert(p != nullptr);
 	return p -> Radian;
 }

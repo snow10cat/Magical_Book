@@ -44,7 +44,7 @@ private:
 	int bgCounter;
 	int bgmCounter;
 
-//	int materialCounter;
+	int counter;
 
 	int materialCol;
 	int materialRow;

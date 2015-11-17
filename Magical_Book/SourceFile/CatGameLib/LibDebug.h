@@ -17,10 +17,10 @@ public:
 	 * 	@author	minaka1412
 	 * 	@param	message		出力したい文字列
 	 */
-	static void errorMessageBox( const char* message)
+	static void errorMessageBox(const char* message)
 	{
-		MessageBox( NULL, message, "Error!", MB_OK);
-		std::exit( 0);
+		MessageBox(NULL, message, "Error!", MB_OK);
+		std::exit(0);
 	}
 
 	/**
@@ -29,11 +29,11 @@ public:
 	 * 	@author	minaka1412
 	 * 	@param	message		出力したい文字列
 	 */
-	static void debugMessageLog( const char* message)
+	static void debugMessageLog(const char* message)
 	{
 		std::string str = message;
 		str += "\n";
-		OutputDebugString( str.c_str());
+		OutputDebugString(str.c_str());
 	}
 
 	/**
@@ -42,33 +42,33 @@ public:
 	 * 	@author	minaka1412
 	 * 	@param	message		出力したい文字列
 	 */
-	static void debugMessageLog( int message)
+	static void debugMessageLog(int message)
 	{
-		std::string str = std::to_string( message);
+		std::string str = std::to_string(message);
 		str += "\n";
-		OutputDebugString( str.c_str());
+		OutputDebugString(str.c_str());
 	}
 
 	template < typename Func >
-	static void getFunctionTime( Func func )
+	static void getFunctionTime(Func func )
 	{
-		glfwSetTime( 0.0);
+		glfwSetTime(0.0);
 		
 		func();
 
 		auto time = glfwGetTime();
 		char str[256];
-		sprintf( str, "%f", time);
-		LibDebug::debugMessageLog( str);
+		sprintf(str, "%f", time);
+		LibDebug::debugMessageLog(str);
 	}
 
-	static void showTime( void)
+	static void showTime(void)
 	{
 		auto time = glfwGetTime();
 		char str[256];
-		sprintf( str, "%f", time);
-		LibDebug::debugMessageLog( str);
-		glfwSetTime( 0.0);
+		sprintf(str, "%f", time);
+		LibDebug::debugMessageLog(str);
+		glfwSetTime(0.0);
 	}
 
 };

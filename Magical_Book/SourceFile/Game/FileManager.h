@@ -29,7 +29,7 @@ public:
 	~FileManager();
 
 	int getFileCount(void);
-	const char* getFileName( int number);
+	const char* getFileName(int number);
 
 	StageFile* loadFile(const char* fileName);
 	void saveFile(StageFile* file);

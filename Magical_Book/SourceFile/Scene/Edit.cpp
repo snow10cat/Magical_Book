@@ -6,6 +6,8 @@
 #include "SceneManager.h"
 #include "Edit.h"
 
+#define COUNTER 25
+
 using namespace std;
 using namespace CatGameLib;
 using namespace MagicalBook;
@@ -80,10 +82,10 @@ void Edit::init(void)
 		grid_size[i] -> setAlpha(0.0f);
 	}
 
-	for( int i = 1; i <= ResourceManager::BG_Count; i++)
+	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back(instance -> getSprite( bgName.c_str()));
+		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
 		bgTextures[i - 1] -> setPosition(sWHeaf - 170, sHHeaf);
 		bgTextures[i - 1] -> setScale(0.7f);
 		bgTextures[i - 1] -> setAlpha(0.0f);
@@ -94,15 +96,15 @@ void Edit::init(void)
 	material_logo -> setAlpha(0.0f);
 
 	chipTable -> setPosition(sWHeaf + 450, sHHeaf);
-	chipTable -> setScale( 1.0f);
+	chipTable -> setScale(1.0f);
 	chipTable -> setAlpha(0.0f);
 
 	pointer -> setPosition(sWHeaf + 350+17, sHHeaf + 200-17);
-	pointer -> setScale( 1.0f);
+	pointer -> setScale(1.0f);
 	pointer -> setAlpha(0.0f);
 
 	chip -> setPosition(sWHeaf + 350, sHHeaf + 200);
-	chip -> setScale( 1.0f);
+	chip -> setScale(1.0f);
 	chip -> setAlpha(0.0f);
 
 	player -> setPosition(sWHeaf + 350, sHHeaf + 68);
@@ -140,6 +142,8 @@ void Edit::init(void)
 	back -> setPosition(sWHeaf + 450, sHHeaf - 300);
 	back -> setScale(0.8f);
 	back -> setAlpha(0.0f);
+
+	counter = 0;
 
 	chipNum = 1;
 	chipState = 0;
@@ -377,6 +381,19 @@ void Edit::materialSelect(void)
 	{
 		materialRow--;
 	}
+	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Up))
+	{
+		counter++;
+		if(counter >= COUNTER && counter % 5 == 1)
+		{
+			materialRow--;
+		}
+	}
+	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Up))
+	{
+		counter = 0;
+	}
+
 	if(materialRow == 1 && materialCol == 5)
 	{
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
@@ -391,7 +408,21 @@ void Edit::materialSelect(void)
 		{
 			materialRow++;
 		}
+
+		if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Down))
+		{
+			counter++;
+			if(counter >= COUNTER && counter % 5 == 1)
+			{
+				materialRow++;
+			}
+		}
+		else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Down))
+		{
+			counter = 0;
+		}
 	}
+	
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
 		if(materialRow % 4 != 0)
@@ -399,6 +430,19 @@ void Edit::materialSelect(void)
 			materialCol--;
 		}
 	}
+	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Left))
+	{
+		counter++;
+		if(counter >= COUNTER && counter % 5 == 1)
+		{
+			materialCol--;
+		}
+	}
+	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Left))
+	{
+		counter = 0;
+	}
+	
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 	{
 		if(materialRow % 4 != 0)
@@ -406,6 +450,19 @@ void Edit::materialSelect(void)
 			materialCol++;
 		}
 	}
+	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Right))
+	{
+		counter++;
+		if(counter >= COUNTER && counter % 5 == 1)
+		{
+			materialCol++;
+		}
+	}
+	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Right))
+	{
+		counter = 0;
+	}
+	
 
 	materialRow = CatGameLib::LibBasicFunc::wrap(materialRow, 0, 4);
 	if(materialRow == 1)
@@ -515,17 +572,68 @@ void Edit::materialSet(void)
 	{
 		materialSetRow--;
 	}
+	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Up))
+	{
+		counter++;
+		if(counter >= COUNTER && counter % 5 == 1)
+		{
+			materialSetRow--;
+		}
+	}
+	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Up))
+	{
+		counter = 0;
+	}
+
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 	{
 		materialSetRow++;
 	}
+	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Down))
+	{
+		counter++;
+		if(counter >= COUNTER && counter % 5 == 1)
+		{
+			materialSetRow++;
+		}
+	}
+	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Down))
+	{
+		counter = 0;
+	}
+
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
 		materialSetCol--;
 	}
+	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Left))
+	{
+		counter++;
+		if(counter >= COUNTER && counter % 5 == 1)
+		{
+			materialSetCol--;
+		}
+	}
+	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Left))
+	{
+		counter = 0;
+	}
+
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 	{
 		materialSetCol++;
+	}
+	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Right))
+	{
+		counter++;
+		if(counter >= COUNTER && counter % 5 == 1)
+		{
+			materialSetCol++;
+		}
+	}
+	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Right))
+	{
+		counter = 0;
 	}
 	
 	chipDirection = CatGameLib::LibBasicFunc::wrap(chipDirection, 0, 4);

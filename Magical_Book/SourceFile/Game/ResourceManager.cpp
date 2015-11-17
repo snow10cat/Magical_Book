@@ -21,16 +21,16 @@ ResourceManager::~ResourceManager()
 }
 
 
-void ResourceManager::loadResource( void)
+void ResourceManager::loadResource(void)
 {
 	//‰¹º
-	soundArray["selectbgm"] = LibSound::create( "bgm/select.wav");
-	soundArray["bgm1"] = LibSound::create( "bgm/stage1.wav");
-	soundArray["bgm2"] = LibSound::create( "bgm/stage2.wav");
-	soundArray["bgm3"] = LibSound::create( "bgm/stage3.wav");
+	soundArray["selectbgm"] = LibSound::create("bgm/select.wav");
+	soundArray["bgm1"] = LibSound::create("bgm/stage1.wav");
+	soundArray["bgm2"] = LibSound::create("bgm/stage2.wav");
+	soundArray["bgm3"] = LibSound::create("bgm/stage3.wav");
 	soundArray["menuSelect"] = LibSound::create("se/select.wav");
-	soundArray["menuOk"] = LibSound::create( "se/page.wav");
-	soundArray["pageNext"] = LibSound::create( "se/page.wav");
+	soundArray["menuOk"] = LibSound::create("se/page.wav");
+	soundArray["pageNext"] = LibSound::create("se/page.wav");
 
 	//‰æ‘œ
 	spriteArray["fadeout"] = LibSprite::create("background/fadeout.png");
@@ -50,7 +50,7 @@ void ResourceManager::loadResource( void)
 
 	for(int i = 1; i <= BG_Count; i++)
 	{
-		string fileName = "game_bg" + to_string( i);
+		string fileName = "game_bg" + to_string(i);
 		string filePass =  "background/" + fileName + ".png";
 
 		spriteArray[fileName] = LibSprite::create(filePass.c_str());

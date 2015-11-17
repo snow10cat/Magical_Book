@@ -11,8 +11,8 @@ using namespace CatGameLib;
 using namespace MagicalBook;
 using namespace boost::filesystem;
 
-FileManager::FileManager() : stageFileCount( 0),
-							 currentPath( boost::filesystem::current_path())
+FileManager::FileManager() : stageFileCount(0),
+							 currentPath(boost::filesystem::current_path())
 {
 	stageFileCount = getFileCount();
 }
@@ -22,17 +22,17 @@ int FileManager::getFileCount(void)
 	stageFileCount = 0;
 	fileNameArray.clear();
 
-	path dir( currentPath.string() + "/ResourceFile/Stage/");
+	path dir(currentPath.string() + "/ResourceFile/Stage/");
 	
 
-	BOOST_FOREACH(const path& p, make_pair( directory_iterator( dir), directory_iterator()))
+	BOOST_FOREACH(const path& p, make_pair(directory_iterator(dir), directory_iterator()))
 	{
 		if (!is_directory(p))
 		{
 			string fileName = p.filename().string();
-			fileNameArray.push_back( fileName);
-			fileName.erase( 0, fileName.rfind( '.', fileName.size()));
-			if( fileName == ".stage")
+			fileNameArray.push_back(fileName);
+			fileName.erase(0, fileName.rfind('.', fileName.size()));
+			if(fileName == ".stage")
 			{
 				stageFileCount++;
 			}
@@ -43,7 +43,7 @@ int FileManager::getFileCount(void)
 }
 
 
-const char* FileManager::getFileName( int number)
+const char* FileManager::getFileName(int number)
 {
 	return fileNameArray[number].c_str();
 }
@@ -54,50 +54,50 @@ StageFile* FileManager::loadFile(const char* fileName)
 	StageFile* file = StageFile::create();
 
 	string filePass = currentPath.string() + "/ResourceFile/Stage/" + fileName;
-	boost::filesystem::ifstream inStream( filePass);
-	if( inStream.fail())
+	boost::filesystem::ifstream inStream(filePass);
+	if(inStream.fail())
 	{
 		return nullptr;
 	}
 
 	string buf;
 	vector<unsigned char> vec;
-	for( int i = 0; getline( inStream, buf); i++)
+	for(int i = 0; getline(inStream, buf); i++)
 	{
-		istringstream str( buf);
+		istringstream str(buf);
 		string temp;
 		int x;
 		int y;
-		switch( i)
+		switch(i)
 		{
 		case 0: // ステージサイズ
-			getline( str, temp, ',');
-			x = atoi( temp.c_str());
-			getline( str, temp);
-			y = atoi( temp.c_str());
-			file -> setStageSize( LibVector2( x, y));
+			getline(str, temp, ',');
+			x = atoi(temp.c_str());
+			getline(str, temp);
+			y = atoi(temp.c_str());
+			file -> setStageSize(LibVector2(x, y));
 			break;
 
 		case 1: // 背景
-			getline( str, temp);
-			file -> setBGNumber( (ResourceManager::BgName)atoi( temp.c_str()));
+			getline(str, temp);
+			file -> setBGNumber((ResourceManager::BgName)atoi(temp.c_str()));
 			break;
 
 		case 2: // BGM
-			getline( str, temp);
-			file -> setMusicNumber( (ResourceManager::BgmNum)atoi( temp.c_str()));
+			getline(str, temp);
+			file -> setMusicNumber((ResourceManager::BgmNum)atoi(temp.c_str()));
 			break;
 		}
-		if( i >= 3)
+		if(i >= 3)
 		{
-			while( getline( str, temp, ','))
+			while(getline(str, temp, ','))
 			{
-				vec.push_back( atoi( temp.c_str()));
+				vec.push_back(atoi(temp.c_str()));
 			}
 		}
 
 	}
-	file -> setStageData( vec);
+	file -> setStageData(vec);
 
 	return file;
 }
@@ -105,16 +105,16 @@ StageFile* FileManager::loadFile(const char* fileName)
 
 void FileManager::saveFile(StageFile* file)
 {
-	string fileName = currentPath.string() + "/ResourceFile/Stage/" + FILE_NAME + to_string( fileNameArray.size() + 1) + ".stage";
+	string fileName = currentPath.string() + "/ResourceFile/Stage/" + FILE_NAME + to_string(fileNameArray.size() + 1) + ".stage";
 
-	boost::filesystem::ofstream outStream( fileName);
+	boost::filesystem::ofstream outStream(fileName);
 	outStream << file -> getStageSize().x << "," << file -> getStageSize().y << "\n";
 	outStream << file -> getBGNumber() << "\n";
 	outStream << file -> getMusicNumber() << "\n";
 
-	for( int y = 0; y < file -> getStageSize().y; y++)
+	for(int y = 0; y < file -> getStageSize().y; y++)
 	{
-		for( int x = 0; x < file -> getStageSize().x; x++)
+		for(int x = 0; x < file -> getStageSize().x; x++)
 		{
 			outStream << file -> getStageData()[y * file -> getStageSize().x + x] << ",";
 		}
@@ -127,11 +127,11 @@ void FileManager::saveFile(StageFile* file)
 
 
 
-StageFile* StageFile::create( void)
+StageFile* StageFile::create(void)
 {
 	StageFile* file = new (nothrow)StageFile();
 
-	if( !file)
+	if(!file)
 	{
 		return nullptr;
 	}
@@ -140,9 +140,9 @@ StageFile* StageFile::create( void)
 }
 
 
-StageFile::StageFile() : stageSize( LibVector2( 0, 0)),
-						 bgNumber( ResourceManager::BgName::BG_Castle),
-						 musicNumber( ResourceManager::BgmNum::BGM_1),
+StageFile::StageFile() : stageSize(LibVector2(0, 0)),
+						 bgNumber(ResourceManager::BgName::BG_Castle),
+						 musicNumber(ResourceManager::BgmNum::BGM_1),
 						 stageData()
 {
 }

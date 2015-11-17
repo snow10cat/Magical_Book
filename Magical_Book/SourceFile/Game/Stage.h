@@ -25,15 +25,15 @@ public:
 	void update(void);
 	void draw(void);
 
-	void setBGNumber( );
-	void setMapData( const std::vector<unsigned char>& map);
+	void setBGNumber();
+	void setMapData(const std::vector<unsigned char>& map);
 
-	int getRotateCount( void);
-	int getRotateDegree( void);
-	float getRotateRadian( void);
+	int getRotateCount(void);
+	int getRotateDegree(void);
+	float getRotateRadian(void);
 
-	int getChipNumber( int x, int y);
-	CatGameLib::LibVector2 getChipPosition( int x, int y);
+	int getChipNumber(int x, int y);
+	CatGameLib::LibVector2 getChipPosition(int x, int y);
 
 private:
 	int chipCount;

@@ -38,7 +38,7 @@ public:
 	ResourceManager(const ResourceManager&) = delete;
 	const ResourceManager& operator=(const ResourceManager&) = delete;
 
-	void loadResource( void);
+	void loadResource(void);
 
 	CatGameLib::LibSound* getSound(const std::string& fileName);
 

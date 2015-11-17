@@ -49,10 +49,10 @@ void Stageselect::init(void)
 	instance -> getSprites("openBook") -> setPosition(sWHeaf + 300, sHHeaf);
 	instance -> getSprites("openBook") -> setScale(1.5f);
 
-	for( int i = 1; i <= ResourceManager::BG_Count; i++)
+	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back( instance -> getSprite( bgName.c_str()));
+		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
 		bgTextures[i - 1] -> setAlpha(0.0f);
 	}
 
@@ -186,7 +186,7 @@ void Stageselect::gameSelect(void)
 	{
 		flag = counterNumber;
 
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up))
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 		{
 			counter -= 2;
 		}
@@ -195,9 +195,9 @@ void Stageselect::gameSelect(void)
 			counter += 2;
 		}
 
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 		{
-			if( counterNumber % 2)
+			if(counterNumber % 2)
 			{
 				counter--;
 			}
@@ -209,7 +209,7 @@ void Stageselect::gameSelect(void)
 
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 		{
-			if( counterNumber % 2)
+			if(counterNumber % 2)
 			{
 				flag = 6;
 			}
@@ -227,9 +227,9 @@ void Stageselect::gameSelect(void)
 	}
 	else
 	{
-		if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 		{
-			if( counter % 2 == 0)
+			if(counter % 2 == 0)
 			{
 				counter++;
 				flag = counter;
@@ -241,7 +241,7 @@ void Stageselect::gameSelect(void)
 		}
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 		{
-			if( counter % 2 == 0)
+			if(counter % 2 == 0)
 			{
 				flag = counter;
 			}

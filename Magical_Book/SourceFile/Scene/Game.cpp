@@ -16,27 +16,27 @@ Game::~Game()
 	stage = nullptr;
 }
 
-void Game::init( void)
+void Game::init(void)
 {
 	stage = new Stage();
-	characters.push_back( new Player());
+	characters.push_back(new Player());
 
-	for( int i = 0; i < characters.size(); i++)
+	for(int i = 0; i < characters.size(); i++)
 	{
 		characters[i] -> init();
 	}
 }
 
-void Game::update( void)
+void Game::update(void)
 {
 	stage -> update();
-	for( int i = 0; i < characters.size(); i++)
+	for(int i = 0; i < characters.size(); i++)
 	{
-		characters[i] -> update( stage);
+		characters[i] -> update(stage);
 	}
 
 	stage -> draw();
-	for( int i = 0; i < characters.size(); i++)
+	for(int i = 0; i < characters.size(); i++)
 	{
 		characters[i] -> draw();
 	}

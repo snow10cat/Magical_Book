@@ -8,9 +8,9 @@ using namespace std;
 using namespace CatGameLib;
 using namespace MagicalBook;
 
-Player::Player() : direction( false),
-				   animationTimer( 0),
-				   animationCount( 0)
+Player::Player() : direction(false),
+				   animationTimer(0),
+				   animationCount(0)
 {
 }
 
@@ -18,17 +18,17 @@ Player::~Player()
 {
 }
 
-void Player::init( void)
+void Player::init(void)
 {
 	const int firstPosX = 620;	// ステージファイルからとってくる
 	const int firstPosY = 300;
 
-	sprites	= LibSprites::create( "player/player.png", 34, 68);
-	damageSprites = LibSprites::create( "player/player_damage.png", 42, 68);
+	sprites	= LibSprites::create("player/player.png", 34, 68);
+	damageSprites = LibSprites::create("player/player_damage.png", 42, 68);
 
-	sprites -> setPosition( firstPosX, firstPosY);
-	sprites -> setAnchorPointY( 0.25f);
-	damageSprites -> setPosition( firstPosX, firstPosY);
+	sprites -> setPosition(firstPosX, firstPosY);
+	sprites -> setAnchorPointY(0.25f);
+	damageSprites -> setPosition(firstPosX, firstPosY);
 
 	position.x = firstPosX;
 	position.y = firstPosY;
@@ -36,90 +36,90 @@ void Player::init( void)
 	velocity.y = 0;
 }
 
-void Player::update( Stage* stage)
+void Player::update(Stage* stage)
 {
 	LibInput* input = LibInput::getInstance();
 
 	animationTimer++;
 
-	damageSprites -> setDrawFlag( false);
+	damageSprites -> setDrawFlag(false);
 	state = Idle;
 
 	int stageAngle = stage -> getRotateDegree();
 
-	if( stageAngle % 90 == 0)
+	if(stageAngle % 90 == 0)
 	{
-		if( input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Left))
+		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 		{
 			direction = false;
 		}
-		if( input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Right))
+		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 		{
 			direction = true;
 		}
 
 		// 移動
-		move( stage);
+		move(stage);
 
 		// 回転
-		sprites -> setRotation( 0);
+		sprites -> setRotation(0);
 	}
 	else
 	{
 		int quarterDeg = 90;
 		int rot = quarterDeg * stage -> getRotateCount() - stageAngle;
-		LibDebug::debugMessageLog( "------------------------------------------");
-		LibDebug::debugMessageLog( string( "StageRot : " + to_string( stage -> getRotateCount() - stageAngle)).c_str());
-		LibDebug::debugMessageLog( string( "Rot : " + to_string( rot)).c_str());
+		LibDebug::debugMessageLog("------------------------------------------");
+		LibDebug::debugMessageLog(string("StageRot : " + to_string(stage -> getRotateCount() - stageAngle)).c_str());
+		LibDebug::debugMessageLog(string("Rot : " + to_string(rot)).c_str());
 
-		if( rot > 0)
+		if(rot > 0)
 		{
-			if( ( rot - quarterDeg) < 0)
+			if((rot - quarterDeg) < 0)
 			{
-				LibDebug::debugMessageLog( string( "D : 異常 / " + to_string( -rot + quarterDeg)).c_str());
-				sprites -> setRotation( -rot + quarterDeg);
+				LibDebug::debugMessageLog(string("D : 異常 / " + to_string(-rot + quarterDeg)).c_str());
+				sprites -> setRotation(-rot + quarterDeg);
 			}
 			else
 			{
-				LibDebug::debugMessageLog( string( "D : 正常 / " + to_string( rot - quarterDeg)).c_str());
-				sprites -> setRotation( rot - quarterDeg);
+				LibDebug::debugMessageLog(string("D : 正常 / " + to_string(rot - quarterDeg)).c_str());
+				sprites -> setRotation(rot - quarterDeg);
 			}
 		}
 		else
 		{	
-			if( ( rot + quarterDeg) < 0)
+			if((rot + quarterDeg) < 0)
 			{
-				LibDebug::debugMessageLog( string( "F : 異常 / " + to_string( -rot - quarterDeg)).c_str());
-				sprites -> setRotation( -rot - quarterDeg);
+				LibDebug::debugMessageLog(string("F : 異常 / " + to_string(-rot - quarterDeg)).c_str());
+				sprites -> setRotation(-rot - quarterDeg);
 			}
 			else
 			{
-				LibDebug::debugMessageLog( string( "F : 正常 / " + to_string( rot + quarterDeg)).c_str());
-				sprites -> setRotation( rot + quarterDeg);				
+				LibDebug::debugMessageLog(string("F : 正常 / " + to_string(rot + quarterDeg)).c_str());
+				sprites -> setRotation(rot + quarterDeg);				
 			}
 		}
-		rotation( rot > 0 ? 1 : -1);
+		rotation(rot > 0 ? 1 : -1);
 
 	}
 
-	if( direction)
+	if(direction)
 	{
-		sprites -> setScaleX( -1.0f);
+		sprites -> setScaleX(-1.0f);
 	}
 	else
 	{
-		sprites -> setScaleX( 1.0f);
+		sprites -> setScaleX(1.0f);
 	}
 
 	// 描画位置設定
-	sprites -> setPosition( position);
-	damageSprites -> setPosition( position);
+	sprites -> setPosition(position);
+	damageSprites -> setPosition(position);
 	
-	switch( state)
+	switch(state)
 	{
 	case Idle:
-		if( animationTimer % 10 == 0) { animationCount++; }
-		animationCount = LibBasicFunc::wrap( animationCount, 0, 6);
+		if(animationTimer % 10 == 0) { animationCount++; }
+		animationCount = LibBasicFunc::wrap(animationCount, 0, 6);
 		break;
 
 	case NoMove:
@@ -127,36 +127,36 @@ void Player::update( Stage* stage)
 		break;
 
 	case Walk:
-		if( animationTimer % 5 == 0) { animationCount++; }
-		animationCount = LibBasicFunc::wrap( animationCount, 7, 13);
+		if(animationTimer % 5 == 0) { animationCount++; }
+		animationCount = LibBasicFunc::wrap(animationCount, 7, 13);
 		break;
 
 	case Fall:
-		if( animationTimer % 7 == 0) { animationCount++; }
-		animationCount = LibBasicFunc::wrap( animationCount, 14, 18);
+		if(animationTimer % 7 == 0) { animationCount++; }
+		animationCount = LibBasicFunc::wrap(animationCount, 14, 18);
 		break;
 
 	case Door:
-		if( animationTimer % 7 == 0) { animationCount++; }
-		animationCount = LibBasicFunc::wrap( animationCount, 21, 27);
+		if(animationTimer % 7 == 0) { animationCount++; }
+		animationCount = LibBasicFunc::wrap(animationCount, 21, 27);
 		break;
 
 	case Damage:
-		sprites -> setDrawFlag( false);
-		damageSprites -> setDrawFlag( true);
-		if( animationTimer % 7 == 0) { animationCount++; }
-		animationCount = LibBasicFunc::clamp( animationCount, 0, 6);
+		sprites -> setDrawFlag(false);
+		damageSprites -> setDrawFlag(true);
+		if(animationTimer % 7 == 0) { animationCount++; }
+		animationCount = LibBasicFunc::clamp(animationCount, 0, 6);
 		break;
 	}
 }
 
-void Player::draw( void)
+void Player::draw(void)
 {
-	sprites -> draw( animationCount);
-	damageSprites -> draw( animationCount);
+	sprites -> draw(animationCount);
+	damageSprites -> draw(animationCount);
 }
 
-void Player::move( Stage* stage)
+void Player::move(Stage* stage)
 {
 	// 重力
 	velocity.y = GRAVITY_POWER;
@@ -166,38 +166,38 @@ void Player::move( Stage* stage)
 	const int collisionSizeX = sprites -> getTextureSizeX() * sprites -> getAnchorPointX() * 0.9f;
 	const int collisionSizeY = sprites -> getTextureSizeY() * sprites -> getAnchorPointY();
 
-	const int upChipNum			= stage -> getChipNumber( position.x, position.y + collisionSizeY + 20);
-	const int downLeftChipNum	= stage -> getChipNumber( position.x - collisionSizeX, position.y - collisionSizeY);
-	const int downRightChipNum	= stage -> getChipNumber( position.x + collisionSizeX, position.y - collisionSizeY);
-	const int leftChipNum		= stage -> getChipNumber( position.x - collisionSizeX, position.y + collisionSizeY);
-	const int rightChipNum		= stage -> getChipNumber( position.x + collisionSizeX, position.y + collisionSizeY);
+	const int upChipNum			= stage -> getChipNumber(position.x, position.y + collisionSizeY + 20);
+	const int downLeftChipNum	= stage -> getChipNumber(position.x - collisionSizeX, position.y - collisionSizeY);
+	const int downRightChipNum	= stage -> getChipNumber(position.x + collisionSizeX, position.y - collisionSizeY);
+	const int leftChipNum		= stage -> getChipNumber(position.x - collisionSizeX, position.y + collisionSizeY);
+	const int rightChipNum		= stage -> getChipNumber(position.x + collisionSizeX, position.y + collisionSizeY);
 
-	if( LibInput::getInstance() -> getKeyboardState( LibInput::KeyBoardNumber::Key_Down))
+	if(LibInput::getInstance() -> getKeyboardState(LibInput::KeyBoardNumber::Key_Down))
 	{
 		state = NoMove;
 	}
 
 	// 頭上
-	if( stage -> getChipNumber( position.x, position.y + collisionSizeY + 20) > 0)
+	if(stage -> getChipNumber(position.x, position.y + collisionSizeY + 20) > 0)
 	{
 		state = NoMove;
 	}
 
 	// 足元
-	if( downLeftChipNum > 0 || downRightChipNum > 0)
+	if(downLeftChipNum > 0 || downRightChipNum > 0)
 	{
 		int pos = (int)(position.y / collisionSizeY) * collisionSizeY;
-		position.y = stage -> getChipPosition( position.x, position.y - collisionSizeY).y + collisionSizeY;
+		position.y = stage -> getChipPosition(position.x, position.y - collisionSizeY).y + collisionSizeY;
 
-		if( state != NoMove)
+		if(state != NoMove)
 		{
-			if( LibInput::getInstance() -> getKeyboardState( LibInput::KeyBoardNumber::Key_Left))
+			if(LibInput::getInstance() -> getKeyboardState(LibInput::KeyBoardNumber::Key_Left))
 			{
 				state = Walk;
 				velocity.x -= MOVE_SPEED;
 				direction = false;
 			}
-			if( LibInput::getInstance() -> getKeyboardState( LibInput::KeyBoardNumber::Key_Right))
+			if(LibInput::getInstance() -> getKeyboardState(LibInput::KeyBoardNumber::Key_Right))
 			{
 				state = Walk;
 				velocity.x += MOVE_SPEED;
@@ -207,7 +207,7 @@ void Player::move( Stage* stage)
 	}
 	else
 	{
-		if( state != NoMove)
+		if(state != NoMove)
 		{
 			state = Fall;
 		}
@@ -216,11 +216,11 @@ void Player::move( Stage* stage)
 	position.x += velocity.x;
 
 	// 胴体
-	if( leftChipNum > 0 || rightChipNum > 0 )
+	if(leftChipNum > 0 || rightChipNum > 0 )
 	{
-		if( velocity.x == 0)
+		if(velocity.x == 0)
 		{
-			if( leftChipNum > 0)
+			if(leftChipNum > 0)
 			{
 				position.x += collisionSizeX * 0.3f;
 			}

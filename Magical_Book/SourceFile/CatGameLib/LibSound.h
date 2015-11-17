@@ -16,19 +16,19 @@ public:
 		Init,
 	};
 
-	static LibSound* create( const char* fileName);
-	static void allRelease( void);
-	static void allStop( void);
+	static LibSound* create(const char* fileName);
+	static void allRelease(void);
+	static void allStop(void);
 
-	void setLoop( bool isLoop);
-	void setVolume( float vol);
+	void setLoop(bool isLoop);
+	void setVolume(float vol);
 
-	SoundState getState( void);
+	SoundState getState(void);
 
-	void play( void);
-	void pause( void);
-	void stop( void);
-	void restart( void);
+	void play(void);
+	void pause(void);
+	void stop(void);
+	void restart(void);
 
 private:
 	enum
@@ -45,7 +45,7 @@ private:
 	LibSound();
 	~LibSound();
 
-	void loadFile( const char* fileName);
+	void loadFile(const char* fileName);
 };
 
 }

@@ -168,7 +168,7 @@ void Title::select(void)
 	title_start -> draw();
 	title_end -> draw();
 
-	if (input -> getKeyboardDownState( LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
+	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 	{
 		timer = 0;
 		counter++;

@@ -9,37 +9,37 @@ class LibCircle
 {
 public:
 	LibCircle();
-	LibCircle( int angle);
-	LibCircle( float angle);
-	LibCircle( const LibCircle& obj) = delete;
+	LibCircle(int angle);
+	LibCircle(float angle);
+	LibCircle(const LibCircle& obj) = delete;
 	~LibCircle();
 
-	LibCircle& operator=( int angle);
-	LibCircle& operator=( float angle);
-	LibCircle& operator=( const LibCircle& c);
+	LibCircle& operator = (int angle);
+	LibCircle& operator = (float angle);
+	LibCircle& operator = (const LibCircle& c);
 
-	int operator+( int angle);
-	float operator+( float angle);
-	LibCircle& operator+=( int angle);
-	LibCircle& operator+=( float angle);
-	LibCircle& operator+=( const LibCircle& c);
+	int operator + (int angle);
+	float operator + (float angle);
+	LibCircle& operator += (int angle);
+	LibCircle& operator += (float angle);
+	LibCircle& operator += (const LibCircle& c);
 
-	int operator-( int angle);
-	float operator-( float angle);
-	LibCircle& operator-=( int angle);
-	LibCircle& operator-=( float angle);
-	LibCircle& operator-=( const LibCircle& c);
+	int operator - (int angle);
+	float operator - (float angle);
+	LibCircle& operator -= (int angle);
+	LibCircle& operator -= (float angle);
+	LibCircle& operator -= (const LibCircle& c);
 
-	LibCircle& operator*=( int val);
-	LibCircle& operator*=( float val);
-	LibCircle& operator*=( const LibCircle& c);
+	LibCircle& operator *= (int val);
+	LibCircle& operator *= (float val);
+	LibCircle& operator *= (const LibCircle& c);
 
-	LibCircle& operator/=( int val);
-	LibCircle& operator/=( float val);
-	LibCircle& operator/=( const LibCircle& c);
+	LibCircle& operator /= (int val);
+	LibCircle& operator /= (float val);
+	LibCircle& operator /= (const LibCircle& c);
 
-	int getDegree( void);
-	float getRadian( void);
+	int getDegree(void);
+	float getRadian(void);
 
 private:
 	class Private;	// Pimpl

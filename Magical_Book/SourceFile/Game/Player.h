@@ -10,9 +10,9 @@ namespace MagicalBook
 class Player : public Character
 {
 public:
-	void init( void);
-	void update( Stage* stage);
-	void draw( void);
+	void init(void);
+	void update(Stage* stage);
+	void draw(void);
 	
 
 	Player();
@@ -25,7 +25,7 @@ private:
 	CatGameLib::LibSprites* sprites;
 	CatGameLib::LibSprites* damageSprites;
 
-	void move( Stage* stage);
+	void move(Stage* stage);
 };
 
 }

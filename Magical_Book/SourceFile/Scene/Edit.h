@@ -17,6 +17,14 @@ public:
 	void init(void) override;
 	void update(void) override;
 
+	enum StageSize
+	{
+		Small	= 14,
+		Medium	= 16,
+		Large	= 18,
+		SizeNum = 3,
+	};
+
 	enum EditNumber
 	{
 		Fadein,
@@ -46,11 +54,11 @@ private:
 
 	int counter;
 
-	int materialCol;
-	int materialRow;
+	int materialRow;		//çs
+	int materialCol;		//óÒ
 	
-	int materialSetRow;
-	int materialSetCol;
+	int materialSetRow;		//çs
+	int materialSetCol;		//óÒ
 
 	int flag;
 	int fadeFlag;
@@ -94,6 +102,11 @@ private:
 	CatGameLib::LibSprites* materialGimmick;
 	CatGameLib::LibSprites* materialDoor;
 	
+	CatGameLib::LibVector2 chipSize;
+	CatGameLib::LibVector2 screenSize;
+	CatGameLib::LibVector2 stageSize;
+	CatGameLib::LibVector2 drawStartingPos;
+
 	std::vector<CatGameLib::LibVector2> chipPosition;
 	std::vector<CatGameLib::LibSprite*> bgTextures;
 

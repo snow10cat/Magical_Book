@@ -141,7 +141,7 @@ void Stage::update(void)
 	}
 	else
 	{
-		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_F))
+		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_D))
 		{
 			rotateCount--;
 			vector<unsigned char> buffer = collisionData;
@@ -153,7 +153,7 @@ void Stage::update(void)
 				}
 			}
 		}
-		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_D))
+		if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_S))
 		{
 			rotateCount++;
 			vector<unsigned char> buffer = collisionData;

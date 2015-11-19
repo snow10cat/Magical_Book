@@ -41,7 +41,7 @@ public:
 	};
 
 private:
-
+	int chipCount;
 	int chipNum;
 	int chipState;
 	int chipCounter;

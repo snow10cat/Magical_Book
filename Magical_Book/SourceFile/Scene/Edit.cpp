@@ -45,6 +45,8 @@ Edit::Edit() : edit_bgm(nullptr),
 	materialGimmick = CatGameLib::LibSprites::create("gimmick/gimmick_up.png", 34, 68);
 	materialDoor = CatGameLib::LibSprites::create("gimmick/door_up.png", 42, 68);
 
+	save = CatGameLib::LibSprite::create("logo/save.png");
+
 	pointer = CatGameLib::LibSprite::create("logo/pointer.png");
 }
 
@@ -138,6 +140,10 @@ void Edit::init(void)
 	materialGimmick -> setScale(1.0f);
 	materialGimmick -> setAlpha(255.0f);
 
+	save -> setPosition(sWHeaf + 550, sHHeaf - 200);
+	save -> setScale(0.7f);
+	save -> setAlpha(0.0f);
+
 	back -> setPosition(sWHeaf + 450, sHHeaf - 300);
 	back -> setScale(0.8f);
 	back -> setAlpha(0.0f);
@@ -158,6 +164,22 @@ void Edit::init(void)
 		stageSize = Large;
 	}
 
+	drawStartingPos.x = (screenSize.x / 2) - ((stageSize.x / 2) * chipSize.x) + chipSize.x * chip -> getAnchorPointX();
+	drawStartingPos.y = (screenSize.y / 2) - ((stageSize.y / 2) * chipSize.y) + chipSize.y * chip -> getAnchorPointY();
+
+	chipCount = stageSize.x * stageSize.y;
+
+	chipPosition.resize(chipCount);
+
+	for(int y = 0; y < stageSize.y; y++)
+	{
+		for(int x = 0, posX = stageSize.x - 1; x < stageSize.x; x++, posX--)
+		{
+			const int arrayNumber = y * stageSize.x + x;
+			chipPosition[arrayNumber].x = drawStartingPos.x + posX * chipSize.x;
+			chipPosition[arrayNumber].y = drawStartingPos.y + y * chipSize.y;
+		}
+	}
 
 	counter = 0;
 
@@ -220,6 +242,7 @@ void Edit::update(void)
 }
 
 
+//BGM再生
 void Edit::playSound(void)
 {
 	if (edit_bgm -> getState() != LibSound::Play)
@@ -240,6 +263,7 @@ void Edit::playSound(void)
 }
 
 
+//フェードイン
 void Edit::pictFade(void)
 {
 	if(grid_size[stageConfig -> getSizeNumber()] -> getAlpha() < 255)
@@ -292,6 +316,11 @@ void Edit::pictFade(void)
 		gimmick -> setAlpha(gimmick -> getAlpha() + 5);
 	}
 
+	if(save -> getAlpha() < 255)
+	{
+		save -> setAlpha(save -> getAlpha() + 5);
+	}
+
 	if (back -> getAlpha() < 255)
 	{
 		back -> setAlpha(back -> getAlpha() + 5);
@@ -321,6 +350,7 @@ void Edit::edit(void)
 }
 
 
+//素材選択
 void Edit::materialSelect(void)
 {
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
@@ -328,88 +358,98 @@ void Edit::materialSelect(void)
 		materialSetRow = stageSize.x / 2;
 		materialSetCol = stageSize.y / 2;
 
-		if(materialCol == 1)
+		if(materialRow == 1)
 		{
 			chipHave = 1;
-			if(materialRow == 1)
+			if(materialCol == 1)
 			{
 				chipNum = 1;
 			}
-			else if(materialRow == 2)
+			else if(materialCol == 2)
 			{
 				chipNum = 5;
 			}
-			else if(materialRow == 3)
+			else if(materialCol == 3)
 			{
 				chipNum = 9;
 			}
-			else if(materialRow == 4)
+			else if(materialCol == 4)
 			{
 				chipNum = 13;
 			}
-			else if(materialRow == 5)
+			else if(materialCol == 5)
 			{
 				chipNum = 17;
 			}
 		}
-		else if(materialCol == 2)
+		else if(materialRow == 2)
 		{
 			chipHave = 1;
-			if(materialRow == 1)
+			if(materialCol == 1)
 			{
 				chipNum = 21;
 			}
-			else if(materialRow == 2)
+			else if(materialCol == 2)
 			{
 				chipNum = 25;
 			}
-			else if(materialRow == 3)
+			else if(materialCol == 3)
 			{
 				chipNum = 29;
 			}
-			else if(materialRow == 4)
+			else if(materialCol == 4)
 			{
 				chipNum = 33;
 			}
 		}
-		else if(materialCol == 3)
+		else if(materialRow == 3)
 		{
-			chipState = materialRow;
+			chipState = materialCol;
 			chipHave = 2;
 		}
 		edit_set_work = MaterialSet;
 	}
 
-	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
+	if(materialRow == 1 && materialCol == 5)
 	{
-		materialCol--;
-	}
-	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Up))
-	{
-		counter++;
-		if(counter >= COUNTER && counter % 5 == 1)
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 		{
+			materialRow--;
 			materialCol--;
 		}
 	}
-	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Up))
+	else
 	{
-		counter = 0;
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
+		{
+			materialRow--;
+		}
+		if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Up))
+		{
+			counter++;
+			if(counter >= COUNTER && counter % 5 == 1)
+			{
+				materialRow--;
+			}
+		}
+		else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Up))
+		{
+			counter = 0;
+		}
 	}
-
-	if(materialCol == 1 && materialRow == 5)
+	if(materialRow == 1 && materialCol == 5)
 	{
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
-			materialRow--;
-			materialCol++;
+			materialRow++;
+			materialCol--;
 		}
 	}
 	else
 	{
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
-			materialCol++;
+			materialRow++;
 		}
 
 		if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Down))
@@ -417,7 +457,7 @@ void Edit::materialSelect(void)
 			counter++;
 			if(counter >= COUNTER && counter % 5 == 1)
 			{
-				materialCol++;
+				materialRow++;
 			}
 		}
 		else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Down))
@@ -428,9 +468,9 @@ void Edit::materialSelect(void)
 	
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
-		if(materialCol % 4 != 0)
+		if(materialRow % 4 != 0)
 		{
-			materialRow--;
+			materialCol--;
 		}
 	}
 	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Left))
@@ -438,7 +478,7 @@ void Edit::materialSelect(void)
 		counter++;
 		if(counter >= COUNTER && counter % 5 == 1)
 		{
-			materialRow--;
+			materialCol--;
 		}
 	}
 	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Left))
@@ -448,9 +488,9 @@ void Edit::materialSelect(void)
 	
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 	{
-		if(materialCol % 4 != 0)
+		if(materialRow % 4 != 0)
 		{
-			materialRow++;
+			materialCol++;
 		}
 	}
 	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Right))
@@ -458,7 +498,7 @@ void Edit::materialSelect(void)
 		counter++;
 		if(counter >= COUNTER && counter % 5 == 1)
 		{
-			materialRow++;
+			materialCol++;
 		}
 	}
 	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Right))
@@ -467,69 +507,69 @@ void Edit::materialSelect(void)
 	}
 	
 
-	materialCol = CatGameLib::LibBasicFunc::wrap(materialCol, 0, 4);
-	if(materialCol == 1)
+	materialRow = CatGameLib::LibBasicFunc::wrap(materialRow, 0, 4);
+	if(materialRow == 1)
 	{
-		materialRow = CatGameLib::LibBasicFunc::wrap(materialRow, 0, 6);
+		materialCol = CatGameLib::LibBasicFunc::wrap(materialCol, 0, 6);
 	}
 	else
 	{
-		materialRow = CatGameLib::LibBasicFunc::wrap(materialRow, 0, 5);
+		materialCol = CatGameLib::LibBasicFunc::wrap(materialCol, 0, 5);
 	}
 
-	if(materialCol % 4 == 0)
+	if(materialRow % 4 == 0)
 	{
 		pointer -> setPosition(sWHeaf + 450, sHHeaf - 310);
 		back -> setScale(1.0f);
 	}
-	else if(materialCol % 4 == 3)
+	else if(materialRow % 4 == 3)
 	{
-		pointer -> setPositionY(sHHeaf + 200-17 - (materialCol - 1 + 1) * 50);
+		pointer -> setPositionY(sHHeaf + 200-17 - (materialRow - 1 + 1) * 50);
 		back -> setScale(0.8f);
 	}
 	else
 	{
-		pointer -> setPositionY(sHHeaf + 200-17 - (materialCol - 1) * 60);
+		pointer -> setPositionY(sHHeaf + 200-17 - (materialRow - 1) * 60);
 		back -> setScale(0.8f);
 	}
 
-	if(materialCol == 1)
+	if(materialRow == 1)
 	{
-		if(materialRow % 6 == 0)
+		if(materialCol % 6 == 0)
 		{
-			materialSetCol = 1;
+			materialSetRow = 1;
 			edit_set_work = MaterialSet;
 		}
 		else
 		{
-			pointer -> setPositionX(sWHeaf + 350+17 + (materialRow - 1) * 50);
+			pointer -> setPositionX(sWHeaf + 350+17 + (materialCol - 1) * 50);
 		}
 	}
 	else
 	{
-		if(materialCol % 4 != 0)
+		if(materialRow % 4 != 0)
 		{
-			if(materialRow % 5 == 0)
+			if(materialCol % 5 == 0)
 			{
-				materialSetCol = 1;
+				materialSetRow = 1;
 				edit_set_work = MaterialSet;
 			}
 			else
 			{
-				pointer -> setPositionX(sWHeaf + 350+17 + (materialRow - 1) * 50);
+				pointer -> setPositionX(sWHeaf + 350+17 + (materialCol - 1) * 50);
 			}
 		}
 	}
 
 	if(chipHave == 0)
 	{
-		if(materialRow == 4 || materialRow == 5)
+		if(materialCol == 4 || materialCol == 5)
 		{
-			materialSetRow = 1;
+			materialSetCol = 1;
 		}
-		else if(materialRow == 1)
+		else if(materialCol == 1)
 		{
-			materialSetRow = stageSize.x;
+			materialSetCol = stageSize.x;
 		}
 	}
 	else if(chipHave == 1)
@@ -538,19 +578,19 @@ void Edit::materialSelect(void)
 	}
 	else if(chipHave == 2)
 	{
-		if(materialRow == 1)
+		if(materialCol == 1)
 		{
 			player -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
-		else if(materialRow == 2)
+		else if(materialCol == 2)
 		{
 			enemy -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
-		else if(materialRow == 3)
+		else if(materialCol == 3)
 		{
 			door -> setPosition(pointer -> getPositionX()-21, pointer -> getPositionY()+34);
 		}
-		else if(materialRow == 4)
+		else if(materialCol == 4)
 		{
 			gimmick -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
@@ -558,6 +598,7 @@ void Edit::materialSelect(void)
 }
 
 
+//素材配置
 void Edit::materialSet(void)
 {
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
@@ -568,14 +609,14 @@ void Edit::materialSet(void)
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 	{
-		materialSetCol--;
+		materialSetRow--;
 	}
 	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Up))
 	{
 		counter++;
 		if(counter >= COUNTER && counter % 5 == 1)
 		{
-			materialSetCol--;
+			materialSetRow--;
 		}
 	}
 	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Up))
@@ -585,14 +626,14 @@ void Edit::materialSet(void)
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 	{
-		materialSetCol++;
+		materialSetRow++;
 	}
 	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Down))
 	{
 		counter++;
 		if(counter >= COUNTER && counter % 5 == 1)
 		{
-			materialSetCol++;
+			materialSetRow++;
 		}
 	}
 	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Down))
@@ -602,14 +643,14 @@ void Edit::materialSet(void)
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
-		materialSetRow--;
+		materialSetCol--;
 	}
 	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Left))
 	{
 		counter++;
 		if(counter >= COUNTER && counter % 5 == 1)
 		{
-			materialSetRow--;
+			materialSetCol--;
 		}
 	}
 	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Left))
@@ -619,14 +660,14 @@ void Edit::materialSet(void)
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 	{
-		materialSetRow++;
+		materialSetCol++;
 	}
 	if (input -> getKeyboardState(LibInput::KeyBoardNumber::Key_Right))
 	{
 		counter++;
 		if(counter >= COUNTER && counter % 5 == 1)
 		{
-			materialSetRow++;
+			materialSetCol++;
 		}
 	}
 	else if (input -> getKeyboardUpState(LibInput::KeyBoardNumber::Key_Right))
@@ -689,97 +730,97 @@ void Edit::materialSet(void)
 
 	if(stageConfig -> getSizeNumber() == 0)
 	{
-		materialSetRow = CatGameLib::LibBasicFunc::wrap(materialSetRow, 0, 15);
-		materialSetCol = CatGameLib::LibBasicFunc::wrap(materialSetCol, 0, 14);
+		materialSetRow = CatGameLib::LibBasicFunc::wrap(materialSetRow, 0, 14);
+		materialSetCol = CatGameLib::LibBasicFunc::wrap(materialSetCol, 0, 15);
 	}
 	else if(stageConfig -> getSizeNumber() == 1)
 	{
-		materialSetRow = CatGameLib::LibBasicFunc::wrap(materialSetRow, 0, 17);
-		materialSetCol = CatGameLib::LibBasicFunc::wrap(materialSetCol, 0, 16);
+		materialSetRow = CatGameLib::LibBasicFunc::wrap(materialSetRow, 0, 16);
+		materialSetCol = CatGameLib::LibBasicFunc::wrap(materialSetCol, 0, 17);
 	}
 	else if(stageConfig -> getSizeNumber() == 2)
 	{
-		materialSetRow = CatGameLib::LibBasicFunc::wrap(materialSetRow, 0, 19);
-		materialSetCol = CatGameLib::LibBasicFunc::wrap(materialSetCol, 0, 18);
+		materialSetRow = CatGameLib::LibBasicFunc::wrap(materialSetRow, 0, 18);
+		materialSetCol = CatGameLib::LibBasicFunc::wrap(materialSetCol, 0, 19);
 	}
 
 	if(stageConfig -> getSizeNumber() == 0)
 	{
-		if(materialSetCol % 14 == 0)
+		if(materialSetRow % 14 == 0)
 		{
-			pointer -> setPositionY(sHHeaf + 35 * (materialSetCol - stageSize.y / 2));
+			pointer -> setPositionY(sHHeaf + 35 * (materialSetRow - stageSize.y / 2));
 		}
 		else
 		{
-			pointer -> setPositionY(sHHeaf - 35 * (materialSetCol - stageSize.y / 2));
+			pointer -> setPositionY(sHHeaf - 35 * (materialSetRow - stageSize.y / 2));
 		}
 		
-		if(materialSetRow % 15 == 0)
+		if(materialSetCol % 15 == 0)
 		{
-			materialCol = 1;
+			materialRow = 1;
 			chipHave = 0;
 			chipDirection = 0;
 			edit_set_work = MaterialSelect;
 		}
 		else
 		{
-			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetRow - stageSize.y / 2));
+			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetCol - stageSize.y / 2));
 		}
 	}
 	else if(stageConfig -> getSizeNumber() == 1)
 	{
-		if(materialSetCol % 16 == 0)
+		if(materialSetRow % 16 == 0)
 		{
-			pointer -> setPositionY(sHHeaf + 35 * (materialSetCol - stageSize.y / 2));
+			pointer -> setPositionY(sHHeaf + 35 * (materialSetRow - stageSize.y / 2));
 		}
 		else
 		{
-			pointer -> setPositionY(sHHeaf - 35 * (materialSetCol - stageSize.y / 2));
+			pointer -> setPositionY(sHHeaf - 35 * (materialSetRow - stageSize.y / 2));
 		}
 
-		if(materialSetRow % 17 == 0)
+		if(materialSetCol % 17 == 0)
 		{
-			materialCol = 1;
+			materialRow = 1;
 			chipHave = 0;
 			chipDirection = 0;
 			edit_set_work = MaterialSelect;
 		}
 		else
 		{
-			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetRow - stageSize.y / 2));
+			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetCol - stageSize.y / 2));
 		}
 	}
 	else if(stageConfig -> getSizeNumber() == 2)
 	{
-		if(materialSetCol % 18 == 0)
+		if(materialSetRow % 18 == 0)
 		{
-			pointer -> setPositionY(sHHeaf + 35 * (materialSetCol - stageSize.y / 2));
+			pointer -> setPositionY(sHHeaf + 35 * (materialSetRow - stageSize.y / 2));
 		}
 		else
 		{
-			pointer -> setPositionY(sHHeaf - 35 * (materialSetCol - stageSize.y / 2));
+			pointer -> setPositionY(sHHeaf - 35 * (materialSetRow - stageSize.y / 2));
 		}
 
-		if(materialSetRow % 19 == 0)
+		if(materialSetCol % 19 == 0)
 		{
-			materialCol = 1;
+			materialRow = 1;
 			chipHave = 0;
 			chipDirection = 0;
 			edit_set_work = MaterialSelect;
 		}
 		else
 		{
-			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetRow - stageSize.y / 2));
+			pointer -> setPositionX(sWHeaf - 170 + 35 * (materialSetCol - stageSize.y / 2));
 		}
 	}
 
-	if(materialSetRow == 1)
+	if(materialSetCol == 1)
 	{
-		materialRow = 5;
+		materialCol = 5;
 	}
-	else if(materialSetRow == stageSize.x)
+	else if(materialSetCol == stageSize.x)
 	{
-		materialRow = 1;
+		materialCol = 1;
 	}
 }
 
@@ -840,6 +881,8 @@ void Edit::editDraw(void)
 	materialEnemy -> draw(0);
 	materialDoor -> draw(0);
 	materialGimmick -> draw(0);
+
+	save -> draw();
 
 	back -> draw();
 

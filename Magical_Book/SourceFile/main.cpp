@@ -8,39 +8,39 @@ using namespace MagicalBook;
 
 int main()
 {
-	// ライブラリのインスタンス取???
+	//ライブラリのインスタンス取得
 	LibMain* const lib = LibMain::getInstance();
 
-	// スクリーンサイズ??????
+	//スクリーンサイズ設定
 	lib -> setScreenSize(1280, 720);
 
-	// スクリーンモード指???
+	//スクリーンモード指定
 	lib -> setScreenMode(LibMain::ScreenMode::Window);
 
-	// ウィンドウタイトル??????
+	//ウィンドウタイトル決定
 	lib -> setWindowTitle("Magical_Book");
 
-	// 背景色??????
+	//背景色設定
 	lib -> setClearColor(200.0f, 200.0f, 200.0f, 255.0f);
 
-	// ライブラリ初期???
+	//ライブラリ初期化
 	lib -> initLib();
 
-	// 共通スプライトファイル読み込み
+	//共通スプライトファイル読み込み
 	ResourceManager::getInstance() -> loadResource();
 
-	SceneManager::getInstance() -> createScene(SceneManager::EditSelect);
+//	SceneManager::getInstance() -> createScene(SceneManager::EditSelect);
 
-	// メインルー???
+	//メインループ
 	while(lib -> checkWindowState())
 	{
-		// 画面消去
+		//画面消去
 		lib -> clear();
 
-		// シーンア???プデー???
+		//シーンアップデート
 		SceneManager::getInstance() -> update();
 
-		// 描画
+		//描画
 		lib -> draw();
 	}
 

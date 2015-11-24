@@ -20,37 +20,44 @@ public:
 
 	enum TitleNumber
 	{
-		Select,
-		Animation,
-		Fadeout,
-		Next,
+		Select,		//選択
+		Animation,	//アニメーション
+		Fadeout,	//フェードアウト
+		Next,		//次へ
 	};
 private:	
+	
+	float volume;		//音量
+	bool volumeFlag;	//再生フラグ
 
-	int timer;
-	int counter;
-	int flag;
-	int volumeFlag;
-	int anime_number;
-	int title_work;
-	float size;
-	float Volume;
+	int timer;			//ロゴアニメーションタイマー
+	float size;			//ロゴサイズ
+	int counter;		//カウンター
+	bool flag;			//処理の切り替え
+	int animeNumber;	//アニメーション番号
+	int titleWork;		//タイトルシーン
 	
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 	CatGameLib::LibInput* input;
 
-	CatGameLib::LibSound* title_bgm;
-	CatGameLib::LibSound* game_in;
+	CatGameLib::LibSound* titleBgm;		//タイトルBGM
+	CatGameLib::LibSound* menuSelect;	//選択効果音
+	CatGameLib::LibSound* gameIn;		//入る効果音
 
-	CatGameLib::LibSprite* title_logo;
-	CatGameLib::LibSprite* title_start;
-	CatGameLib::LibSprite* title_end;
+	CatGameLib::LibSprite* fade;		//フェード
+	CatGameLib::LibSprite* floor;		//床
+	CatGameLib::LibSprite* titleLogo;	//タイトルロゴ
+	CatGameLib::LibSprite* titleStart;	//ひらくロゴ
+	CatGameLib::LibSprite* titleEnd;	//とじるロゴ
 
+	CatGameLib::LibSprites* openBooks;	//本を開く
+	
+	void playSound(void);
+	void titleDraw(void);
 	void logoAnimation(void);
 	void bookAnimation(void);
-	void playSound(void);
 
 	void select(void);
 	void animation(void);

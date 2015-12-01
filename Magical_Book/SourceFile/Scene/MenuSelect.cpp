@@ -14,12 +14,12 @@ using namespace MagicalBook;
 static ResourceManager* instance = ResourceManager::getInstance();
 
 
-MenuSelect::MenuSelect() : select_bgm(nullptr),
+MenuSelect::MenuSelect() : selectBgm(nullptr),
 						   play(nullptr),
 						   make(nullptr)
 {
 	
-	select_bgm = LibSound::create("bgm/menuselect.wav");
+	selectBgm = LibSound::create("bgm/menuselect.wav");
 	play = LibSprite::create("logo/play.png");
 	make = LibSprite::create("logo/make.png");
 }
@@ -30,23 +30,45 @@ MenuSelect::~MenuSelect()
 }
 
 
+//初期化
 void MenuSelect::init(void)
 {
 	input = LibInput::getInstance();
+	
+	menuSelect = instance -> getSound("menuSelect");
 
-	select_bgm -> setVolume(0.0f);
-	select_bgm -> setLoop(true);
-
-
-	instance ->getSprite("fadeout") -> setAlpha(255);
-
+	fade = instance ->getSprite("fade");
+	floor = instance -> getSprite("floor");
+	openBooks = instance -> getSprites("openBook");
 	books = instance -> getSprites("books");
+	back = instance -> getSprite("back");
+
+	volume = 0;
+	volumeFlag = true;
+
+	timer = 0;
+	counter = 0;
+	flag = true;
+	fadeFlag = 0;
+	bookAnmFlag = 0;
+	anime_number = BOOK_ANM_MIN;
+	anime_counter = 0;
+	size = 1.3;
+
+	//音声
+	selectBgm -> setVolume(volume);
+	selectBgm -> setLoop(true);
+
+	menuSelect -> setVolume(1.0f);
+
+	//画像
+	fade -> setAlpha(255);
 
 	books -> setPosition(sWHeaf + 300, sHHeaf);
 	books -> setScale(1.5f);
 
-	instance -> getSprites("openBook") -> setPosition(sWHeaf + 300, sHHeaf);
-	instance -> getSprites("openBook") -> setScale(1.5f);
+	openBooks -> setPosition(sWHeaf + 300, sHHeaf);
+	openBooks -> setScale(1.5f);
 
 	play -> setPosition(sWHeaf - 100, sHHeaf + 200);
 	play -> setScale(1.3f);
@@ -56,43 +78,21 @@ void MenuSelect::init(void)
 	make -> setScale(1.0f);
 	make -> setAlpha(0.0f);
 
-	instance -> getSprite("back") -> setPosition(sWHeaf - 100, sHHeaf - 200);
-	instance -> getSprite("back") -> setScale(1.0f);
-	instance -> getSprite("back") -> setAlpha(0.0f);
+	back -> setPosition(sWHeaf - 100, sHHeaf - 200);
+	back -> setScale(1.0f);
+	back -> setAlpha(0.0f);
 
-	timer = 0;
-	counter = 0;
-	flag = 0;
-	fadeFlag = 0;
-	volumeFlag = 0;
-	bookAnmFlag = 0;
-	anime_number = BOOK_ANM_MIN;
-	anime_counter = 0;
-	Volume = 0;
-	size = 1.3;
+	//フェードインから
 	select_work = Fadein;
 }
 
 
+//更新
 void MenuSelect::update(void)
 {
-	if(select_bgm -> getState() != LibSound::Play)
-	{
-		select_bgm -> play();
-	}
+	playSound();
 
-	if(volumeFlag == 1)
-	{
-		Volume -= 0.02f;
-		select_bgm -> setVolume(Volume);
-	}
-	else if(Volume <= 1.0 && volumeFlag == 0)
-	{
-		Volume += 0.02f;
-		select_bgm -> setVolume(Volume);
-	}
-
-	instance -> getSprite("floor") -> draw();
+	menuSelectDraw();
 
 	switch(select_work)
 	{
@@ -103,10 +103,6 @@ void MenuSelect::update(void)
 		}
 		else
 		{
-			books -> draw(0);
-			play -> draw();
-			make -> draw();
-			instance -> getSprite("back") -> draw();
 			select_work = ModeSelect;
 		}
 		break;
@@ -129,76 +125,118 @@ void MenuSelect::update(void)
 }
 
 
-void MenuSelect::fadein(void)
+//音声再生
+void MenuSelect::playSound(void)
 {
-	if(bookAnmFlag == 0)
+	if(selectBgm -> getState() != LibSound::Play)
 	{
-		books -> draw(0);
-
-		play -> draw();
-		make -> draw();
-		instance -> getSprite("back") -> draw();
+		selectBgm -> play();
 	}
 
-	instance ->getSprite("fadeout") -> draw();
-	instance ->getSprite("fadeout") -> setAlpha(instance ->getSprite("fadeout") -> getAlpha() - 5);
-	if(instance ->getSprite("fadeout") -> getAlpha() <= 0)
+	if(volumeFlag == false)
 	{
-		instance ->getSprite("fadeout") -> setAlpha(0);
-		if(bookAnmFlag == 0)
-		{
-			select_work = ModeSelect;
-		}
+		//BGMフェードアウト
+		volume -= 0.02f;
+		selectBgm -> setVolume(volume);
+	}
+	else if(volume <= 1.0 && volumeFlag == true)
+	{
+		//BGMフェードイン
+		volume += 0.02f;
+		selectBgm -> setVolume(volume);
 	}
 }
 
 
+//描画
+void MenuSelect::menuSelectDraw(void)
+{
+	floor -> draw();
+
+	if(select_work == Animation && counter == 2)
+	{
+		openBooks -> draw(anime_number);
+	}
+	else
+	{
+		books -> draw(anime_number);
+	}
+
+	if(select_work == Fadein || select_work == ModeSelect)
+	{
+		play -> draw();
+		make -> draw();
+		back -> draw();
+	}
+
+	fade -> draw();
+}
+
+
+//フェードイン
+void MenuSelect::fadein(void)
+{	
+	if(play-> getAlpha() < 255)
+	{
+		play -> setAlpha(play -> getAlpha() + 5);
+	}
+	else
+	{
+		play -> setAlpha(255);
+	}
+
+	if(make-> getAlpha() < 255)
+	{
+		make -> setAlpha(make -> getAlpha() + 5);
+	}
+	else
+	{
+		make -> setAlpha(255);
+	}
+
+	if(back -> getAlpha() < 255)
+	{
+		back -> setAlpha(back -> getAlpha() + 5);
+	}
+	else
+	{
+		back -> setAlpha(255);
+	}
+
+	if(fade -> getAlpha() > 0)
+	{
+		fade -> setAlpha(fade -> getAlpha() - 5);
+	}
+	else
+	{
+		fade -> setAlpha(0);
+		select_work = ModeSelect;
+	}
+}
+
+
+//モード選択
 void MenuSelect::modeSelect(void)
 {
 	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 3);
 
 	if(bookAnmFlag == 0)
 	{
-		books -> draw(anime_number);
-
-		if(play-> getAlpha() < 255)
-		{
-			play -> setAlpha(play -> getAlpha() + 5);
-		}
-		play -> draw();
-
-		if(make-> getAlpha() < 255)
-		{
-			make -> setAlpha(make -> getAlpha() + 5);
-		}
-		make -> draw();
-
-		if(instance -> getSprite("back")-> getAlpha() < 255)
-		{
-			instance -> getSprite("back") -> setAlpha(instance -> getSprite("back") -> getAlpha() + 5);
-		}
-		instance -> getSprite("back") -> draw();
-
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 		{
 			timer = 0;
 			counter--;
-			flag = 0;
+			flag = true;
 			size = 1.3;
-			instance -> getSound("menuSelect") -> play();
+			menuSelect -> play();
 		}
 		else if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
 			timer = 0;
 			counter++;
-			flag = 0;
+			flag = true;
 			size = 1.3;
-			instance -> getSound("menuSelect") -> play();
-		}
-
-		if(counter >= 3)
-		{
-			counter = 0;
+			menuSelect -> play();
 		}
 
 		if (counter % 3 == 0)
@@ -206,7 +244,7 @@ void MenuSelect::modeSelect(void)
 			//ゲーム本編
 			play -> setScale(size);
 			make -> setScale(1.0f);
-			instance -> getSprite("back") -> setScale(1.0f);
+			back -> setScale(1.0f);
 
 			logoAnimation();
 
@@ -214,11 +252,11 @@ void MenuSelect::modeSelect(void)
 			{
 				timer = 0;
 				size = 1.3;
-				flag = 0;
+				flag = true;
 				play -> setAlpha(0.0f);
 				make -> setAlpha(0.0f);
-				instance -> getSprite("back") -> setAlpha(0.0f);
-				select_work = Animation;
+				back -> setAlpha(0.0f);
+				select_work = Animation;		//アニメーションへ
 			}
 		}
 		else if (counter % 3 == 1)
@@ -226,7 +264,7 @@ void MenuSelect::modeSelect(void)
 			//ゲームエディット
 			play -> setScale(1.0f);
 			make -> setScale(size);
-			instance -> getSprite("back") -> setScale(1.0f);
+			back -> setScale(1.0f);
 
 			logoAnimation();
 
@@ -234,112 +272,56 @@ void MenuSelect::modeSelect(void)
 			{
 				timer = 0;
 				size = 1.3;
-				flag = 0;
+				flag = true;
 				play -> setAlpha(0.0f);
 				make -> setAlpha(0.0f);
-				instance -> getSprite("back") -> setAlpha(0.0f);
-				select_work = Animation;
+				back -> setAlpha(0.0f);
+				select_work = Animation;		//アニメーションへ
 			}
 		}
 		else
 		{
 			play -> setScale(1.0f);
 			make -> setScale(1.0f);
-			instance -> getSprite("back") -> setScale(size);
+			back -> setScale(size);
 
 			logoAnimation();
 
 			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 			{
 				anime_number = BOOK_ANM_MAX;
-				counter = 0;
 				size = 1.5f;
+				select_work = Animation;		//アニメーションへ
 				bookAnmFlag = 1;
-			}
-		}
-	}
-	else if(bookAnmFlag == 1)
-	{
-		instance -> getSprites("openBook") -> draw(anime_number);
-		instance -> getSprites("openBook") -> setScale(size);
-
-		if (instance -> getSprites("openBook") -> getPositionX() <= sWHeaf - 250)
-		{
-			instance -> getSprites("openBook") -> setPositionX(sWHeaf - 250);
-		}
-		else
-		{
-			instance -> getSprites("openBook") -> setPositionX(instance -> getSprites("openBook") -> getPositionX() - 10);
-		}
-
-		if(anime_number > BOOK_ANM_MIN)
-		{
-			closeAnimation();
-		}
-
-		if(anime_counter % 7 == 0)
-		{
-			if(size > 1)
-			{
-				size -= 0.1f;
-			}
-			else if(size <= 1)
-			{
-				size = 1.0f;
-			}
-		}
-		
-		if(size == 1.0)
-		{
-			if(anime_number == BOOK_ANM_MIN)
-			{
-				LibSound::allStop();
-				if(fadeFlag == 0)
-				{
-					fadeout();
-				}
-				else
-				{
-					fadein();
-				}
-
-				
-				if(instance ->getSprite("fadeout") -> getAlpha() <= 0)
-				{
-					SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Title);
-				}
-				else if(instance ->getSprite("fadeout") -> getAlpha() >= 255)
-				{
-					fadeFlag = 1;
-				}
 			}
 		}
 	}
 }
 
 
+//ロゴアニメーション
 void MenuSelect::logoAnimation()
 {
+	timer = CatGameLib::LibBasicFunc::wrap(timer, 0, 3);
+
 	timer++;
 
 	if(timer % 3 == 0)
 	{
-		if(size <= 1.5 && flag == 0)
+		if(size <= 1.5 && flag == true)
 		{
 			if(size >= 1.4)
 			{
-				flag = 1;
-				timer = 0;
+				flag = false;
 			}
 			
 			size += 0.01f;
 		}
-		else if(size >= 1.1 && flag == 1)
+		else if(size >= 1.1 && flag == false)
 		{
 			if(size <= 1.2)
 			{	
-				flag = 0;
-				timer = 0;
+				flag = true;
 			}
 			
 			size -= 0.01;
@@ -348,12 +330,10 @@ void MenuSelect::logoAnimation()
 }
 
 
+//移行アニメーション
 void MenuSelect::animation(void)
-{
-	books -> draw(anime_number);
-	
-	volumeFlag = 1;
-
+{	
+	volumeFlag = false;
 
 	if(counter == 0)
 	{
@@ -378,13 +358,47 @@ void MenuSelect::animation(void)
 			select_work = Next;
 		}
 	}
+	else
+	{
+		openBooks -> setScale(size);
+
+		if (openBooks -> getPositionX() > sWHeaf - 250)
+		{
+			openBooks -> setPositionX(openBooks -> getPositionX() - 10);
+		}
+		else
+		{
+			openBooks -> setPositionX(sWHeaf - 250);
+		}
+
+		if(anime_number > BOOK_ANM_MIN)
+		{
+			closeAnimation();
+		}
+
+		if(size == 1.0 && anime_number == BOOK_ANM_MIN)
+		{
+			if(anime_number == BOOK_ANM_MIN)
+			{
+				fadeout();
+				fadein();
+				
+				if()
+				{
+					select_work = Next;
+				}
+			}
+		}
+	}
 }
 
 
+//本をめくるアニメーション
 void MenuSelect::bookAnimation()
 {
 	if(anime_number <= BOOK_ANM_MAX)
 	{
+		anime_counter = CatGameLib::LibBasicFunc::wrap(anime_counter, 0, 7);
 		anime_counter++;
 		if(anime_counter % 7 == 0)
 		{
@@ -395,41 +409,59 @@ void MenuSelect::bookAnimation()
 }
 
 
+//本を閉じるアニメーション
 void MenuSelect::closeAnimation(void)
 {
 	if(anime_number >= BOOK_ANM_MIN)
 	{
+		anime_counter = CatGameLib::LibBasicFunc::wrap(anime_counter, 0, 7);
 		anime_counter++;
 		if(anime_counter % 7 == 0)
 		{
 			anime_counter = 0;
 			anime_number--;
+			
+			if(size > 1)
+			{
+				size -= 0.1f;
+			}
+			else if(size <= 1)
+			{
+				size = 1.0f;
+			}
 		}
 	}
 }
 
 
+//フェードアウト
 void MenuSelect::fadeout(void)
 {
-	instance ->getSprite("fadeout") -> draw();
-	instance ->getSprite("fadeout") -> setAlpha(instance ->getSprite("fadeout") -> getAlpha() + 5);
-	if(instance ->getSprite("fadeout") -> getAlpha() >= 255)
+	if(fade -> getAlpha() < 255)
 	{
-		instance ->getSprite("fadeout") -> setAlpha(255);
+		fade -> setAlpha(fade -> getAlpha() + 5);
+	}
+	else
+	{
+		fade -> setAlpha(255);
 	}
 }
 
 
+//counterが0ならステージセレクト、1ならエディットセレクトへ、それ以外はタイトルへ
 void MenuSelect::next(void)
 {
+	LibSound::allStop();		//すべてのサウンド停止
 	if(counter == 0)
 	{
-		LibSound::allStop();
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::StageSelect);
 	}
 	else if(counter == 1)
 	{
-		LibSound::allStop();
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::EditSelect);
+	}
+	else
+	{
+		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Title);
 	}
 }

@@ -43,8 +43,8 @@ private:
 	CatGameLib::LibInput* input;
 
 	CatGameLib::LibSound* titleBgm;		//タイトルBGM
-	CatGameLib::LibSound* menuSelect;	//選択効果音
-	CatGameLib::LibSound* gameIn;		//入る効果音
+	CatGameLib::LibSound* menuSelect;	//選択SE
+	CatGameLib::LibSound* gameIn;		//入るSE
 
 	CatGameLib::LibSprite* fade;		//フェード
 	CatGameLib::LibSprite* floor;		//床

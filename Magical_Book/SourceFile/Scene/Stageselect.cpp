@@ -39,7 +39,7 @@ void Stageselect::init(void)
 	instance -> getSound("selectbgm") -> setLoop(true);
 
 
-	instance ->getSprite("fadeout") -> setAlpha(255);
+	instance ->getSprite("fade") -> setAlpha(255);
 
 	books = instance -> getSprites("books");
 
@@ -221,7 +221,7 @@ void Stageselect::gameSelect(void)
 
 		if (bookAnmFlag == 0 && flag != 4 && flag != 5 && input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
-			instance ->getSprite("fadeout") -> setAlpha(0);
+			instance ->getSprite("fade") -> setAlpha(0);
 			select_work = Fadeout;
 		}
 	}
@@ -415,11 +415,11 @@ void Stageselect::fadeout(void)
 {
 	instance -> getSprites("books") -> draw(anime_number);
 
-	instance ->getSprite("fadeout") -> draw();
-	instance ->getSprite("fadeout") -> setAlpha(instance ->getSprite("fadeout") -> getAlpha() + 5);
-	if(instance ->getSprite("fadeout") -> getAlpha() >= 255)
+	instance ->getSprite("fade") -> draw();
+	instance ->getSprite("fade") -> setAlpha(instance ->getSprite("fade") -> getAlpha() + 5);
+	if(instance ->getSprite("fade") -> getAlpha() >= 255)
 	{
-		instance ->getSprite("fadeout") -> setAlpha(255);
+		instance ->getSprite("fade") -> setAlpha(255);
 		if(bookAnmFlag == 0)
 		{
 			if(anime_number == BOOK_ANM_MAX)

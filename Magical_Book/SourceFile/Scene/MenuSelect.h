@@ -19,52 +19,53 @@ public:
 
 	enum MenuSelectNumber
 	{
-		Fadein,
-		ModeSelect,
-		Animation,
-		Fadeout,
-		Next,
+		Fadein,			//フェードイン
+		ModeSelect,		//モード選択
+		Animation,		//アニメーション
+		Fadeout,		//フェードアウト
+		Next,			//次へ
 	};
 
 private:
+	
+	float volume;		//音量
+	bool volumeFlag;	//再生フラグ
 
-	int timer;
-	int counter;
-	int flag;
-	int fadeFlag;
-	int volumeFlag;
-	int bookAnmFlag;
-	int edit_select;
-	int anime_number;
-	int anime_counter;
-	int select_work;
-	float size;
-	float Volume;
+	int timer;			//ロゴアニメーションタイマー
+	int counter;		//カウンター
+	bool flag;			//処理の切り替え
+	int fadeFlag;		//フェード用フラグ
+	int bookAnmFlag;	//
+	int edit_select;	//
+	int anime_number;	//アニメーション番号
+	int anime_counter;	//
+	int select_work;	//
+	float size;			//
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 	CatGameLib::LibInput* input;
-	CatGameLib::LibSprites* books;
+	
+	CatGameLib::LibSound* selectBgm;	//モード選択画面BGM
+	CatGameLib::LibSound* menuSelect;	//選択SE
 
-	CatGameLib::LibSound* select_bgm;
+	CatGameLib::LibSprite* fade;		//フェード用
+	CatGameLib::LibSprite* floor;		//床
+	CatGameLib::LibSprites* openBooks;	//本を開く
+	CatGameLib::LibSprites* books;		//本をめくる
+	CatGameLib::LibSprite* play;		//遊ぶロゴ
+	CatGameLib::LibSprite* make;		//作るロゴ
+	CatGameLib::LibSprite* back;		//戻るロゴ
 
-	CatGameLib::LibSprite* frame;
-	CatGameLib::LibSprite* play;
-	CatGameLib::LibSprite* make;
-	CatGameLib::LibSprite* arrow_right;
-	CatGameLib::LibSprite* arrow_left;
-
-	std::vector<CatGameLib::LibSprite*> bgTextures;
-
-	void logoAnimation(void);
-	void bookAnimation(void);
 	void playSound(void);
-
-	void modeSelect(void);
-	void animation(void);
-	void closeAnimation(void);
+	void menuSelectDraw(void);
 	void fadein(void);
+	void modeSelect(void);
+	void logoAnimation(void);
+	void animation(void);
+	void bookAnimation(void);
+	void closeAnimation(void);
 	void fadeout(void);
 	void next(void);
 };

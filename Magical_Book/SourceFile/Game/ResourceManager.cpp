@@ -33,7 +33,7 @@ void ResourceManager::loadResource(void)
 	soundArray["pageNext"] = LibSound::create("se/page.wav");
 
 	//‰æ‘œ
-	spriteArray["fadeout"] = LibSprite::create("background/fadeout.png");
+	spriteArray["fade"] = LibSprite::create("background/fade.png");
 	spriteArray["floor"] = LibSprite::create("background/floor.png");
 	spriteArray["frame"] = LibSprite::create("background/frame.png");
 	

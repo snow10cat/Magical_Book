@@ -69,9 +69,6 @@
     <ClCompile Include="SourceFile\CatGameLib\LibSprites.cpp">
       <Filter>SourceFile\CatGameLib</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFile\Scene\Stageselect.cpp">
-      <Filter>SourceFile\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFile\Scene\Edit.cpp">
       <Filter>SourceFile\Scene</Filter>
     </ClCompile>
@@ -104,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="SourceFile\Game\StageConfig.cpp">
       <Filter>SourceFile\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFile\Scene\StageSelect.cpp">
+      <Filter>SourceFile\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,9 +155,6 @@
     <ClInclude Include="SourceFile\CatGameLib\LibSprites.h">
       <Filter>HeaderFile\CatGameLib</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFile\Scene\Stageselect.h">
-      <Filter>HeaderFile\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFile\Scene\Edit.h">
       <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
@@ -190,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="SourceFile\Game\StageConfig.h">
       <Filter>HeaderFile\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile\Scene\StageSelect.h">
+      <Filter>HeaderFile\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

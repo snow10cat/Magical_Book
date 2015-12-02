@@ -30,7 +30,11 @@ MenuSelect::~MenuSelect()
 }
 
 
-//初期化
+/**
+ *	@brief 初期化
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::init(void)
 {
 	input = LibInput::getInstance();
@@ -49,10 +53,9 @@ void MenuSelect::init(void)
 	timer = 0;
 	counter = 0;
 	flag = true;
-	fadeFlag = 0;
-	bookAnmFlag = 0;
-	anime_number = BOOK_ANM_MIN;
-	anime_counter = 0;
+	fadeFlag = true;
+	animeNumber = BOOK_ANM_MIN;
+	animeCounter = 0;
 	size = 1.3;
 
 	//音声
@@ -62,7 +65,14 @@ void MenuSelect::init(void)
 	menuSelect -> setVolume(1.0f);
 
 	//画像
-	fade -> setAlpha(255);
+	if(SceneManager::getInstance() -> getOldSceneNumber() == SceneManager::SceneNumber::Title)
+	{
+		fade -> setAlpha(255);
+	}
+	else
+	{
+		fade -> setAlpha(0);
+	}
 
 	books -> setPosition(sWHeaf + 300, sHHeaf);
 	books -> setScale(1.5f);
@@ -83,27 +93,32 @@ void MenuSelect::init(void)
 	back -> setAlpha(0.0f);
 
 	//フェードインから
-	select_work = Fadein;
+	selectWork = Fadein;
 }
 
 
-//更新
+/**
+ *	@brief 更新
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::update(void)
 {
 	playSound();
 
 	menuSelectDraw();
 
-	switch(select_work)
+	switch(selectWork)
 	{
 	case Fadein:
 		if(SceneManager::getInstance() -> getOldSceneNumber() == SceneManager::SceneNumber::Title)
 		{
 			fadein();
+			logoFadein();
 		}
 		else
 		{
-			select_work = ModeSelect;
+			logoFadein();
 		}
 		break;
 	case ModeSelect:
@@ -125,7 +140,11 @@ void MenuSelect::update(void)
 }
 
 
-//音声再生
+/**
+ *	@brief 音声再生
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::playSound(void)
 {
 	if(selectBgm -> getState() != LibSound::Play)
@@ -148,21 +167,25 @@ void MenuSelect::playSound(void)
 }
 
 
-//描画
+/**
+ *	@brief 描画
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::menuSelectDraw(void)
 {
 	floor -> draw();
 
-	if(select_work == Animation && counter == 2)
+	if(selectWork == Animation && counter == 2)
 	{
-		openBooks -> draw(anime_number);
+		openBooks -> draw(animeNumber);
 	}
 	else
 	{
-		books -> draw(anime_number);
+		books -> draw(animeNumber);
 	}
 
-	if(select_work == Fadein || select_work == ModeSelect)
+	if(selectWork == Fadein || selectWork == ModeSelect)
 	{
 		play -> draw();
 		make -> draw();
@@ -173,9 +196,31 @@ void MenuSelect::menuSelectDraw(void)
 }
 
 
-//フェードイン
+/**
+ *	@brief フェードイン
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::fadein(void)
-{	
+{
+	if(fade -> getAlpha() > 0)
+	{
+		fade -> setAlpha(fade -> getAlpha() - 5);
+	}
+	else
+	{
+		fade -> setAlpha(0);
+	}
+}
+
+
+/**
+ *	@brief ロゴフェードイン
+ *
+ *	@author	Tatsuya Maeda
+ */
+void MenuSelect::logoFadein(void)
+{
 	if(play-> getAlpha() < 255)
 	{
 		play -> setAlpha(play -> getAlpha() + 5);
@@ -201,106 +246,102 @@ void MenuSelect::fadein(void)
 	else
 	{
 		back -> setAlpha(255);
-	}
-
-	if(fade -> getAlpha() > 0)
-	{
-		fade -> setAlpha(fade -> getAlpha() - 5);
-	}
-	else
-	{
-		fade -> setAlpha(0);
-		select_work = ModeSelect;
+		
+		selectWork = ModeSelect;
 	}
 }
 
 
-//モード選択
+/**
+ *	@brief モード選択
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::modeSelect(void)
 {
 	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 3);
 
-	if(bookAnmFlag == 0)
+	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 	{
-		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
+		timer = 0;
+		counter--;
+		flag = true;
+		size = 1.3;
+		menuSelect -> play();
+	}
+	else if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
+	{
+		timer = 0;
+		counter++;
+		flag = true;
+		size = 1.3;
+		menuSelect -> play();
+	}
+
+	if (counter % 3 == 0)
+	{
+		//ゲーム本編
+		play -> setScale(size);
+		make -> setScale(1.0f);
+		back -> setScale(1.0f);
+
+		logoAnimation();
+
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
 			timer = 0;
-			counter--;
-			flag = true;
 			size = 1.3;
-			menuSelect -> play();
+			flag = true;
+			play -> setAlpha(0.0f);
+			make -> setAlpha(0.0f);
+			back -> setAlpha(0.0f);
+			selectWork = Animation;		//アニメーションへ
 		}
-		else if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
+	}
+	else if (counter % 3 == 1)
+	{
+		//ゲームエディット
+		play -> setScale(1.0f);
+		make -> setScale(size);
+		back -> setScale(1.0f);
+
+		logoAnimation();
+
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
 			timer = 0;
-			counter++;
-			flag = true;
 			size = 1.3;
-			menuSelect -> play();
+			flag = true;
+			play -> setAlpha(0.0f);
+			make -> setAlpha(0.0f);
+			back -> setAlpha(0.0f);
+			selectWork = Animation;		//アニメーションへ
 		}
+	}
+	else
+	{
+		play -> setScale(1.0f);
+		make -> setScale(1.0f);
+		back -> setScale(size);
 
-		if (counter % 3 == 0)
+		logoAnimation();
+
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
-			//ゲーム本編
-			play -> setScale(size);
-			make -> setScale(1.0f);
-			back -> setScale(1.0f);
-
-			logoAnimation();
-
-			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
-			{
-				timer = 0;
-				size = 1.3;
-				flag = true;
-				play -> setAlpha(0.0f);
-				make -> setAlpha(0.0f);
-				back -> setAlpha(0.0f);
-				select_work = Animation;		//アニメーションへ
-			}
-		}
-		else if (counter % 3 == 1)
-		{
-			//ゲームエディット
-			play -> setScale(1.0f);
-			make -> setScale(size);
-			back -> setScale(1.0f);
-
-			logoAnimation();
-
-			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
-			{
-				timer = 0;
-				size = 1.3;
-				flag = true;
-				play -> setAlpha(0.0f);
-				make -> setAlpha(0.0f);
-				back -> setAlpha(0.0f);
-				select_work = Animation;		//アニメーションへ
-			}
-		}
-		else
-		{
-			play -> setScale(1.0f);
-			make -> setScale(1.0f);
-			back -> setScale(size);
-
-			logoAnimation();
-
-			if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
-			{
-				anime_number = BOOK_ANM_MAX;
-				size = 1.5f;
-				select_work = Animation;		//アニメーションへ
-				bookAnmFlag = 1;
-			}
+			animeNumber = BOOK_ANM_MAX;
+			size = 1.5f;
+			selectWork = Animation;		//アニメーションへ
 		}
 	}
 }
 
 
-//ロゴアニメーション
-void MenuSelect::logoAnimation()
+/**
+ *	@brief ロゴアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
+void MenuSelect::logoAnimation(void)
 {
 	timer = CatGameLib::LibBasicFunc::wrap(timer, 0, 3);
 
@@ -330,7 +371,11 @@ void MenuSelect::logoAnimation()
 }
 
 
-//移行アニメーション
+/**
+ *	@brief 移行アニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::animation(void)
 {	
 	volumeFlag = false;
@@ -339,15 +384,16 @@ void MenuSelect::animation(void)
 	{
 		bookAnimation();
 
-		if(anime_number == BOOK_ANM_MAX)
+		if(animeNumber == BOOK_ANM_MAX)
 		{
-			anime_number = BOOK_ANM_MIN;
-			anime_counter = 0;
-			select_work = Next;
+			animeNumber = BOOK_ANM_MIN;
+			animeCounter = 0;
+			selectWork = Next;		//ステージ選択へ
 		}
 	}
 	else if(counter == 1)
 	{
+		//本の移動
 		if (books -> getPositionX() > sWHeaf - 320)
 		{
 			books -> setPositionX(books -> getPositionX() - 10);
@@ -355,13 +401,14 @@ void MenuSelect::animation(void)
 		else
 		{
 			books -> setPositionX(sWHeaf - 320);
-			select_work = Next;
+			selectWork = Next;		//エディット選択へ
 		}
 	}
 	else
 	{
 		openBooks -> setScale(size);
 
+		//本の移動
 		if (openBooks -> getPositionX() > sWHeaf - 250)
 		{
 			openBooks -> setPositionX(openBooks -> getPositionX() - 10);
@@ -371,55 +418,70 @@ void MenuSelect::animation(void)
 			openBooks -> setPositionX(sWHeaf - 250);
 		}
 
-		if(anime_number > BOOK_ANM_MIN)
+		if(animeNumber > BOOK_ANM_MIN)
 		{
 			closeAnimation();
 		}
 
-		if(size == 1.0 && anime_number == BOOK_ANM_MIN)
+		if(size == 1.0 && animeNumber == BOOK_ANM_MIN && openBooks -> getPositionX() == sWHeaf - 250)
 		{
-			if(anime_number == BOOK_ANM_MIN)
+			if(fade -> getAlpha() < 255 && fadeFlag == true)
 			{
 				fadeout();
-				fadein();
-				
-				if()
+				if(fade -> getAlpha() == 255)
 				{
-					select_work = Next;
+					fadeFlag = false;
 				}
+			}
+			else if(fade -> getAlpha() > 0 && fadeFlag == false)
+			{
+				fadein();
+			}
+
+			if(fade -> getAlpha() <= 0)
+			{
+				selectWork = Next;		//タイトルへ
 			}
 		}
 	}
 }
 
 
-//本をめくるアニメーション
-void MenuSelect::bookAnimation()
+/**
+ *	@brief 本をめくるアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
+void MenuSelect::bookAnimation(void)
 {
-	if(anime_number <= BOOK_ANM_MAX)
+	if(animeNumber <= BOOK_ANM_MAX)
 	{
-		anime_counter = CatGameLib::LibBasicFunc::wrap(anime_counter, 0, 7);
-		anime_counter++;
-		if(anime_counter % 7 == 0)
+		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
+		animeCounter++;
+		if(animeCounter % 7 == 0)
 		{
-			anime_counter = 0;
-			anime_number++;
+			animeCounter = 0;
+			animeNumber++;
 		}
 	}
 }
 
 
-//本を閉じるアニメーション
+/**
+ *	@brief 本を閉じるアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::closeAnimation(void)
 {
-	if(anime_number >= BOOK_ANM_MIN)
+	if(animeNumber >= BOOK_ANM_MIN)
 	{
-		anime_counter = CatGameLib::LibBasicFunc::wrap(anime_counter, 0, 7);
-		anime_counter++;
-		if(anime_counter % 7 == 0)
+		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
+		animeCounter++;
+		if(animeCounter % 7 == 0)
 		{
-			anime_counter = 0;
-			anime_number--;
+			animeCounter = 0;
+			animeNumber--;
 			
 			if(size > 1)
 			{
@@ -434,7 +496,11 @@ void MenuSelect::closeAnimation(void)
 }
 
 
-//フェードアウト
+/**
+ *	@brief フェードアウト
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::fadeout(void)
 {
 	if(fade -> getAlpha() < 255)
@@ -448,20 +514,27 @@ void MenuSelect::fadeout(void)
 }
 
 
-//counterが0ならステージセレクト、1ならエディットセレクトへ、それ以外はタイトルへ
+/**
+ *	@brief counterが0ならステージセレクト、1ならエディットセレクトへ、それ以外はタイトルへ
+ *
+ *	@author	Tatsuya Maeda
+ */
 void MenuSelect::next(void)
 {
 	LibSound::allStop();		//すべてのサウンド停止
 	if(counter == 0)
 	{
+		//ステージセレクトへ
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::StageSelect);
 	}
 	else if(counter == 1)
 	{
+		//エディットセレクトへ
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::EditSelect);
 	}
 	else
 	{
+		//タイトルへ
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Title);
 	}
 }

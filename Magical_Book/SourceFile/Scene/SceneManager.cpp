@@ -40,7 +40,7 @@ void SceneManager::createScene(SceneNumber number)
 		break;
 
 	case StageSelect:
-		scene = new class::Stageselect;
+		scene = new class::StageSelect;
 		break;
 	
 	case EditSelect:

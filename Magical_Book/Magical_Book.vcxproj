@@ -203,7 +203,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClCompile Include="SourceFile\Scene\MenuSelect.cpp" />
     <ClCompile Include="SourceFile\scene\Scene.cpp" />
     <ClCompile Include="SourceFile\scene\SceneManager.cpp" />
-    <ClCompile Include="SourceFile\Scene\Stageselect.cpp" />
+    <ClCompile Include="SourceFile\Scene\StageSelect.cpp" />
     <ClCompile Include="SourceFile\scene\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -233,7 +233,7 @@ xcopy /y /r "$(ProjectDir)\ExternalLibrary\bin\*.dll" "$(TargetDir)"</Command>
     <ClInclude Include="SourceFile\Scene\MenuSelect.h" />
     <ClInclude Include="SourceFile\scene\Scene.h" />
     <ClInclude Include="SourceFile\scene\SceneManager.h" />
-    <ClInclude Include="SourceFile\Scene\Stageselect.h" />
+    <ClInclude Include="SourceFile\Scene\StageSelect.h" />
     <ClInclude Include="SourceFile\scene\Title.h" />
   </ItemGroup>
   <ItemGroup>

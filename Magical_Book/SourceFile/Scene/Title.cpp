@@ -31,7 +31,11 @@ Title::~Title()
 }
 
 
-//初期化
+/**
+ *	@brief 初期化
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::init(void)
 {
 	input = LibInput::getInstance();
@@ -83,12 +87,15 @@ void Title::init(void)
 }
 
 
-//更新
+/**
+ *	@brief 更新
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::update(void)
 {
 	playSound();
 
-	floor -> draw();
 	titleDraw();
 
 	switch (titleWork)
@@ -112,7 +119,11 @@ void Title::update(void)
 }
 
 
-//音声再生
+/**
+ *	@brief 音声再生
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::playSound(void)
 {
 	if (titleBgm -> getState() != LibSound::Play)
@@ -129,9 +140,15 @@ void Title::playSound(void)
 }
 
 
-//描画
+/**
+ *	@brief 描画
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::titleDraw(void)
 {
+	floor -> draw();
+
 	openBooks -> draw(animeNumber);
 	
 	if(titleWork == Select)
@@ -144,7 +161,12 @@ void Title::titleDraw(void)
 	fade -> draw();
 }
 
-//ロゴアニメーション
+
+/**
+ *	@brief ロゴアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::logoAnimation(void)
 {
 	timer = CatGameLib::LibBasicFunc::wrap(timer, 0, 3);
@@ -175,7 +197,11 @@ void Title::logoAnimation(void)
 }
 
 
-//本の開くアニメーション
+/**
+ *	@brief 本の開くアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::bookAnimation(void)
 {
 	if(animeNumber < BOOK_ANM_MAX)
@@ -190,7 +216,11 @@ void Title::bookAnimation(void)
 }
 
 
-//モード選択
+/**
+ *	@brief モード選択
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::select(void)
 {
 	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 2);
@@ -236,6 +266,12 @@ void Title::select(void)
 	}
 }
 
+
+/**
+ *	@brief 本を開くアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::animation(void)
 {
 	volumeFlag = false;
@@ -257,6 +293,12 @@ void Title::animation(void)
 	}
 }
 
+
+/**
+ *	@brief フェードアウト
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::fadeout(void)
 {
 	openBooks -> setScale(size);
@@ -276,7 +318,7 @@ void Title::fadeout(void)
 	}
 	else if(flag == false && gameIn -> getState() != LibSound::Play)
 	{
-		titleWork = Next;		//次へ
+		titleWork = Next;		//メニューセレクトへ
 	}
 
 	if(size >= 1.5f)
@@ -289,6 +331,12 @@ void Title::fadeout(void)
 	}
 }
 
+
+/**
+ *	@brief 次のシーンへ
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Title::next(void)
 {
 	LibSound::allStop();		//すべてのサウンド停止

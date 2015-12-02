@@ -3,7 +3,7 @@
 #include "../Game/ResourceManager.h"
 #include "CatGameLib.h"
 #include "SceneManager.h"
-#include "Stageselect.h"
+#include "StageSelect.h"
 
 
 using namespace std;
@@ -14,40 +14,71 @@ using namespace MagicalBook;
 static ResourceManager* instance = ResourceManager::getInstance();
 
 
-Stageselect::Stageselect() : play(nullptr),
-							 make(nullptr),
-							 arrow_right(nullptr),
+StageSelect::StageSelect() : arrow_right(nullptr),
 							 arrow_left(nullptr)
 {
-	play = LibSprite::create("logo/play.png");
-	make = LibSprite::create("logo/make.png");
 	arrow_right = LibSprite::create("logo/arrow_right.png");
 	arrow_left = LibSprite::create("logo/arrow_left.png");
 }
 
 
-Stageselect::~Stageselect()
+StageSelect::~StageSelect()
 {
 }
 
 
-void Stageselect::init(void)
+void StageSelect::init(void)
 {
 	input = LibInput::getInstance();
 
-	instance -> getSound("selectbgm") -> setVolume(0.0f);
-	instance -> getSound("selectbgm") -> setLoop(true);
+	selectBgm = instance -> getSound("selectbgm");
+	menuSelect = instance -> getSound("menuSelect");
 
-
-	instance ->getSprite("fade") -> setAlpha(255);
-
+	fade = instance ->getSprite("fade");
+	floor = instance ->getSprite("floor");
 	books = instance -> getSprites("books");
+	frame = instance -> getSprite("frame");
+	back = instance -> getSprite("back");
 
-	instance -> getSprites("books") -> setPosition(sWHeaf + 300, sHHeaf);
-	instance -> getSprites("books") -> setScale(1.5f);
+	volume = 0;
+	volumeFlag = true;
 
-	instance -> getSprites("openBook") -> setPosition(sWHeaf + 300, sHHeaf);
-	instance -> getSprites("openBook") -> setScale(1.5f);
+	timer = 0;
+	counter = 0;
+	flag = 0;
+	fadeFlag = 0;
+	bookAnmFlag = 0;
+	anime_number = BOOK_ANM_MIN;
+	anime_counter = 0;
+	size = 1.3;
+
+	//音声
+	selectBgm -> setVolume(0.0f);
+	selectBgm -> setLoop(true);
+
+	menuSelect -> setVolume(1.0f);
+
+	//画像
+	fade -> setAlpha(255);
+
+	books -> setPosition(sWHeaf + 300, sHHeaf);
+	books -> setScale(1.5f);
+
+	frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
+	frame -> setScale(0.35f);
+	frame -> setAlpha(0.0f);
+
+	arrow_right -> setPosition(sWHeaf + 150, sHHeaf - 310);
+	arrow_right -> setScale(0.3f);
+	arrow_right -> setAlpha(0.0f);
+
+	arrow_left -> setPosition(sWHeaf - 270, sHHeaf - 310);
+	arrow_left -> setScale(0.3f);
+	arrow_left -> setAlpha(0.0f);
+
+	back -> setPosition(sWHeaf + 500, sHHeaf - 300);
+	back -> setScale(1.0f);
+	back -> setAlpha(0.0f);
 
 	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
@@ -68,63 +99,17 @@ void Stageselect::init(void)
 	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 90, sHHeaf - 140);
 	bgTextures[ResourceManager::BG_Window] -> setScale(0.3f);
 
-	instance -> getSprite("frame") -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	instance -> getSprite("frame") -> setScale(0.35f);
-	instance -> getSprite("frame") -> setAlpha(0.0f);
-
-	play -> setPosition(sWHeaf - 100, sHHeaf + 200);
-	play -> setScale(1.3f);
-	play -> setAlpha(0.0f);
-
-	make -> setPosition(sWHeaf - 100, sHHeaf);
-	make -> setScale(1.0f);
-	make -> setAlpha(0.0f);
-
-	instance -> getSprite("back") -> setPosition(sWHeaf + 500, sHHeaf - 300);
-	instance -> getSprite("back") -> setScale(1.0f);
-	instance -> getSprite("back") -> setAlpha(0.0f);
-
-	arrow_right -> setPosition(sWHeaf + 150, sHHeaf - 310);
-	arrow_right -> setScale(0.3f);
-	arrow_right -> setAlpha(0.0f);
-	arrow_left -> setPosition(sWHeaf - 270, sHHeaf - 310);
-	arrow_left -> setScale(0.3f);
-	arrow_left -> setAlpha(0.0f);
-
-	timer = 0;
-	counter = 0;
-	flag = 0;
-	fadeFlag = 0;
-	bookAnmFlag = 0;
-	anime_number = BOOK_ANM_MIN;
-	anime_counter = 0;
-	Volume = 0;
-	volumeFlag = 0;
-	size = 1.3;
+	//ステージ選択から
 	select_work = GameMode;
 }
 
 
 
-void Stageselect::update(void)
+void StageSelect::update(void)
 {
-	if(instance -> getSound("selectbgm") -> getState() != LibSound::Play)
-	{
-		instance -> getSound("selectbgm") -> play();
-	}
+	playSound();
 
-	if(volumeFlag == 1)
-	{
-		Volume -= 0.02f;
-		instance -> getSound("selectbgm") -> setVolume(Volume);
-	}
-	else if(Volume <= 1.0 && volumeFlag == 0)
-	{
-		Volume += 0.02f;
-		instance -> getSound("selectbgm") -> setVolume(Volume);
-	}
-
-	instance -> getSprite("floor") -> draw();
+	stageSelectDraw();
 
 	switch(select_work)
 	{
@@ -148,7 +133,36 @@ void Stageselect::update(void)
 }
 
 
-void Stageselect::bookAnimation()
+void StageSelect::playSound(void)
+{
+	if(selectBgm -> getState() != LibSound::Play)
+	{
+		selectBgm -> play();
+	}
+
+	if(volumeFlag == false)
+	{
+		//フェードアウト
+		volume -= 0.02f;
+		selectBgm -> setVolume(volume);
+	}
+	else if(volume <= 1.0 && volumeFlag == true)
+	{
+		//フェードイン
+		volume += 0.02f;
+		selectBgm -> setVolume(volume);
+	}
+}
+
+
+void  StageSelect::stageSelectDraw(void)
+{
+	floor -> draw();
+
+}
+
+
+void StageSelect::bookAnimation(void)
 {
 	if(anime_number <= BOOK_ANM_MAX)
 	{
@@ -162,7 +176,7 @@ void Stageselect::bookAnimation()
 }
 
 
-void Stageselect::gameMode(void)
+void StageSelect::gameMode(void)
 {
 	gameModeDraw();
 	if(timer >= 10)
@@ -176,7 +190,7 @@ void Stageselect::gameMode(void)
 }
 
 
-void Stageselect::gameSelect(void)
+void StageSelect::gameSelect(void)
 {
 	const int counterNumber = CatGameLib::LibBasicFunc::wrap(counter, 0, 6);
 
@@ -265,7 +279,7 @@ void Stageselect::gameSelect(void)
 
 		if(bookAnmFlag == 1)
 		{
-			volumeFlag = 1;
+			volumeFlag = false;
 			backAnimation();
 			if(anime_number == BOOK_ANM_MIN)
 			{
@@ -280,7 +294,7 @@ void Stageselect::gameSelect(void)
 }
 
 
-void Stageselect::gameModeDraw(void)
+void StageSelect::gameModeDraw(void)
 {
 	instance -> getSprites("books") -> draw(anime_number);
 
@@ -378,15 +392,15 @@ void Stageselect::gameModeDraw(void)
 
 		arrow_right -> setScale(0.35f);
 
-		instance ->getSprite("frame") ->setScale(0.1f);
+		instance ->getSprite("frame") -> setScale(0.1f);
 		instance ->getSprite("frame") -> setPosition(sWHeaf + 150, sHHeaf - 310);
 		break;
 	case 6:
 		sizeResetFunc();
 
 		instance -> getSprite("back") -> setScale(1.2f);
-		instance ->getSprite("frame") ->setScaleX(0.35f);
-		instance ->getSprite("frame") ->setScaleY(0.12f);
+		instance ->getSprite("frame") -> setScaleX(0.35f);
+		instance ->getSprite("frame") -> setScaleY(0.12f);
 		instance ->getSprite("frame") -> setPosition(sWHeaf + 500, sHHeaf - 300);
 		break;
 	default:
@@ -396,7 +410,7 @@ void Stageselect::gameModeDraw(void)
 }
 
 
-void Stageselect::backAnimation(void)
+void StageSelect::backAnimation(void)
 {
 	volumeFlag = 1;
 	if(anime_number >= BOOK_ANM_MIN)
@@ -411,7 +425,7 @@ void Stageselect::backAnimation(void)
 }
 
 
-void Stageselect::fadeout(void)
+void StageSelect::fadeout(void)
 {
 	instance -> getSprites("books") -> draw(anime_number);
 
@@ -431,7 +445,7 @@ void Stageselect::fadeout(void)
 }
 
 
-void Stageselect::next(void)
+void StageSelect::next(void)
 {
 	LibSound::allStop();
 	SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);

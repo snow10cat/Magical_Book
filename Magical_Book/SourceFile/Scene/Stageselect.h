@@ -17,29 +17,36 @@ public:
 	void init(void) override;
 	void update(void) override;
 
-	enum SelectNumber
+	enum StageSelectNumber
 	{
-		GameMode,
-		Back,
-		Fadeout,
-		Next,
+		SelectStage,		//!< ステージ選択
+		BackAnimation,		//!< 前に戻るアニメーション
+		Animation,			//!< アニメーション
+		Next,				//!< 次へ
+	};
+
+	enum SelectPosition
+	{
+		LeftUp,			//!< 左上
+		RightUp,		//!< 右上
+		LeftDown,		//!< 左下
+		RightDown,		//!< 右下
+		Leftarrow,		//!< 左矢印
+		Rightarrow,		//!< 右矢印
+		BackLogo,		//!< 戻るロゴ
 	};
 
 private:
 
-	float volume;		//!< 音量
-	bool volumeFlag;	//!< 再生フラグ
+	float volume;			//!< 音量
+	bool volumeFlag;		//!< 再生フラグ
 
-	int timer;
-	int counter;
-	int flag;
-	int fadeFlag;
-	int bookAnmFlag;
-	int edit_select;
-	int anime_number;
-	int anime_counter;
-	int select_work;
-	float size;
+	int selectFlag;			//!< 選択フラグ
+
+	int counter;			//!< カウンター
+	int animeNumber;		//!< アニメーション番号
+	int animeCounter;		//!< アニメーション用カウンター
+	int stageSelectWork;	//!< 選択シーン
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
@@ -52,28 +59,28 @@ private:
 	CatGameLib::LibSprite* fade;		//!< フェード用
 	CatGameLib::LibSprite* floor;		//!< 床
 	CatGameLib::LibSprites* books;		//!< 本をめくる
+	CatGameLib::LibSprite* arrowRight;	//!< 右矢印
+	CatGameLib::LibSprite* arrowLeft;	//!< 左矢印
 	CatGameLib::LibSprite* frame;		//!< フレーム
-	CatGameLib::LibSprite* arrow_right;	//!< 右矢印
-	CatGameLib::LibSprite* arrow_left;	//!< 左矢印
 	CatGameLib::LibSprite* back;		//!< 戻るロゴ
 	
 	std::vector<CatGameLib::LibSprite*> bgTextures;		//!< ステージ背景
 
 	void playSound(void);
 	void stageSelectDraw(void);
-	void fadein(void);
+	void logoFadein(void);
+	void bgFadein(void);
+	void stageSelect(void);
 
-	void modeSelect(void);
-	void gameMode(void);
-	void gameSelect(void);
-	void gameModeDraw(void);
-	void logoAnimation(void);
-	void animation(void);
-	void bookAnimation(void);
+	void selectActions(void);
+
+	void cangeSize(void);
 	void backAnimation(void);
-	void closeAnimation(void);
+	void bookAnimation(void);
 	void fadeout(void);
 	void next(void);
+};
+
 }
 
 #endif // __MAGICAL_BOOK_STSGESELECT_H__

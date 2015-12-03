@@ -56,11 +56,10 @@ private:
 	
 	void playSound(void);
 	void titleDraw(void);
-	void logoAnimation(void);
-	void bookAnimation(void);
-
 	void select(void);
+	void logoAnimation(void);
 	void animation(void);
+	void bookAnimation(void);
 	void fadeout(void);
 	void next(void);
 };

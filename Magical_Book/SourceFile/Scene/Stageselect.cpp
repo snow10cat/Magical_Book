@@ -14,11 +14,11 @@ using namespace MagicalBook;
 static ResourceManager* instance = ResourceManager::getInstance();
 
 
-StageSelect::StageSelect() : arrow_right(nullptr),
-							 arrow_left(nullptr)
+StageSelect::StageSelect() : arrowRight(nullptr),
+							 arrowLeft(nullptr)
 {
-	arrow_right = LibSprite::create("logo/arrow_right.png");
-	arrow_left = LibSprite::create("logo/arrow_left.png");
+	arrowRight = LibSprite::create("logo/arrow_right.png");
+	arrowLeft = LibSprite::create("logo/arrow_left.png");
 }
 
 
@@ -27,6 +27,11 @@ StageSelect::~StageSelect()
 }
 
 
+/**
+ *	@brief 初期化
+ *
+ *	@author	Tatsuya Maeda
+ */
 void StageSelect::init(void)
 {
 	input = LibInput::getInstance();
@@ -40,17 +45,19 @@ void StageSelect::init(void)
 	frame = instance -> getSprite("frame");
 	back = instance -> getSprite("back");
 
+	for(int i = 1; i <= ResourceManager::BG_Count; i++)
+	{
+		string bgName = "game_bg" + to_string(i);
+		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
+	}
+
 	volume = 0;
 	volumeFlag = true;
 
-	timer = 0;
+	selectFlag = 0;
 	counter = 0;
-	flag = 0;
-	fadeFlag = 0;
-	bookAnmFlag = 0;
-	anime_number = BOOK_ANM_MIN;
-	anime_counter = 0;
-	size = 1.3;
+	animeNumber = BOOK_ANM_MIN;
+	animeCounter = 0;
 
 	//音声
 	selectBgm -> setVolume(0.0f);
@@ -68,58 +75,61 @@ void StageSelect::init(void)
 	frame -> setScale(0.35f);
 	frame -> setAlpha(0.0f);
 
-	arrow_right -> setPosition(sWHeaf + 150, sHHeaf - 310);
-	arrow_right -> setScale(0.3f);
-	arrow_right -> setAlpha(0.0f);
+	arrowRight -> setPosition(sWHeaf + 150, sHHeaf - 310);
+	arrowRight -> setScale(0.3f);
+	arrowRight -> setAlpha(0.0f);
 
-	arrow_left -> setPosition(sWHeaf - 270, sHHeaf - 310);
-	arrow_left -> setScale(0.3f);
-	arrow_left -> setAlpha(0.0f);
+	arrowLeft -> setPosition(sWHeaf - 270, sHHeaf - 310);
+	arrowLeft -> setScale(0.3f);
+	arrowLeft -> setAlpha(0.0f);
 
 	back -> setPosition(sWHeaf + 500, sHHeaf - 300);
 	back -> setScale(1.0f);
 	back -> setAlpha(0.0f);
 
-	for(int i = 1; i <= ResourceManager::BG_Count; i++)
-	{
-		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
-		bgTextures[i - 1] -> setAlpha(0.0f);
-	}
-
 	bgTextures[ResourceManager::BG_Castle] -> setPosition(sWHeaf - 210, sHHeaf + 160);
 	bgTextures[ResourceManager::BG_Castle] -> setScale(0.35f);
+	bgTextures[ResourceManager::BG_Castle] -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Table] -> setPosition(sWHeaf + 90, sHHeaf + 160);
 	bgTextures[ResourceManager::BG_Table] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Table] -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Gate] -> setPosition(sWHeaf - 210, sHHeaf - 140);
 	bgTextures[ResourceManager::BG_Gate] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Gate] -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 90, sHHeaf - 140);
 	bgTextures[ResourceManager::BG_Window] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Window] -> setAlpha(0.0f);
 
 	//ステージ選択から
-	select_work = GameMode;
+	stageSelectWork = SelectStage;
 }
 
 
-
+/**
+ *	@brief 更新
+ *
+ *	@author	Tatsuya Maeda
+ */
 void StageSelect::update(void)
 {
 	playSound();
 
 	stageSelectDraw();
 
-	switch(select_work)
+	switch(stageSelectWork)
 	{
-	case GameMode:
-		gameMode();
+	case SelectStage:
+		logoFadein();
+		bgFadein();
+		stageSelect();
 		break;
-	case Back:
+	case BackAnimation:
 		backAnimation();
 		break;
-	case Fadeout:
+	case Animation:
 		bookAnimation();
 		fadeout();
 		break;
@@ -133,6 +143,11 @@ void StageSelect::update(void)
 }
 
 
+/**
+ *	@brief 音声再生
+ *
+ *	@author	Tatsuya Maeda
+ */
 void StageSelect::playSound(void)
 {
 	if(selectBgm -> getState() != LibSound::Play)
@@ -155,55 +170,135 @@ void StageSelect::playSound(void)
 }
 
 
+/**
+ *	@brief 描画
+ *
+ *	@author	Tatsuya Maeda
+ */
 void  StageSelect::stageSelectDraw(void)
 {
 	floor -> draw();
+	books -> draw(animeNumber);
+	
+	if(stageSelectWork == SelectStage)
+	{
+		for(int i = 0; i < bgTextures.size() - 1; i++)
+		{
+			bgTextures[i] -> draw();
+		}
 
+		arrowRight -> draw();
+		arrowLeft -> draw();
+		back -> draw();
+		frame -> draw();
+	}
+	
 }
 
 
-void StageSelect::bookAnimation(void)
+/**
+ *	@brief ロゴフェードイン
+ *
+ *	@author	Tatsuya Maeda
+ */
+void StageSelect::logoFadein(void)
 {
-	if(anime_number <= BOOK_ANM_MAX)
+	if(back -> getAlpha() < 255)
 	{
-		anime_counter++;
-		if(anime_counter % 7 == 0)
+		back -> setAlpha(back -> getAlpha() + 5);
+	}
+	else
+	{
+		back -> setAlpha(255);
+	}
+
+	if(arrowRight -> getAlpha() < 255)
+	{
+		arrowRight -> setAlpha(arrowRight -> getAlpha() + 5);
+	}
+	else
+	{
+		arrowRight -> setAlpha(255);
+	}
+
+	if(arrowLeft -> getAlpha() < 255)
+	{
+		arrowLeft -> setAlpha(arrowLeft -> getAlpha() + 5);
+	}
+	else
+	{
+		arrowLeft -> setAlpha(255);
+	}
+
+	if(frame -> getAlpha() < 255)
+	{
+		frame -> setAlpha(frame -> getAlpha() + 5);
+	}
+	else
+	{
+		frame -> setAlpha(255);
+	}
+}
+
+
+/**
+ *	@brief ステージ背景フェードイン
+ *
+ *	@author	Tatsuya Maeda
+ */
+void StageSelect::bgFadein(void)
+{
+	for(int i = 0; i < ResourceManager::BG_Count - 1; i++)
+	{
+		if(bgTextures[i] -> getAlpha() < 255)
 		{
-			anime_counter = 0;
-			anime_number++;
+			bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
+		}
+		else
+		{
+			bgTextures[i] -> setAlpha(255);
 		}
 	}
 }
 
 
-void StageSelect::gameMode(void)
+/**
+ *	@brief ステージ選択
+ *
+ *	@author	Tatsuya Maeda
+ */
+void StageSelect::stageSelect(void)
 {
-	gameModeDraw();
-	if(timer >= 10)
+	cangeSize();
+
+	if(frame -> getAlpha() == 255)
 	{
-		gameSelect();
+		selectActions();
 	}
-	else
-	{
-		timer++;
-	}
+
 }
 
 
-void StageSelect::gameSelect(void)
+/**
+ *	@brief 選択操作
+ *
+ *	@author	Tatsuya Maeda
+ */
+void StageSelect::selectActions(void)
 {
 	const int counterNumber = CatGameLib::LibBasicFunc::wrap(counter, 0, 6);
 
 	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 6);
 
-	if(flag != 6)
+	if(selectFlag != BackLogo)
 	{
-		flag = counterNumber;
+		selectFlag = counterNumber;
 
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 		{
 			counter -= 2;
 		}
+
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
 			counter += 2;
@@ -217,7 +312,7 @@ void StageSelect::gameSelect(void)
 			}
 			else
 			{
-				flag = 6;
+				selectFlag = BackLogo;
 			}
 		}
 
@@ -225,7 +320,7 @@ void StageSelect::gameSelect(void)
 		{
 			if(counterNumber % 2)
 			{
-				flag = 6;
+				selectFlag = BackLogo;
 			}
 			else
 			{
@@ -233,10 +328,10 @@ void StageSelect::gameSelect(void)
 			}
 		}
 
-		if (bookAnmFlag == 0 && flag != 4 && flag != 5 && input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
+		if (selectFlag != Leftarrow && selectFlag != Rightarrow && input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
-			instance ->getSprite("fade") -> setAlpha(0);
-			select_work = Fadeout;
+			fade -> setAlpha(0);
+			stageSelectWork = Animation;
 		}
 	}
 	else
@@ -246,162 +341,112 @@ void StageSelect::gameSelect(void)
 			if(counter % 2 == 0)
 			{
 				counter++;
-				flag = counter;
+				selectFlag = counter;
 			}
 			else
 			{
-				flag = counter;
+				selectFlag = counter;
 			}
 		}
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 		{
 			if(counter % 2 == 0)
 			{
-				flag = counter;
+				selectFlag = counter;
 			}
 			else
 			{
 				counter--;
-				flag = counter;
+				selectFlag = counter;
 			}
 		}
-	}
 
-
-	if(flag == 6)
-	{
-		if (bookAnmFlag == 0 && input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
+		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
 			counter = 0;
-			bookAnmFlag = 1;
-			anime_number = BOOK_ANM_MAX;
-		}
-
-		if(bookAnmFlag == 1)
-		{
-			volumeFlag = false;
-			backAnimation();
-			if(anime_number == BOOK_ANM_MIN)
-			{
-				bookAnmFlag = 0;
-				instance -> getSprite("back") -> setPosition(sWHeaf - 100, sHHeaf - 200);
-
-				LibSound::allStop();
-				SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::MenuSelect);
-			}
+			animeNumber = BOOK_ANM_MAX;
+			stageSelectWork = BackAnimation;
 		}
 	}
 }
 
 
-void StageSelect::gameModeDraw(void)
+/**
+ *	@brief ステージ背景、ロゴのサイズ変更
+ *
+ *	@author	Tatsuya Maeda
+ */
+void StageSelect::cangeSize(void)
 {
-	instance -> getSprites("books") -> draw(anime_number);
-
+	//全てのスケール設定
 	auto sizeResetFunc = [&](void)
 	{
-		instance -> getSprite("game_bg1") -> setScale(0.3f);
-		instance -> getSprite("game_bg2") -> setScale(0.3f);
-		instance -> getSprite("game_bg3") -> setScale(0.3f);
-		instance -> getSprite("game_bg4") -> setScale(0.3f);
+		for(int i = 0; i <= ResourceManager::BG_Count - 1; i++)
+		{
+			bgTextures[i] -> setScale(0.3f);
+		}
 		
-		arrow_left -> setScale(0.3f);
-		arrow_right -> setScale(0.3f);
-		instance -> getSprite("back") -> setScale(1.0f);
-		instance -> getSprite("frame") -> setScale(0.35f);
+		arrowLeft -> setScale(0.3f);
+		arrowRight -> setScale(0.3f);
+		back -> setScale(1.0f);
+		frame -> setScale(0.35f);
 	};
 
 
-	if(anime_number == BOOK_ANM_MIN)
+	switch(selectFlag)
 	{
-		for(int i = 0; i < bgTextures.size() - 1; i++)
-		{
-			bgTextures[i] -> draw();
-
-			if(bgTextures[i] -> getAlpha() < 255)
-			{
-				bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
-			}
-		}
-
-		if(instance -> getSprite("back") -> getAlpha() < 255)
-		{
-			instance -> getSprite("back") -> setAlpha(instance -> getSprite("back") -> getAlpha() + 5);
-		}
-		instance -> getSprite("back") -> draw();
-
-		if(arrow_right -> getAlpha() < 255)
-		{
-			arrow_right -> setAlpha(arrow_right -> getAlpha() + 5);
-		}
-		arrow_right -> draw();
-
-		if(arrow_left -> getAlpha() < 255)
-		{
-			arrow_left -> setAlpha(arrow_left -> getAlpha() + 5);
-		}
-		arrow_left -> draw();
-
-		if(instance -> getSprite("frame") -> getAlpha() < 255)
-		{
-			instance -> getSprite("frame") -> setAlpha(instance -> getSprite("frame") -> getAlpha() + 5);
-		}
-		instance -> getSprite("frame") -> draw();
-	}
-
-	switch(flag)
-	{
-	case 0:
+	case LeftUp:
 		sizeResetFunc();
 
-		instance -> getSprite("game_bg1") -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Castle] -> setScale(0.35f);
 
-		instance -> getSprite("frame") -> setPosition(sWHeaf - 210, sHHeaf + 160);
+		frame -> setPosition(bgTextures[ResourceManager::BG_Castle] -> getPosition());
 		break;
-	case 1:
+	case RightUp:
 		sizeResetFunc();
 
-		instance -> getSprite("game_bg2") -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Table] -> setScale(0.35f);
 
-		instance ->getSprite("frame") -> setPosition(sWHeaf + 90, sHHeaf + 160);
+		frame -> setPosition(bgTextures[ResourceManager::BG_Table] -> getPosition());
 		break;
-	case 2:
+	case LeftDown:
 		sizeResetFunc();
 
-		instance -> getSprite("game_bg3") -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Gate] -> setScale(0.35f);
 
-		instance ->getSprite("frame") -> setPosition(sWHeaf - 210, sHHeaf - 140);
+		frame -> setPosition(bgTextures[ResourceManager::BG_Gate] -> getPosition());
 		break;
-	case 3:
+	case RightDown:
 		sizeResetFunc();
 
-		instance -> getSprite("game_bg4") -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Window] -> setScale(0.35f);
 
-		instance ->getSprite("frame") -> setPosition(sWHeaf + 90, sHHeaf - 140);
+		frame -> setPosition(bgTextures[ResourceManager::BG_Window] -> getPosition());
 		break;
-	case 4:
+	case Leftarrow:
 		sizeResetFunc();
 
-		arrow_left -> setScale(0.35f);
+		arrowLeft -> setScale(0.35f);
 
-		instance ->getSprite("frame") -> setScale(0.1f);
-		instance ->getSprite("frame") -> setPosition(sWHeaf - 270, sHHeaf - 310);
+		frame -> setScale(0.1f);
+		frame -> setPosition(arrowLeft -> getPosition());
 		break;
-	case 5:
+	case Rightarrow:
 		sizeResetFunc();
 
-		arrow_right -> setScale(0.35f);
+		arrowRight -> setScale(0.35f);
 
-		instance ->getSprite("frame") -> setScale(0.1f);
-		instance ->getSprite("frame") -> setPosition(sWHeaf + 150, sHHeaf - 310);
+		frame -> setScale(0.1f);
+		frame -> setPosition(arrowRight -> getPosition());
 		break;
-	case 6:
+	case BackLogo:
 		sizeResetFunc();
 
-		instance -> getSprite("back") -> setScale(1.2f);
-		instance ->getSprite("frame") -> setScaleX(0.35f);
-		instance ->getSprite("frame") -> setScaleY(0.12f);
-		instance ->getSprite("frame") -> setPosition(sWHeaf + 500, sHHeaf - 300);
+		back -> setScale(1.2f);
+
+		frame -> setScaleX(0.35f);
+		frame -> setScaleY(0.12f);
+		frame -> setPosition(back -> getPosition());
 		break;
 	default:
 		assert(!"不正な状態");
@@ -410,43 +455,96 @@ void StageSelect::gameModeDraw(void)
 }
 
 
+/**
+ *	@brief 本をめくる(1ページ戻す)アニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
 void StageSelect::backAnimation(void)
 {
-	volumeFlag = 1;
-	if(anime_number >= BOOK_ANM_MIN)
+	volumeFlag = false;
+
+	if(animeNumber > BOOK_ANM_MIN)
 	{
-		anime_counter++;
-		if(anime_counter % 7 == 0)
+		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
+		animeCounter++;
+		if(animeCounter % 7 == 0)
 		{
-			anime_counter = 0;
-			anime_number--;
+			animeCounter = 0;
+			animeNumber--;
 		}
+	}
+	else
+	{
+		animeNumber = BOOK_ANM_MIN;
+		stageSelectWork = Next;		//次へ
 	}
 }
 
 
+/**
+ *	@brief 本をめくるアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
+void StageSelect::bookAnimation(void)
+{
+	volumeFlag = false;
+
+	if(animeNumber < BOOK_ANM_MAX)
+	{
+		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
+		animeCounter++;
+		if(animeCounter % 7 == 0)
+		{
+			animeCounter = 0;
+			animeNumber++;
+		}
+	}
+	else
+	{
+		animeNumber = BOOK_ANM_MAX;
+	}
+}
+
+
+/**
+ *	@brief フェードアウト
+ *
+ *	@author	Tatsuya Maeda
+ */
 void StageSelect::fadeout(void)
 {
-	instance -> getSprites("books") -> draw(anime_number);
-
-	instance ->getSprite("fade") -> draw();
-	instance ->getSprite("fade") -> setAlpha(instance ->getSprite("fade") -> getAlpha() + 5);
-	if(instance ->getSprite("fade") -> getAlpha() >= 255)
+	if(fade -> getAlpha() < 255)
 	{
-		instance ->getSprite("fade") -> setAlpha(255);
-		if(bookAnmFlag == 0)
-		{
-			if(anime_number == BOOK_ANM_MAX)
-			{
-				select_work = Next;
-			}
-		}
+		fade -> setAlpha(fade -> getAlpha() + 5);
+	}
+	else
+	{
+		fade -> setAlpha(255);
+		stageSelectWork = Next;		//次へ
 	}
 }
 
 
+/**
+ *	@brief selectFlagがBackLogoならメニューセレクトへ、それ以外はゲームへ
+ *
+ *	@author	Tatsuya Maeda
+ */
 void StageSelect::next(void)
 {
 	LibSound::allStop();
-	SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
+
+	if(selectFlag != BackLogo)
+	{
+		//ゲームへ
+		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Game);
+	}
+	else
+	{
+		//メニューセレクトへ
+		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::MenuSelect);
+	}
+
 }

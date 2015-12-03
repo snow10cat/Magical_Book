@@ -148,7 +148,6 @@ void Title::playSound(void)
 void Title::titleDraw(void)
 {
 	floor -> draw();
-
 	openBooks -> draw(animeNumber);
 	
 	if(titleWork == Select)
@@ -159,60 +158,6 @@ void Title::titleDraw(void)
 	}
 	
 	fade -> draw();
-}
-
-
-/**
- *	@brief ロゴアニメーション
- *
- *	@author	Tatsuya Maeda
- */
-void Title::logoAnimation(void)
-{
-	timer = CatGameLib::LibBasicFunc::wrap(timer, 0, 3);
-
-	timer++;
-
-	if(timer % 3 == 0)
-	{
-		if(size <= 1.2 && flag == true)
-		{
-			if(size >= 1.1)
-			{
-				flag = false;
-			}
-
-			size += 0.01f;
-		}
-		else if(size >= 0.8 && flag == false)
-		{
-			if(size <= 0.9)
-			{
-				flag = true;
-			}
-
-			size -= 0.01;
-		}
-	}
-}
-
-
-/**
- *	@brief 本の開くアニメーション
- *
- *	@author	Tatsuya Maeda
- */
-void Title::bookAnimation(void)
-{
-	if(animeNumber < BOOK_ANM_MAX)
-	{
-		counter++;
-		if(counter % 7 == 0)
-		{
-			counter = 0;
-			animeNumber++;
-		}
-	}
 }
 
 
@@ -268,7 +213,42 @@ void Title::select(void)
 
 
 /**
- *	@brief 本を開くアニメーション
+ *	@brief ロゴアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
+void Title::logoAnimation(void)
+{
+	timer = CatGameLib::LibBasicFunc::wrap(timer, 0, 3);
+
+	timer++;
+
+	if(timer % 3 == 0)
+	{
+		if(size <= 1.2 && flag == true)
+		{
+			if(size >= 1.1)
+			{
+				flag = false;
+			}
+
+			size += 0.01f;
+		}
+		else if(size >= 0.8 && flag == false)
+		{
+			if(size <= 0.9)
+			{
+				flag = true;
+			}
+
+			size -= 0.01;
+		}
+	}
+}
+
+
+/**
+ *	@brief 本移動アニメーション
  *
  *	@author	Tatsuya Maeda
  */
@@ -278,18 +258,41 @@ void Title::animation(void)
 
 	bookAnimation();
 
-	if (openBooks -> getPositionX() >= sWHeaf + 250)
+	if (openBooks -> getPositionX() < sWHeaf + 250)
+	{
+		openBooks -> setPositionX(openBooks -> getPositionX() + 10);
+	}
+	else
 	{
 		openBooks -> setPositionX(sWHeaf + 250);
+
 		if(animeNumber == BOOK_ANM_MAX)
 		{
-			animeNumber = BOOK_ANM_MAX;
 			titleWork = Fadeout;		//フェードアウトへ
+		}
+	}
+}
+
+
+/**
+ *	@brief 本の開くアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
+void Title::bookAnimation(void)
+{
+	if(animeNumber < BOOK_ANM_MAX)
+	{
+		counter++;
+		if(counter % 7 == 0)
+		{
+			counter = 0;
+			animeNumber++;
 		}
 	}
 	else
 	{
-		openBooks -> setPositionX(openBooks -> getPositionX() + 10);
+		animeNumber = BOOK_ANM_MAX;
 	}
 }
 

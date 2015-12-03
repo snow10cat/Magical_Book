@@ -454,7 +454,7 @@ void MenuSelect::animation(void)
  */
 void MenuSelect::bookAnimation(void)
 {
-	if(animeNumber <= BOOK_ANM_MAX)
+	if(animeNumber < BOOK_ANM_MAX)
 	{
 		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
 		animeCounter++;
@@ -463,6 +463,10 @@ void MenuSelect::bookAnimation(void)
 			animeCounter = 0;
 			animeNumber++;
 		}
+	}
+	else
+	{
+		animeNumber = BOOK_ANM_MAX;
 	}
 }
 
@@ -474,7 +478,7 @@ void MenuSelect::bookAnimation(void)
  */
 void MenuSelect::closeAnimation(void)
 {
-	if(animeNumber >= BOOK_ANM_MIN)
+	if(animeNumber > BOOK_ANM_MIN)
 	{
 		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
 		animeCounter++;
@@ -492,6 +496,10 @@ void MenuSelect::closeAnimation(void)
 				size = 1.0f;
 			}
 		}
+	}
+	else
+	{
+		animeNumber = BOOK_ANM_MIN;
 	}
 }
 

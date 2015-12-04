@@ -16,21 +16,21 @@ static ResourceManager* instance = ResourceManager::getInstance();
 static StageConfig* stageConfig = StageConfig::getInstance();
 
 
-EditSelect::EditSelect() : size_section(nullptr),
-						   bg_section(nullptr),
-						   music_section(nullptr)
+EditSelect::EditSelect() : sizeSection(nullptr),
+						   bgSection(nullptr),
+						   musicSection(nullptr)
 {
-	size_section = CatGameLib::LibSprite::create("logo/size_section.png");
-	bg_section = CatGameLib::LibSprite::create("logo/bg_section.png");
-	music_section = CatGameLib::LibSprite::create("logo/music_section.png");
+	sizeSection = CatGameLib::LibSprite::create("logo/size_section.png");
+	bgSection = CatGameLib::LibSprite::create("logo/bg_section.png");
+	musicSection = CatGameLib::LibSprite::create("logo/music_section.png");
 
-	size_logo[0] = CatGameLib::LibSprite::create("logo/S.png");
-	size_logo[1] = CatGameLib::LibSprite::create("logo/M.png");
-	size_logo[2] = CatGameLib::LibSprite::create("logo/L.png");
+	bgmLogos[ResourceManager::BGM_1] = CatGameLib::LibSprite::create("logo/bgm1.png");
+	bgmLogos[ResourceManager::BGM_2] = CatGameLib::LibSprite::create("logo/bgm2.png");
+	bgmLogos[ResourceManager::BGM_3] = CatGameLib::LibSprite::create("logo/bgm3.png");;
 
-	bgm_logo[0] = CatGameLib::LibSprite::create("logo/bgm1.png");
-	bgm_logo[1] = CatGameLib::LibSprite::create("logo/bgm2.png");
-	bgm_logo[2] = CatGameLib::LibSprite::create("logo/bgm3.png");
+	sizeLogo[ResourceManager::Size_S] = CatGameLib::LibSprite::create("logo/S.png");
+	sizeLogo[ResourceManager::Size_M] = CatGameLib::LibSprite::create("logo/M.png");
+	sizeLogo[ResourceManager::Size_L] = CatGameLib::LibSprite::create("logo/L.png");
 }
 
 
@@ -39,83 +39,31 @@ EditSelect::~EditSelect()
 }
 
 
+/**
+ *	@brief 初期化
+ *
+ *	@author	Tatsuya Maeda
+ */
 void EditSelect::init(void)
 {
 	input = LibInput::getInstance();
 
-	instance -> getSound("selectbgm") -> setVolume(0.0f);
-	instance -> getSound("selectbgm") -> setLoop(true);
+	selectBgm = instance -> getSound("selectbgm");
+	menuSelect = instance -> getSound("menuSelect");
 
-	instance -> getSprites("books") -> setPosition(sWHeaf - 320, sHHeaf);
-	instance -> getSprites("books") -> setScale(1.5f);
-
-
-	size_logo[0] -> setPosition(sWHeaf - 100, sHHeaf + 200);
-	size_logo[0] -> setScale(0.35f);
-	size_logo[0] -> setAlpha(0.0f);
-
-	size_logo[1] -> setPosition(sWHeaf + 50, sHHeaf + 200);
-	size_logo[1] -> setScale(0.25f);
-	size_logo[1] -> setAlpha(0.0f);
-
-	size_logo[2] -> setPosition(sWHeaf + 200, sHHeaf + 200);
-	size_logo[2] -> setScale(0.25f);
-	size_logo[2] -> setAlpha(0.0f);
-
-
-	bgm_logo[0] -> setPosition(sWHeaf - 100, sHHeaf - 220);
-	bgm_logo[0] -> setScale(0.25f);
-	bgm_logo[0] -> setAlpha(0.0f);
-
-	bgm_logo[1] -> setPosition(sWHeaf + 50, sHHeaf - 220);
-	bgm_logo[1] -> setScale(0.25f);
-	bgm_logo[1] -> setAlpha(0.0f);
-
-	bgm_logo[2] -> setPosition(sWHeaf + 200, sHHeaf - 220);
-	bgm_logo[2] -> setScale(0.25f);
-	bgm_logo[2] -> setAlpha(0.0f);
+	floor = instance ->getSprite("floor");
+	books = instance -> getSprites("books");
+	frame = instance -> getSprite("frame");
+	back = instance -> getSprite("back");
 
 	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
 		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
-		bgTextures[i - 1] -> setAlpha(0.0f);
 	}
 
-	bgTextures[ResourceManager::BG_Castle] -> setPosition(sWHeaf - 100, sHHeaf - 30);
-	bgTextures[ResourceManager::BG_Castle] -> setScale(0.1f);
-
-	bgTextures[ResourceManager::BG_Table] -> setPosition(sWHeaf - 25, sHHeaf - 30);
-	bgTextures[ResourceManager::BG_Table] -> setScale(0.1f);
-
-	bgTextures[ResourceManager::BG_Gate] -> setPosition(sWHeaf + 50, sHHeaf - 30);
-	bgTextures[ResourceManager::BG_Gate] -> setScale(0.1f);
-
-	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 125, sHHeaf - 30);
-	bgTextures[ResourceManager::BG_Window] -> setScale(0.1f);
-
-	bgTextures[ResourceManager::BG_Throne] -> setPosition(sWHeaf + 200, sHHeaf - 30);
-	bgTextures[ResourceManager::BG_Throne] -> setScale(0.1f);
-
-	instance -> getSprite("frame") -> setPosition(sWHeaf - 100, sHHeaf + 200);
-	instance -> getSprite("frame") -> setScale(0.15f);
-	instance -> getSprite("frame") -> setAlpha(0.0f);
-
-	size_section -> setPosition(sWHeaf - 100, sHHeaf + 300);
-	size_section -> setScale(0.8f);
-	size_section -> setAlpha(0.0f);
-
-	bg_section -> setPosition(sWHeaf - 100, sHHeaf + 80);
-	bg_section -> setScale(0.7f);
-	bg_section -> setAlpha(0.0f);
-
-	music_section -> setPosition(sWHeaf - 100, sHHeaf - 140);
-	music_section -> setScale(0.7f);
-	music_section -> setAlpha(0.0f);
-
-	instance -> getSprite("back") -> setPosition(sWHeaf - 500, sHHeaf - 280);
-	instance -> getSprite("back") -> setScale(0.7f);
-	instance -> getSprite("back") -> setAlpha(0.0f);
+	volume = 0;
+	volumeFlag = true;
 
 	sizeCounter = 1;
 	bgCounter = 1;
@@ -124,170 +72,283 @@ void EditSelect::init(void)
 	bookAnmFlag = 0;
 	anime_number = BOOK_ANM_MIN;
 	anime_counter = 0;
-	Volume = 0;
-	volumeFlag = 0;
-	editMode_work = logoFadein;
+
+	//音声
+	selectBgm -> setVolume(0.0f);
+	selectBgm -> setLoop(true);
+
+	menuSelect -> setVolume(1.0f);
+
+	//画像
+	books -> setPosition(sWHeaf - 320, sHHeaf);
+	books -> setScale(1.5f);
+
+	for(int i = 0; i <= ResourceManager::Size_Count - 1; i++)
+	{
+		sizeLogo[i] -> setAlpha(0.0f);
+	}
+
+	//!< 大きさ
+	sizeSection -> setPosition(sWHeaf - 100, sHHeaf + 300);
+	sizeSection -> setScale(0.8f);
+	sizeSection -> setAlpha(0.0f);
+
+	sizeLogo[ResourceManager::Size_S] -> setPosition(sWHeaf - 100, sHHeaf + 200);
+	sizeLogo[ResourceManager::Size_S] -> setScale(0.35f);
+
+	sizeLogo[ResourceManager::Size_M] -> setPosition(sWHeaf + 50, sHHeaf + 200);
+	sizeLogo[ResourceManager::Size_M] -> setScale(0.25f);
+
+	sizeLogo[ResourceManager::Size_L] -> setPosition(sWHeaf + 200, sHHeaf + 200);
+	sizeLogo[ResourceManager::Size_L] -> setScale(0.25f);
+
+	//!< 背景
+	bgSection -> setPosition(sWHeaf - 100, sHHeaf + 80);
+	bgSection -> setScale(0.7f);
+	bgSection -> setAlpha(0.0f);
+
+	bgTextures[ResourceManager::BG_Castle] -> setPosition(sWHeaf - 100, sHHeaf - 30);
+
+	bgTextures[ResourceManager::BG_Table] -> setPosition(sWHeaf - 25, sHHeaf - 30);
+
+	bgTextures[ResourceManager::BG_Gate] -> setPosition(sWHeaf + 50, sHHeaf - 30);
+
+	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 125, sHHeaf - 30);
+
+	bgTextures[ResourceManager::BG_Throne] -> setPosition(sWHeaf + 200, sHHeaf - 30);
+	
+	for(int i = 0; i <= ResourceManager::BG_Count - 1; i++)
+	{
+		bgTextures[i] -> setScale(0.1f);
+		bgTextures[i] -> setAlpha(0.0f);
+	}
+
+	//!< 音楽
+	musicSection -> setPosition(sWHeaf - 100, sHHeaf - 140);
+	musicSection -> setScale(0.7f);
+	musicSection -> setAlpha(0.0f);
+	
+	bgmLogos[ResourceManager::BGM_1] -> setPosition(sWHeaf - 100, sHHeaf - 220);
+
+	bgmLogos[ResourceManager::BGM_2] -> setPosition(sWHeaf + 50, sHHeaf - 220);
+
+	bgmLogos[ResourceManager::BGM_3] -> setPosition(sWHeaf + 200, sHHeaf - 220);
+	
+	for(int i = 0; i <= ResourceManager::BGM_Count - 1; i++)
+	{
+		bgmLogos[i] -> setScale(0.25f);
+		bgmLogos[i] -> setAlpha(0.0f);
+	}
+
+	frame -> setPosition(sWHeaf - 100, sHHeaf + 200);
+	frame -> setScale(0.15f);
+	frame -> setAlpha(0.0f);
+
+	back -> setPosition(sWHeaf - 500, sHHeaf - 280);
+	back -> setScale(0.7f);
+	back -> setAlpha(0.0f);
+
+	//フェードインから
+	editSetWork = Fadein;
 }
 
 
+/**
+ *	@brief 更新
+ *
+ *	@author	Tatsuya Maeda
+ */
 void EditSelect::update(void)
 {
-	if(instance -> getSound("selectbgm") -> getState() != LibSound::Play)
-	{
-		instance -> getSound("selectbgm") -> play();
-	}
+	playSound();
 
-	if(volumeFlag == 1)
-	{
-		Volume -= 0.02f;
-		instance -> getSound("selectbgm") -> setVolume(Volume);
-	}
-	else if(Volume <= 1.0 && volumeFlag == 0)
-	{
-		Volume += 0.02f;
-		instance -> getSound("selectbgm") -> setVolume(Volume);
-	}
+	editSetUpDraw();
 
-	instance -> getSprite("floor") -> draw();
-	instance -> getSprites("books") -> draw(anime_number);
-
-	switch(editMode_work)
+	switch(editSetWork)
 	{
-	case logoFadein:
-		logoFade();
-		editSetUpDraw();
+	case Fadein:
+		logoFadein();
 		break;
 	case EditMenuSelect:
-		editSetUpDraw();
 		editSetUp();
 		break;
-	case Animation:
-		animation();
-		break;
-	case Back:
+	case BackAnimation:
 		backAnimation();
+		break;
+	case Animation:
+		bookAnimation();
 		break;
 	case Next:
 		next();
 		break;
-
 	default:
 		assert(!"不正な状態");
 		break;
 	}
 }
 
-void EditSelect::logoFade(void)
+
+/**
+ *	@brief 音声再生
+ *
+ *	@author	Tatsuya Maeda
+ */
+void EditSelect::playSound(void)
 {
-	if(size_section -> getAlpha() < 255)
+	if(selectBgm -> getState() != LibSound::Play)
 	{
-		size_section -> setAlpha(size_section -> getAlpha() + 5);
-	}
-	
-	if(bg_section -> getAlpha() < 255)
-	{
-		bg_section -> setAlpha(bg_section -> getAlpha() + 5);
-	}
-	
-	if(music_section -> getAlpha() < 255)
-	{
-		music_section -> setAlpha(music_section -> getAlpha() + 5);
+		selectBgm -> play();
 	}
 
-	if(instance -> getSprite("back")-> getAlpha() < 255)
+	if(volumeFlag == false)
 	{
-		instance -> getSprite("back") -> setAlpha(instance -> getSprite("back") -> getAlpha() + 5);
+		//フェードアウト
+		volume -= 0.02f;
+		selectBgm -> setVolume(volume);
 	}
-
-	for(int i = 0; i <= 2; i++)
+	else if(volume <= 1.0 && volumeFlag == true)
 	{
-		if(size_logo[i] -> getAlpha() < 255)
+		//フェードイン
+		volume += 0.02f;
+		selectBgm -> setVolume(volume);
+	}
+}
+
+
+/**
+ *	@brief 描画
+ *
+ *	@author	Tatsuya Maeda
+ */
+void EditSelect::editSetUpDraw(void)
+{
+	floor -> draw();
+	books -> draw(anime_number);
+
+	if(editSetWork == Fadein || editSetWork == EditMenuSelect)
+	{
+		sizeSection -> draw();
+
+		for(int i = 0; i < ResourceManager::Size_Count; i++)
 		{
-			size_logo[i] -> setAlpha(size_logo[i] -> getAlpha() + 5);
+			sizeLogo[i] -> draw();
 		}
 
-		if(bgm_logo[i] -> getAlpha() < 255)
+		bgSection -> draw();
+
+		for(int i = 0; i < ResourceManager::BG_Count; i++)
 		{
-			bgm_logo[i] -> setAlpha(bgm_logo[i] -> getAlpha() + 5);
-		}	
+			bgTextures[i] -> draw();
+		}
+
+		musicSection -> draw();
+		
+		for(int i = 0; i < ResourceManager::BGM_Count; i++)
+		{
+			bgmLogos[i] -> draw();
+		}
+
+		back -> draw();
+		frame -> draw();
+	}
+}
+
+
+/**
+ *	@brief ロゴフェードイン
+ *
+ *	@author	Tatsuya Maeda
+ */
+void EditSelect::logoFadein(void)
+{
+	if(sizeSection -> getAlpha() < 255)
+	{
+		sizeSection -> setAlpha(sizeSection -> getAlpha() + 5);
+	}
+	else
+	{
+		sizeSection -> setAlpha(255);
 	}
 
-	for(int i = 0; i < bgTextures.size(); i++)
+	for(int i = 0; i < ResourceManager::Size_Count; i++)
+	{
+		if(sizeLogo[i] -> getAlpha() < 255)
+		{
+			sizeLogo[i] -> setAlpha(sizeLogo[i] -> getAlpha() + 5);
+		}
+		else
+		{
+			sizeLogo[i] -> setAlpha(255);
+		}
+	}
+
+	if(bgSection -> getAlpha() < 255)
+	{
+		bgSection -> setAlpha(bgSection -> getAlpha() + 5);
+	}
+	else
+	{
+		bgSection -> setAlpha(255);
+	}
+
+	for(int i = 0; i < ResourceManager::BG_Count; i++)
 	{
 		if(bgTextures[i] -> getAlpha() < 255)
 		{
 			bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
 		}
+		else
+		{
+			bgTextures[i] -> setAlpha(255);
+		}
 	}
 
-	if(instance -> getSprite("frame") -> getAlpha() < 255)
+	if(musicSection -> getAlpha() < 255)
 	{
-		instance -> getSprite("frame") -> setAlpha(instance -> getSprite("frame") -> getAlpha() + 5);
-	}
-	
-	if(instance -> getSprite("frame") -> getAlpha() >= 255)
-	{
-		editMode_work = EditMenuSelect;
-	}
-}
-	
-
-void EditSelect::backAnimation(void)
-{
-	volumeFlag = 1;
-
-	if (instance -> getSprites("books") -> getPositionX() < sWHeaf + 300)
-	{
-		instance -> getSprites("books") -> setPositionX(instance -> getSprites("books") -> getPositionX() + 10);
+		musicSection -> setAlpha(musicSection -> getAlpha() + 5);
 	}
 	else
 	{
-		instance -> getSprites("books") -> setPositionX(sWHeaf + 300);
-		LibSound::allStop();
-		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::MenuSelect);
+		musicSection -> setAlpha(255);
 	}
-}
-	
-void EditSelect::animation(void)
-{
-	if(bookAnmFlag == 0)
+	for(int i = 0; i < ResourceManager::BGM_Count; i++)
 	{
-		volumeFlag = 1;
+		if(bgmLogos[i] -> getAlpha() < 255)
+		{
+			bgmLogos[i] -> setAlpha(bgmLogos[i] -> getAlpha() + 5);
+		}
+		else
+		{
+			bgmLogos[i] -> setAlpha(255);
+		}
+	}
 
-		if(anime_number < BOOK_ANM_MAX)
-		{
-			anime_counter++;
-			if(anime_counter % 7 == 0)
-			{
-				anime_counter = 0;
-				anime_number++;
-			}
-		}
-		else if(anime_number == BOOK_ANM_MAX)
-		{
-			bookAnmFlag = 1;
-		}
+	if(back -> getAlpha() < 255)
+	{
+		back -> setAlpha(back -> getAlpha() + 5);
 	}
 	else
 	{
-		anime_number = BOOK_ANM_MIN;
+		back -> setAlpha(255);
 	}
 
-	if (instance -> getSprites("books") -> getPositionX() < sWHeaf + 200)
+	if(frame -> getAlpha() < 255)
 	{
-		instance -> getSprites("books") -> setPositionX(instance -> getSprites("books") -> getPositionX() + 10);
+		frame -> setAlpha(frame -> getAlpha() + 5);
 	}
 	else
 	{
-		if(anime_number == BOOK_ANM_MIN)
-		{
-		instance -> getSprites("books") -> setPositionX(sWHeaf + 200);
-		editMode_work = Next;
-		}
+		frame -> setAlpha(255);
+		editSetWork = EditMenuSelect;
 	}
 }
 
 
+/**
+ *	@brief 設定画面
+ *
+ *	@author	Tatsuya Maeda
+ */
 void EditSelect::editSetUp(void)
 {
 	switch(flag)
@@ -307,17 +368,23 @@ void EditSelect::editSetUp(void)
 	}
 }
 
+
+/**
+ *	@brief サイズ選択
+ *
+ *	@author	Tatsuya Maeda
+ */
 void EditSelect::sizeSelect(void)
 {
 	sizeCounter = CatGameLib::LibBasicFunc::wrap(sizeCounter, 0, 4);
 
 	auto sizeSizeFunc = [&](void)
 	{
-		size_section -> setScale(0.8f);
+		sizeSection -> setScale(0.8f);
 
 		for(int i = 0; i <= 2; i++)
 		{
-			size_logo[i] -> setScale(0.25f);
+			sizeLogo[i] -> setScale(0.25f);
 		}
 		
 		instance -> getSprite("back") -> setScale(0.7f);
@@ -337,12 +404,12 @@ void EditSelect::sizeSelect(void)
 	{
 		if(sizeCounter % 4 != 0)
 		{
-			size_section -> setScale(0.7f);
+			sizeSection -> setScale(0.7f);
 			flag = StageBG;
 		}
 		else
 		{
-			editMode_work = Back;
+			editSetWork = BackAnimation;
 		}
 	}
 
@@ -351,7 +418,7 @@ void EditSelect::sizeSelect(void)
 		if(sizeCounter % 4 == 1)
 		{
 			sizeSizeFunc();
-			size_logo[0] -> setScale(0.35f);
+			sizeLogo[0] -> setScale(0.35f);
 			stageConfig -> setSizeNumber(StageConfig::Size_S);
 
 			instance ->getSprite("frame") -> setPosition(sWHeaf - 100, sHHeaf + 200);
@@ -359,7 +426,7 @@ void EditSelect::sizeSelect(void)
 		else if(sizeCounter % 4 == 2)
 		{
 			sizeSizeFunc();
-			size_logo[1] -> setScale(0.35f);
+			sizeLogo[1] -> setScale(0.35f);
 			stageConfig -> setSizeNumber(StageConfig::Size_M);
 			
 			instance ->getSprite("frame") -> setPosition(sWHeaf + 50, sHHeaf + 200);
@@ -367,7 +434,7 @@ void EditSelect::sizeSelect(void)
 		else if(sizeCounter % 4 == 3)
 		{
 			sizeSizeFunc();
-			size_logo[2] -> setScale(0.35f);
+			sizeLogo[2] -> setScale(0.35f);
 			stageConfig -> setSizeNumber(StageConfig::Size_L);
 			
 			instance ->getSprite("frame") -> setPosition(sWHeaf + 200, sHHeaf + 200);
@@ -375,7 +442,7 @@ void EditSelect::sizeSelect(void)
 		else if(sizeCounter % 4 == 0)
 		{
 			sizeSizeFunc();
-			size_section -> setScale(0.7f);
+			sizeSection -> setScale(0.7f);
 
 			instance -> getSprite("back") -> setScale(0.9f);
 			instance ->getSprite("frame") ->setScaleX(0.3f);
@@ -385,13 +452,19 @@ void EditSelect::sizeSelect(void)
 	}
 }
 
+
+/**
+ *	@brief 背景選択
+ *
+ *	@author	Tatsuya Maeda
+ */
 void EditSelect::bgSelect(void)
 {
 	bgCounter = CatGameLib::LibBasicFunc::wrap(bgCounter, 0, 6);
 
 	auto sizebgFunc = [&](void)
 	{
-		bg_section -> setScale(0.8f);
+		bgSection -> setScale(0.8f);
 	
 		instance -> getSprite("game_bg1") -> setScale(0.1f);
 		instance -> getSprite("game_bg2") -> setScale(0.1f);
@@ -415,18 +488,18 @@ void EditSelect::bgSelect(void)
 	{
 		if(bgCounter % 6 != 0)
 		{
-			bg_section -> setScale(0.7f);
+			bgSection -> setScale(0.7f);
 			flag = StageBGM;
 		}
 		else
 		{
-			editMode_work = Back;
+			editSetWork = BackAnimation;
 		}
 	}
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
 	{
 		sizebgFunc();
-		bg_section -> setScale(0.7f);
+		bgSection -> setScale(0.7f);
 		flag = StageSize;
 	}
 
@@ -481,7 +554,7 @@ void EditSelect::bgSelect(void)
 		{
 			sizebgFunc();
 			
-			bg_section -> setScale(0.7f);
+			bgSection -> setScale(0.7f);
 
 			instance -> getSprite("back") -> setScale(0.9f);
 			instance ->getSprite("frame") ->setScaleX(0.3f);
@@ -492,17 +565,22 @@ void EditSelect::bgSelect(void)
 }
 
 
+/**
+ *	@brief 音楽選択
+ *
+ *	@author	Tatsuya Maeda
+ */
 void EditSelect::bgmSelect(void)
 {
 	bgmCounter = CatGameLib::LibBasicFunc::wrap(bgmCounter, 0, 4);
 
 	auto sizeBgmFunc = [&](void)
 	{
-		music_section -> setScale(0.8f);
+		musicSection -> setScale(0.8f);
 
 		for(int i = 0; i <= 2; i++)
 		{
-			bgm_logo[i] -> setScale(0.25f);
+			bgmLogos[i] -> setScale(0.25f);
 		}
 		
 		instance -> getSprite("back") -> setScale(0.7f);
@@ -522,18 +600,18 @@ void EditSelect::bgmSelect(void)
 	{
 		if(bgmCounter % 4 != 0)
 		{
-			music_section -> setScale(0.7f);
-			editMode_work = Animation;
+			musicSection -> setScale(0.7f);
+			editSetWork = Animation;
 		}
 		else
 		{
-			editMode_work = Back;
+			editSetWork = BackAnimation;
 		}
 	}
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
 	{
 		sizeBgmFunc();
-		music_section -> setScale(0.7f);
+		musicSection -> setScale(0.7f);
 		flag = StageBG;
 	}
 
@@ -563,7 +641,7 @@ void EditSelect::bgmSelect(void)
 		if(bgmCounter % 4 == 1)
 		{
 			sizeBgmFunc();
-			bgm_logo[0] -> setScale(0.35f);
+			bgmLogos[0] -> setScale(0.35f);
 			
 			instance ->getSprite("frame") -> setPosition(sWHeaf - 100, sHHeaf - 220);
 			
@@ -572,7 +650,7 @@ void EditSelect::bgmSelect(void)
 		else if(bgmCounter % 4 == 2)
 		{
 			sizeBgmFunc();
-			bgm_logo[1] -> setScale(0.35f);
+			bgmLogos[1] -> setScale(0.35f);
 			
 			instance ->getSprite("frame") -> setPosition(sWHeaf + 50, sHHeaf - 220);
 			
@@ -581,7 +659,7 @@ void EditSelect::bgmSelect(void)
 		else if(bgmCounter % 4 == 3)
 		{
 			sizeBgmFunc();
-			bgm_logo[2] -> setScale(0.35f);
+			bgmLogos[2] -> setScale(0.35f);
 			
 			instance ->getSprite("frame") -> setPosition(sWHeaf + 200, sHHeaf - 220);
 			
@@ -590,7 +668,7 @@ void EditSelect::bgmSelect(void)
 		else if(bgmCounter % 4 == 0)
 		{
 			sizeBgmFunc();
-			music_section -> setScale(0.7f);
+			musicSection -> setScale(0.7f);
 
 			instance -> getSprite("back") -> setScale(0.9f);
 			instance ->getSprite("frame") ->setScaleX(0.3f);
@@ -601,34 +679,78 @@ void EditSelect::bgmSelect(void)
 }
 
 
-
-void EditSelect::editSetUpDraw(void)
+/**
+ *	@brief 本をめくる(1ページ戻す)アニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
+void EditSelect::backAnimation(void)
 {
-	size_section -> draw();
-	bg_section -> draw();
-	music_section -> draw();
-	instance -> getSprite("back") -> draw();
-	
-	for(int i = 0; i <= 2; i++)
-	{
-		size_logo[i] -> draw();
-		bgm_logo[i] -> draw();
-	}
+	volumeFlag = false;
 
-	for(int i = 0; i < bgTextures.size(); i++)
+	if (books -> getPositionX() < sWHeaf + 300)
 	{
-		bgTextures[i] -> draw();
+		books -> setPositionX(books -> getPositionX() + 10);
 	}
-	
-	instance -> getSprite("frame") -> draw();
+	else
+	{
+		instance -> getSprites("books") -> setPositionX(sWHeaf + 300);
+		LibSound::allStop();
+		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::MenuSelect);
+	}
 }
 
 
-void EditSelect::fadeout(void)
+/**
+ *	@brief 本をめくるアニメーション
+ *
+ *	@author	Tatsuya Maeda
+ */
+void EditSelect::bookAnimation(void)
 {
+	if(bookAnmFlag == 0)
+	{
+		volumeFlag = false;
+
+		if(anime_number < BOOK_ANM_MAX)
+		{
+			anime_counter++;
+			if(anime_counter % 7 == 0)
+			{
+				anime_counter = 0;
+				anime_number++;
+			}
+		}
+		else if(anime_number == BOOK_ANM_MAX)
+		{
+			bookAnmFlag = 1;
+		}
+	}
+	else
+	{
+		anime_number = BOOK_ANM_MIN;
+	}
+
+	if (instance -> getSprites("books") -> getPositionX() < sWHeaf + 200)
+	{
+		instance -> getSprites("books") -> setPositionX(instance -> getSprites("books") -> getPositionX() + 10);
+	}
+	else
+	{
+		if(anime_number == BOOK_ANM_MIN)
+		{
+		instance -> getSprites("books") -> setPositionX(sWHeaf + 200);
+		editSetWork = Next;
+		}
+	}
 }
 
 
+/**
+ *	@brief エディットへ
+ *
+ *	@author	Tatsuya Maeda
+ */
 void EditSelect::next(void)
 {
 	LibSound::allStop();

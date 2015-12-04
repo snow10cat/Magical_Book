@@ -11,6 +11,14 @@ namespace MagicalBook
 class ResourceManager
 {
 public:
+	enum Size
+	{
+		Size_S,
+		Size_M,
+		Size_L,
+		Size_Count = Size_L + 1,
+	};
+
 	enum BgName
 	{
 		BG_Castle,
@@ -36,6 +44,7 @@ public:
 		return instance;
 	}
 	ResourceManager(const ResourceManager&) = delete;
+
 	const ResourceManager& operator=(const ResourceManager&) = delete;
 
 	void loadResource(void);

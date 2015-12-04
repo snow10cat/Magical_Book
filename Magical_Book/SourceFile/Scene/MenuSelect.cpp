@@ -263,19 +263,19 @@ void MenuSelect::modeSelect(void)
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 	{
+		menuSelect -> play();
 		timer = 0;
 		counter--;
 		flag = true;
 		size = 1.3;
-		menuSelect -> play();
 	}
 	else if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 	{
+		menuSelect -> play();
 		timer = 0;
 		counter++;
 		flag = true;
 		size = 1.3;
-		menuSelect -> play();
 	}
 
 	if (counter % 3 == 0)

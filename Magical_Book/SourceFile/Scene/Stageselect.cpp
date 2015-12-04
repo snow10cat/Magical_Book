@@ -182,7 +182,7 @@ void  StageSelect::stageSelectDraw(void)
 	
 	if(stageSelectWork == SelectStage)
 	{
-		for(int i = 0; i < bgTextures.size() - 1; i++)
+		for(int i = 0; i < ResourceManager::BG_Count - 1; i++)
 		{
 			bgTextures[i] -> draw();
 		}
@@ -192,7 +192,6 @@ void  StageSelect::stageSelectDraw(void)
 		back -> draw();
 		frame -> draw();
 	}
-	
 }
 
 
@@ -275,7 +274,6 @@ void StageSelect::stageSelect(void)
 	{
 		selectActions();
 	}
-
 }
 
 
@@ -296,16 +294,19 @@ void StageSelect::selectActions(void)
 
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 		{
+			menuSelect -> play();
 			counter -= 2;
 		}
 
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 		{
+			menuSelect -> play();
 			counter += 2;
 		}
 
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 		{
+			menuSelect -> play();
 			if(counterNumber % 2)
 			{
 				counter--;
@@ -318,6 +319,7 @@ void StageSelect::selectActions(void)
 
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 		{
+			menuSelect -> play();
 			if(counterNumber % 2)
 			{
 				selectFlag = BackLogo;
@@ -338,6 +340,7 @@ void StageSelect::selectActions(void)
 	{
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 		{
+			menuSelect -> play();
 			if(counter % 2 == 0)
 			{
 				counter++;
@@ -350,6 +353,7 @@ void StageSelect::selectActions(void)
 		}
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 		{
+			menuSelect -> play();
 			if(counter % 2 == 0)
 			{
 				selectFlag = counter;
@@ -381,7 +385,7 @@ void StageSelect::cangeSize(void)
 	//全てのスケール設定
 	auto sizeResetFunc = [&](void)
 	{
-		for(int i = 0; i <= ResourceManager::BG_Count - 1; i++)
+		for(int i = 0; i < ResourceManager::BG_Count - 1; i++)
 		{
 			bgTextures[i] -> setScale(0.3f);
 		}

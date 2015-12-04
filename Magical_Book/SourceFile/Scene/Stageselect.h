@@ -71,9 +71,7 @@ private:
 	void logoFadein(void);
 	void bgFadein(void);
 	void stageSelect(void);
-
 	void selectActions(void);
-
 	void cangeSize(void);
 	void backAnimation(void);
 	void bookAnimation(void);

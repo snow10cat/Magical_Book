@@ -19,10 +19,10 @@ public:
 
 	enum EditSelectNumber
 	{
-		logoFadein,
+		Fadein,
 		EditMenuSelect,
+		BackAnimation,
 		Animation,
-		Back,
 		Next,
 	};
 
@@ -35,6 +35,9 @@ public:
 
 private:
 
+	float volume;			//!< ‰¹—Ê
+	bool volumeFlag;		//!< Ä¶ƒtƒ‰ƒO
+
 	int sizeCounter;
 	int bgCounter;
 	int bgmCounter;
@@ -43,37 +46,40 @@ private:
 	int bookAnmFlag;
 	int anime_number;
 	int anime_counter;
-	int editMode_work;
-	float Volume;
-	int volumeFlag;
+
+	int editSetWork;
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 	CatGameLib::LibInput* input;
-	CatGameLib::LibSprites* books;
+	
+	CatGameLib::LibSound* selectBgm;		//!< ƒXƒe[ƒW‘I‘ð‰æ–ÊBGM
+	CatGameLib::LibSound* menuSelect;		//!< ‘I‘ðSE
 
-	CatGameLib::LibSprite* size_section;
-	CatGameLib::LibSprite* bg_section;
-	CatGameLib::LibSprite* music_section;
-	CatGameLib::LibSprite* bgm_logo[3];
-	CatGameLib::LibSprite* size_logo[3];
+	CatGameLib::LibSprite* floor;			//!< °
+	CatGameLib::LibSprites* books;			//!< –{‚ð‚ß‚­‚é
+	CatGameLib::LibSprite* sizeSection;		//!< ‘å‚«‚³ƒƒS
+	CatGameLib::LibSprite* sizeLogo[3];		//!< S, M, LƒƒS
+	CatGameLib::LibSprite* bgmLogos[3];		//!< BGMƒƒS
+	CatGameLib::LibSprite* bgSection;		//!< ”wŒiƒƒS
+	CatGameLib::LibSprite* musicSection;	//!< ‰¹ŠyƒƒS
+	CatGameLib::LibSprite* frame;			//!< ƒtƒŒ[ƒ€
+	CatGameLib::LibSprite* back;			//!< –ß‚éƒƒS
 
-	std::vector<CatGameLib::LibSprite*> bgTextures;
+	std::vector<CatGameLib::LibSprite*> bgTextures;		//!< ƒXƒe[ƒW”wŒi
 
-	void logoFade(void);
-	void bookAnimation(void);
 	void playSound(void);
-
+	void editSetUpDraw(void);
+	void logoFadein(void);
+	
+	void editSetUp(void);
 	void sizeSelect(void);
 	void bgSelect(void);
 	void bgmSelect(void);
-	void animation(void);
-	void editSetUp(void);
-	void editSetUpDraw(void);
+
 	void backAnimation(void);
-	void closeAnimation(void);
-	void fadeout(void);
+	void bookAnimation(void);
 	void next(void);
 };
 

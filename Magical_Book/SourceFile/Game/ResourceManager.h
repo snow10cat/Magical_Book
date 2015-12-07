@@ -5,6 +5,11 @@
 #include "CatGameLib.h"
 #include "ExternalLib.h"
 
+#define FADE 10
+#define VOICE_FADE 0.02f
+#define MOVEMENT_BOOK 10
+#define BOOK_ANIM_SPEED 7
+
 namespace MagicalBook
 {
 

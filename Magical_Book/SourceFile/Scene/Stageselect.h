@@ -48,8 +48,8 @@ private:
 	int animeCounter;		//!< アニメーション用カウンター
 	int stageSelectWork;	//!< 選択シーン
 
-	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
-	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
+	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;		//!< 横画面中心
+	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;		//!< 縦画面中心
 
 	CatGameLib::LibInput* input;
 

@@ -49,7 +49,9 @@ void Title::init(void)
 	volumeFlag = true;
 
 	timer = 0;
-	size = 1;
+	size = 1.0f;
+	logoFlag = 1;
+	bookSize = 1.0f;
 	counter = 0;
 	flag = true;
 	animeNumber = BOOK_ANM_MIN;
@@ -71,7 +73,7 @@ void Title::init(void)
 	floor -> setScale(1.0f);
 
 	openBooks -> setPosition(sWHeaf - 250, sHHeaf);
-	openBooks -> setScale(1.0f);
+	openBooks -> setScale(bookSize);
 
 	titleLogo -> setPosition(sWHeaf + 25, sHHeaf + 150);
 	titleLogo -> setScale(0.5f);
@@ -80,7 +82,7 @@ void Title::init(void)
 	titleStart -> setScale(1.0f);
 
 	titleEnd -> setPosition(sWHeaf + 25, sHHeaf - 150);
-	titleEnd -> setScale(0.7f);
+	titleEnd -> setScale(1.0f);
 
 	//選択から
 	titleWork = Select;
@@ -134,7 +136,7 @@ void Title::playSound(void)
 	//BGMのフェードアウト
 	if (volumeFlag == false)
 	{
-		volume -= 0.02f;
+		volume -= VOICE_FADE;
 		titleBgm -> setVolume(volume);
 	}
 }
@@ -175,7 +177,7 @@ void Title::select(void)
 		menuSelect -> play();
 		timer = 0;
 		size = 1;
-		flag = true;
+		logoFlag = 1;
 		counter++;
 	}
 
@@ -184,7 +186,7 @@ void Title::select(void)
 		logoAnimation();
 
 		titleStart -> setScale(size);
-		titleEnd -> setScale(0.7f);
+		titleEnd -> setScale(LOGO_MIN_SIZE);
 
 		//ゲーム本編
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
@@ -200,7 +202,7 @@ void Title::select(void)
 	{
 		logoAnimation();
 		
-		titleStart -> setScale(0.7f);
+		titleStart -> setScale(LOGO_MIN_SIZE);
 		titleEnd -> setScale(size);
 
 		//ゲーム終了
@@ -223,26 +225,14 @@ void Title::logoAnimation(void)
 
 	timer++;
 
-	if(timer % 3 == 0)
+	if(timer % LOGO_ANIM_SPEED == 0)
 	{
-		if(size <= 1.2 && flag == true)
+		if(size >= LOGO_MAX_SIZE || size <= LOGO_MIN_SIZE)
 		{
-			if(size >= 1.1)
-			{
-				flag = false;
-			}
-
-			size += 0.01f;
+			logoFlag *= -1;
 		}
-		else if(size >= 0.8 && flag == false)
-		{
-			if(size <= 0.9)
-			{
-				flag = true;
-			}
 
-			size -= 0.01;
-		}
+		size += LOGO_SIZE_ADD * logoFlag;
 	}
 }
 
@@ -260,7 +250,7 @@ void Title::animation(void)
 
 	if (openBooks -> getPositionX() < sWHeaf + 250)
 	{
-		openBooks -> setPositionX(openBooks -> getPositionX() + 10);
+		openBooks -> setPositionX(openBooks -> getPositionX() + MOVEMENT_BOOK);
 	}
 	else
 	{
@@ -284,7 +274,7 @@ void Title::bookAnimation(void)
 	if(animeNumber < BOOK_ANM_MAX)
 	{
 		counter++;
-		if(counter % 7 == 0)
+		if(counter % BOOK_ANIM_SPEED == 0)
 		{
 			counter = 0;
 			animeNumber++;
@@ -304,10 +294,10 @@ void Title::bookAnimation(void)
  */
 void Title::fadeout(void)
 {
-	openBooks -> setScale(size);
+	openBooks -> setScale(bookSize);
 	if(fade -> getAlpha() < 255)
 	{
-		fade -> setAlpha(fade -> getAlpha() + 5);
+		fade -> setAlpha(fade -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -324,13 +314,13 @@ void Title::fadeout(void)
 		titleWork = Next;		//メニューセレクトへ
 	}
 
-	if(size >= 1.5f)
+	if(size >= BOOK_MAX_SIZE)
 	{
-		size = 1.5f;
+		size = BOOK_MAX_SIZE;
 	}
 	else
 	{
-		size += 0.01f;
+		size += BOOK_SIZE_ADD;
 	}
 }
 

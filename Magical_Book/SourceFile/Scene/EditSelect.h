@@ -5,6 +5,8 @@
 #include "Scene.h"
 #include "CatGameLib.h"
 
+#define BACK 0
+
 namespace MagicalBook
 {
 
@@ -35,6 +37,29 @@ public:
 
 private:
 
+	enum EditSize
+	{
+		Size_S = 1,
+		Size_M,
+		Size_L,
+	};
+
+	enum EditBg
+	{
+		BG_Castle = 1,
+		BG_Table,
+		BG_Gate,
+		BG_Window,
+		BG_Throne,
+	};
+
+	enum EditBgm
+	{
+		Bgm_1 = 1,
+		Bgm_2,
+		Bgm_3,
+	};
+
 	float volume;			//!< 音量
 	bool volumeFlag;		//!< 再生フラグ
 
@@ -42,15 +67,13 @@ private:
 	int bgCounter;
 	int bgmCounter;
 	int flag;
-	int fadeFlag;
-	int bookAnmFlag;
-	int anime_number;
-	int anime_counter;
+	int animeNumber;
+	int animeCounter;
 
 	int editSetWork;
 
-	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
-	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
+	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;		//!< 横画面中心
+	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;		//!< 縦画面中心
 
 	CatGameLib::LibInput* input;
 	
@@ -72,7 +95,6 @@ private:
 	void playSound(void);
 	void editSetUpDraw(void);
 	void logoFadein(void);
-	
 	void editSetUp(void);
 	void sizeSelect(void);
 	void bgSelect(void);

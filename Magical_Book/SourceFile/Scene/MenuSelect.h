@@ -5,6 +5,14 @@
 #include "Scene.h"
 #include "CatGameLib.h"
 
+#define LOGO_ANIM_SPEED 3
+#define LOGO_MAX_SIZE 1.3f
+#define LOGO_MIN_SIZE 0.8f
+#define LOGO_SIZE_ADD 0.01f
+
+#define BOOK_SIZE 1.5f
+#define BOOK_SIZE_ADD 0.01f
+
 namespace MagicalBook
 {
 
@@ -32,6 +40,7 @@ private:
 	bool volumeFlag;	//!< 再生フラグ
 
 	int timer;			//!< ロゴアニメーションタイマー
+	int logoFlag;		//!< ロゴフラグ
 	int counter;		//!< カウンター
 	bool flag;			//!< 処理の切り替え
 	bool fadeFlag;		//!< フェード用フラグ
@@ -40,8 +49,8 @@ private:
 	int selectWork;		//!< 選択シーン
 	float size;			//!< ロゴサイズ
 
-	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
-	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
+	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;		//!< 横画面中心
+	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;		//!< 縦画面中心
 
 	CatGameLib::LibInput* input;
 	

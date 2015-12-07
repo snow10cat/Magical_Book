@@ -51,6 +51,7 @@ void MenuSelect::init(void)
 	volumeFlag = true;
 
 	timer = 0;
+	logoFlag = 1;
 	counter = 0;
 	flag = true;
 	fadeFlag = true;
@@ -75,10 +76,10 @@ void MenuSelect::init(void)
 	}
 
 	books -> setPosition(sWHeaf + 300, sHHeaf);
-	books -> setScale(1.5f);
+	books -> setScale(BOOK_SIZE);
 
 	openBooks -> setPosition(sWHeaf + 300, sHHeaf);
-	openBooks -> setScale(1.5f);
+	openBooks -> setScale(BOOK_SIZE);
 
 	play -> setPosition(sWHeaf - 100, sHHeaf + 200);
 	play -> setScale(1.3f);
@@ -155,13 +156,13 @@ void MenuSelect::playSound(void)
 	if(volumeFlag == false)
 	{
 		//BGMフェードアウト
-		volume -= 0.02f;
+		volume -= VOICE_FADE;
 		selectBgm -> setVolume(volume);
 	}
 	else if(volume <= 1.0 && volumeFlag == true)
 	{
 		//BGMフェードイン
-		volume += 0.02f;
+		volume += VOICE_FADE;
 		selectBgm -> setVolume(volume);
 	}
 }
@@ -266,7 +267,7 @@ void MenuSelect::modeSelect(void)
 		menuSelect -> play();
 		timer = 0;
 		counter--;
-		flag = true;
+		logoFlag = 1;
 		size = 1.3;
 	}
 	else if(input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
@@ -274,7 +275,7 @@ void MenuSelect::modeSelect(void)
 		menuSelect -> play();
 		timer = 0;
 		counter++;
-		flag = true;
+		logoFlag = 1;
 		size = 1.3;
 	}
 
@@ -347,26 +348,14 @@ void MenuSelect::logoAnimation(void)
 
 	timer++;
 
-	if(timer % 3 == 0)
+	if(timer % LOGO_ANIM_SPEED == 0)
 	{
-		if(size <= 1.5 && flag == true)
+		if(size >= LOGO_MAX_SIZE || size <= LOGO_MIN_SIZE)
 		{
-			if(size >= 1.4)
-			{
-				flag = false;
-			}
-			
-			size += 0.01f;
+			logoFlag *= -1;
 		}
-		else if(size >= 1.1 && flag == false)
-		{
-			if(size <= 1.2)
-			{	
-				flag = true;
-			}
-			
-			size -= 0.01;
-		}
+
+		size += LOGO_SIZE_ADD * logoFlag;
 	}
 }
 

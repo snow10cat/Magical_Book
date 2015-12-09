@@ -11,9 +11,6 @@ using namespace CatGameLib;
 using namespace MagicalBook;
 
 
-static ResourceManager* instance = ResourceManager::getInstance();
-
-
 StageSelect::StageSelect() : arrowRight(nullptr),
 							 arrowLeft(nullptr)
 {
@@ -36,19 +33,19 @@ void StageSelect::init(void)
 {
 	input = LibInput::getInstance();
 
-	selectBgm = instance -> getSound("selectbgm");
-	menuSelect = instance -> getSound("menuSelect");
+	selectBgm = ResourceManager::getInstance() -> getSound("selectbgm");
+	menuSelect = ResourceManager::getInstance() -> getSound("menuSelect");
 
-	fade = instance ->getSprite("fade");
-	floor = instance ->getSprite("floor");
-	books = instance -> getSprites("books");
-	frame = instance -> getSprite("frame");
-	back = instance -> getSprite("back");
+	fade = ResourceManager::getInstance() ->getSprite("fade");
+	floor = ResourceManager::getInstance() ->getSprite("floor");
+	books = ResourceManager::getInstance() -> getSprites("books");
+	frame = ResourceManager::getInstance() -> getSprite("frame");
+	back = ResourceManager::getInstance() -> getSprite("back");
 
 	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
+		bgTextures.push_back(ResourceManager::getInstance() -> getSprite(bgName.c_str()));
 	}
 
 	volume = 0;
@@ -63,44 +60,44 @@ void StageSelect::init(void)
 	selectBgm -> setVolume(0.0f);
 	selectBgm -> setLoop(true);
 
-	menuSelect -> setVolume(1.0f);
+	menuSelect -> setVolume(MAX_VOLUME);
 
 	//画像
 	fade -> setAlpha(255);
 
-	books -> setPosition(sWHeaf + 300, sHHeaf);
-	books -> setScale(1.5f);
+	books -> setPosition(sWHeaf + BOOK_POS_X, sHHeaf);
+	books -> setScale(BOOK_SIZE);
 
 	frame -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	frame -> setScale(0.35f);
+	frame -> setScale(SELECT_SIZE);
 	frame -> setAlpha(0.0f);
 
 	arrowRight -> setPosition(sWHeaf + 150, sHHeaf - 310);
-	arrowRight -> setScale(0.3f);
+	arrowRight -> setScale(DESELECT_SIZE);
 	arrowRight -> setAlpha(0.0f);
 
 	arrowLeft -> setPosition(sWHeaf - 270, sHHeaf - 310);
-	arrowLeft -> setScale(0.3f);
+	arrowLeft -> setScale(DESELECT_SIZE);
 	arrowLeft -> setAlpha(0.0f);
 
 	back -> setPosition(sWHeaf + 500, sHHeaf - 300);
-	back -> setScale(1.0f);
+	back -> setScale(DEFAULT_SIZE);
 	back -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Castle] -> setPosition(sWHeaf - 210, sHHeaf + 160);
-	bgTextures[ResourceManager::BG_Castle] -> setScale(0.35f);
+	bgTextures[ResourceManager::BG_Castle] -> setScale(DESELECT_SIZE);
 	bgTextures[ResourceManager::BG_Castle] -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Table] -> setPosition(sWHeaf + 90, sHHeaf + 160);
-	bgTextures[ResourceManager::BG_Table] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Table] -> setScale(DESELECT_SIZE);
 	bgTextures[ResourceManager::BG_Table] -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Gate] -> setPosition(sWHeaf - 210, sHHeaf - 140);
-	bgTextures[ResourceManager::BG_Gate] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Gate] -> setScale(DESELECT_SIZE);
 	bgTextures[ResourceManager::BG_Gate] -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Window] -> setPosition(sWHeaf + 90, sHHeaf - 140);
-	bgTextures[ResourceManager::BG_Window] -> setScale(0.3f);
+	bgTextures[ResourceManager::BG_Window] -> setScale(DESELECT_SIZE);
 	bgTextures[ResourceManager::BG_Window] -> setAlpha(0.0f);
 
 	//ステージ選択から
@@ -158,13 +155,13 @@ void StageSelect::playSound(void)
 	if(volumeFlag == false)
 	{
 		//フェードアウト
-		volume -= 0.02f;
+		volume -= BGM_FADE;
 		selectBgm -> setVolume(volume);
 	}
-	else if(volume <= 1.0 && volumeFlag == true)
+	else if(volume <= MAX_VOLUME && volumeFlag == true)
 	{
 		//フェードイン
-		volume += 0.02f;
+		volume += BGM_FADE;
 		selectBgm -> setVolume(volume);
 	}
 }
@@ -204,7 +201,7 @@ void StageSelect::logoFadein(void)
 {
 	if(back -> getAlpha() < 255)
 	{
-		back -> setAlpha(back -> getAlpha() + 5);
+		back -> setAlpha(back -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -213,7 +210,7 @@ void StageSelect::logoFadein(void)
 
 	if(arrowRight -> getAlpha() < 255)
 	{
-		arrowRight -> setAlpha(arrowRight -> getAlpha() + 5);
+		arrowRight -> setAlpha(arrowRight -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -222,7 +219,7 @@ void StageSelect::logoFadein(void)
 
 	if(arrowLeft -> getAlpha() < 255)
 	{
-		arrowLeft -> setAlpha(arrowLeft -> getAlpha() + 5);
+		arrowLeft -> setAlpha(arrowLeft -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -231,7 +228,7 @@ void StageSelect::logoFadein(void)
 
 	if(frame -> getAlpha() < 255)
 	{
-		frame -> setAlpha(frame -> getAlpha() + 5);
+		frame -> setAlpha(frame -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -251,7 +248,7 @@ void StageSelect::bgFadein(void)
 	{
 		if(bgTextures[i] -> getAlpha() < 255)
 		{
-			bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
+			bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + FADE);
 		}
 		else
 		{
@@ -387,13 +384,13 @@ void StageSelect::cangeSize(void)
 	{
 		for(int i = 0; i < ResourceManager::BG_Count - 1; i++)
 		{
-			bgTextures[i] -> setScale(0.3f);
+			bgTextures[i] -> setScale(DESELECT_SIZE);
 		}
 		
-		arrowLeft -> setScale(0.3f);
-		arrowRight -> setScale(0.3f);
-		back -> setScale(1.0f);
-		frame -> setScale(0.35f);
+		arrowLeft -> setScale(DESELECT_SIZE);
+		arrowRight -> setScale(DESELECT_SIZE);
+		back -> setScale(DEFAULT_SIZE);
+		frame -> setScale(SELECT_SIZE);
 	};
 
 
@@ -402,54 +399,54 @@ void StageSelect::cangeSize(void)
 	case LeftUp:
 		sizeResetFunc();
 
-		bgTextures[ResourceManager::BG_Castle] -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Castle] -> setScale(SELECT_SIZE);
 
 		frame -> setPosition(bgTextures[ResourceManager::BG_Castle] -> getPosition());
 		break;
 	case RightUp:
 		sizeResetFunc();
 
-		bgTextures[ResourceManager::BG_Table] -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Table] -> setScale(SELECT_SIZE);
 
 		frame -> setPosition(bgTextures[ResourceManager::BG_Table] -> getPosition());
 		break;
 	case LeftDown:
 		sizeResetFunc();
 
-		bgTextures[ResourceManager::BG_Gate] -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Gate] -> setScale(SELECT_SIZE);
 
 		frame -> setPosition(bgTextures[ResourceManager::BG_Gate] -> getPosition());
 		break;
 	case RightDown:
 		sizeResetFunc();
 
-		bgTextures[ResourceManager::BG_Window] -> setScale(0.35f);
+		bgTextures[ResourceManager::BG_Window] -> setScale(SELECT_SIZE);
 
 		frame -> setPosition(bgTextures[ResourceManager::BG_Window] -> getPosition());
 		break;
 	case Leftarrow:
 		sizeResetFunc();
 
-		arrowLeft -> setScale(0.35f);
+		arrowLeft -> setScale(SELECT_SIZE);
 
-		frame -> setScale(0.1f);
+		frame -> setScale(SELECT_ARROW_SIZE);
 		frame -> setPosition(arrowLeft -> getPosition());
 		break;
 	case Rightarrow:
 		sizeResetFunc();
 
-		arrowRight -> setScale(0.35f);
+		arrowRight -> setScale(SELECT_SIZE);
 
-		frame -> setScale(0.1f);
+		frame -> setScale(SELECT_ARROW_SIZE);
 		frame -> setPosition(arrowRight -> getPosition());
 		break;
 	case BackLogo:
 		sizeResetFunc();
 
-		back -> setScale(1.2f);
+		back -> setScale(SELECT_BACK_SIZE);
 
-		frame -> setScaleX(0.35f);
-		frame -> setScaleY(0.12f);
+		frame -> setScaleX(FRAME_SIZE_X);
+		frame -> setScaleY(FRAME_SIZE_Y);
 		frame -> setPosition(back -> getPosition());
 		break;
 	default:
@@ -470,18 +467,17 @@ void StageSelect::backAnimation(void)
 
 	if(animeNumber > BOOK_ANM_MIN)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
+		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
-		if(animeCounter % 7 == 0)
+		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{
-			animeCounter = 0;
 			animeNumber--;
 		}
 	}
 	else
 	{
 		animeNumber = BOOK_ANM_MIN;
-		stageSelectWork = Next;		//次へ
+		stageSelectWork = Next;			//メニューセレクトへ
 	}
 }
 
@@ -497,11 +493,10 @@ void StageSelect::bookAnimation(void)
 
 	if(animeNumber < BOOK_ANM_MAX)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
+		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
-		if(animeCounter % 7 == 0)
+		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{
-			animeCounter = 0;
 			animeNumber++;
 		}
 	}
@@ -521,12 +516,12 @@ void StageSelect::fadeout(void)
 {
 	if(fade -> getAlpha() < 255)
 	{
-		fade -> setAlpha(fade -> getAlpha() + 5);
+		fade -> setAlpha(fade -> getAlpha() + FADE);
 	}
 	else
 	{
 		fade -> setAlpha(255);
-		stageSelectWork = Next;		//次へ
+		stageSelectWork = Next;		//ゲームへ
 	}
 }
 

@@ -17,21 +17,21 @@ public:
 	void init(void) override;
 	void update(void) override;
 
-	enum StageSize
-	{
-		Small	= 14,
-		Medium	= 16,
-		Large	= 18,
-		SizeNum = 3,
-	};
-
 	enum EditNumber
 	{
-		Fadein,
-		EditSet,
-		Animation,
-		Back,
-		Next,
+		Fadein,			//!< フェードイン
+		EditSet,		//!< エディットモード
+		BackAnimation,	//!< 前に戻るアニメーション
+		Animation,		//!< 次に行くアニメーション
+		Next,			//!< 次へ
+	};
+	
+	enum StageSize
+	{
+		Small	= 14,		//!< Sサイズ(マップチップ14個分)
+		Medium	= 16,		//!< Mサイズ(マップチップ16個分)
+		Large	= 18,		//!< Lサイズ(マップチップ18個分)
+		SizeNum = 3,		
 	};
 
 	enum EditSelect

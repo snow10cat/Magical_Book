@@ -5,13 +5,15 @@
 #include "Scene.h"
 #include "CatGameLib.h"
 
-#define LOGO_ANIM_SPEED 3
-#define LOGO_MAX_SIZE 1.1f
-#define LOGO_MIN_SIZE 0.9f
-#define LOGO_SIZE_ADD 0.01f
 
-#define BOOK_MAX_SIZE 1.5f
-#define BOOK_SIZE_ADD 0.01f
+#define LOGO_MAX_SIZE 1.1f		//!< ロゴの最大サイズ
+#define LOGO_MIN_SIZE 0.9f		//!< ロゴの最小サイズ
+#define LOGO_ANIM_SPEED 3		//!< ロゴのアニメーション速度
+#define LOGO_SIZE_ADD 0.01f		//!< ロゴのサイズ加算値
+
+#define BOOK_MAX_SIZE 1.5f		//!< 本のサイズ
+#define BOOK_SIZE_ADD 0.01f		//!< 本のサイズ加算度
+
 
 namespace MagicalBook
 {

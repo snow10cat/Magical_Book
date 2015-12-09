@@ -1,4 +1,5 @@
- 
+//TODO コメントの追加、ソースの整理 
+
 #include <cassert>
 #include "../Game/ResourceManager.h"
 #include "../Game/StageConfig.h"
@@ -13,9 +14,8 @@ using namespace std;
 using namespace CatGameLib;
 using namespace MagicalBook;
 
-
-static ResourceManager* instance = ResourceManager::getInstance();
 static StageConfig* stageConfig = StageConfig::getInstance();
+
 
 Edit::Edit() : edit_bgm(nullptr),
 			   material_logo(nullptr),
@@ -58,16 +58,14 @@ void Edit::init(void)
 {
 	input = LibInput::getInstance();
 
-	books = instance -> getSprites("books");
+	books = ResourceManager::getInstance() -> getSprites("books");
+	chip = ResourceManager::getInstance() -> getSprites("mapchip");
+	player = ResourceManager::getInstance() -> getSprites("player");
+	enemy = ResourceManager::getInstance() -> getSprites("enemy");
+	gimmick = ResourceManager::getInstance() -> getSprites("gimmick");
+	door = ResourceManager::getInstance() -> getSprites("door");
 
-	chip = instance -> getSprites("mapchip");
-
-	player = instance -> getSprites("player");
-	enemy = instance -> getSprites("enemy");
-	gimmick = instance -> getSprites("gimmick");
-	door = instance -> getSprites("door");
-
-	back = instance -> getSprite("back");
+	back = ResourceManager::getInstance() -> getSprite("back");
 
 	edit_bgm -> setVolume(0.0f);
 	edit_bgm -> setLoop(true);
@@ -86,7 +84,7 @@ void Edit::init(void)
 	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
+		bgTextures.push_back(ResourceManager::getInstance() -> getSprite(bgName.c_str()));
 		bgTextures[i - 1] -> setPosition(sWHeaf - 170, sHHeaf);
 		bgTextures[i - 1] -> setScale(0.7f);
 		bgTextures[i - 1] -> setAlpha(0.0f);
@@ -215,11 +213,11 @@ void Edit::update(void)
 	case EditSet:
 		edit();
 		break;
+	case BackAnimation:
+	//	backAnimation();
+		break;
 	case Animation:
 	//	animation();
-		break;
-	case Back:
-	//	backAnimation();
 		break;
 	case Next:
 	//	next();
@@ -827,7 +825,7 @@ void Edit::materialSet(void)
 
 void Edit::editDraw(void)
 {
-	instance -> getSprite("floor") -> draw();
+	ResourceManager::getInstance() -> getSprite("floor") -> draw();
 	books -> draw(anime_number);
 	bgTextures[stageConfig -> getBgNumber()] -> draw();
 	grid_size[stageConfig -> getSizeNumber()] -> draw();
@@ -913,10 +911,10 @@ void Edit::editChipSetDraw(void)
 	}
 	chipCounter = 0;
 
-	instance -> getSprites("player") -> draw(0);
-	instance -> getSprites("enemy") -> draw(0);
-	instance -> getSprites("door") -> draw(0);
-	instance -> getSprites("gimmick") -> draw(0);
+	ResourceManager::getInstance() -> getSprites("player") -> draw(0);
+	ResourceManager::getInstance() -> getSprites("enemy") -> draw(0);
+	ResourceManager::getInstance() -> getSprites("door") -> draw(0);
+	ResourceManager::getInstance() -> getSprites("gimmick") -> draw(0);
 	
 	back -> draw();
 }

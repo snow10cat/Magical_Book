@@ -5,6 +5,19 @@
 #include "Scene.h"
 #include "CatGameLib.h"
 
+
+#define SELECT_SIZE 0.35f 		//!< 選択時サイズ
+#define DESELECT_SIZE 0.3f		//!< 非選択時サイズ
+#define SELECT_ARROW_SIZE 0.1f	//!< 矢印の選択時サイズ
+#define SELECT_BACK_SIZE 1.2f	//!< 戻るロゴの選択時サイズ
+
+#define FRAME_SIZE_X 0.35f		//!< 戻るロゴ選択時のフレームXサイズ
+#define FRAME_SIZE_Y 0.12f		//!< 戻るロゴ選択時のフレームYサイズ
+
+#define BOOK_SIZE 1.5f	  		//!< 本のサイズ
+#define BOOK_SIZE_ADD 0.1f		//!< 本のサイズ加算度
+
+
 namespace MagicalBook
 {
 
@@ -25,6 +38,8 @@ public:
 		Next,				//!< 次へ
 	};
 
+private:
+
 	enum SelectPosition
 	{
 		LeftUp,			//!< 左上
@@ -35,9 +50,7 @@ public:
 		Rightarrow,		//!< 右矢印
 		BackLogo,		//!< 戻るロゴ
 	};
-
-private:
-
+	
 	float volume;			//!< 音量
 	bool volumeFlag;		//!< 再生フラグ
 

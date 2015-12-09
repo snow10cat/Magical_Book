@@ -9,9 +9,6 @@ using namespace CatGameLib;
 using namespace MagicalBook;
 
 
-ResourceManager* instance = ResourceManager::getInstance();
-
-
 Title::Title() : titleBgm(nullptr),
 				 gameIn(nullptr),
 				 titleLogo(nullptr),
@@ -39,19 +36,19 @@ Title::~Title()
 void Title::init(void)
 {
 	input = LibInput::getInstance();
-	menuSelect = instance -> getSound("menuSelect");
-	fade = instance ->getSprite("fade");
-	floor = instance ->getSprite("floor");
-	openBooks = instance -> getSprites("openBook");
+	menuSelect = ResourceManager::getInstance() -> getSound("menuSelect");
+	fade = ResourceManager::getInstance() ->getSprite("fade");
+	floor = ResourceManager::getInstance() ->getSprite("floor");
+	openBooks = ResourceManager::getInstance() -> getSprites("openBook");
 
 	
-	volume = 1.0f;
+	volume = MAX_VOLUME;
 	volumeFlag = true;
-
+	
 	timer = 0;
-	size = 1.0f;
+	size = DEFAULT_SIZE;
 	logoFlag = 1;
-	bookSize = 1.0f;
+	bookSize = DEFAULT_SIZE;
 	counter = 0;
 	flag = true;
 	animeNumber = BOOK_ANM_MIN;
@@ -66,23 +63,23 @@ void Title::init(void)
 
 	//画像
 	fade -> setPosition(sWHeaf, sHHeaf);
-	fade -> setScale(1.0f);
+	fade -> setScale(DEFAULT_SIZE);
 	fade -> setAlpha(0.0f);
 
 	floor -> setPosition(sWHeaf, sHHeaf);
-	floor -> setScale(1.0f);
+	floor -> setScale(DEFAULT_SIZE);
 
-	openBooks -> setPosition(sWHeaf - 250, sHHeaf);
+	openBooks -> setPosition(sWHeaf - TITLE_BOOK_POS_X, sHHeaf);
 	openBooks -> setScale(bookSize);
 
 	titleLogo -> setPosition(sWHeaf + 25, sHHeaf + 150);
 	titleLogo -> setScale(0.5f);
 
 	titleStart -> setPosition(sWHeaf + 25, sHHeaf - 50);
-	titleStart -> setScale(1.0f);
+	titleStart -> setScale(DEFAULT_SIZE);
 
 	titleEnd -> setPosition(sWHeaf + 25, sHHeaf - 150);
-	titleEnd -> setScale(1.0f);
+	titleEnd -> setScale(DEFAULT_SIZE);
 
 	//選択から
 	titleWork = Select;
@@ -136,9 +133,9 @@ void Title::playSound(void)
 	//BGMのフェードアウト
 	if (volumeFlag == false)
 	{
-		volume -= VOICE_FADE;
-		titleBgm -> setVolume(volume);
+		volume -= BGM_FADE;
 	}
+	titleBgm -> setVolume(volume);
 }
 
 
@@ -176,7 +173,7 @@ void Title::select(void)
 	{
 		menuSelect -> play();
 		timer = 0;
-		size = 1;
+		size = DEFAULT_SIZE;
 		logoFlag = 1;
 		counter++;
 	}
@@ -192,9 +189,8 @@ void Title::select(void)
 		if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 		{
 			timer = 0;
-			size = 1;
+			size = DEFAULT_SIZE;
 			counter = 0;
-			flag = true;
 			titleWork = Animation;		//アニメーションへ
 		}
 	}
@@ -248,13 +244,13 @@ void Title::animation(void)
 
 	bookAnimation();
 
-	if (openBooks -> getPositionX() < sWHeaf + 250)
+	if (openBooks -> getPositionX() < sWHeaf + BOOK_POS_X)
 	{
 		openBooks -> setPositionX(openBooks -> getPositionX() + MOVEMENT_BOOK);
 	}
 	else
 	{
-		openBooks -> setPositionX(sWHeaf + 250);
+		openBooks -> setPositionX(sWHeaf + BOOK_POS_X);
 
 		if(animeNumber == BOOK_ANM_MAX)
 		{
@@ -273,10 +269,10 @@ void Title::bookAnimation(void)
 {
 	if(animeNumber < BOOK_ANM_MAX)
 	{
+		counter = CatGameLib::LibBasicFunc::wrap(counter, 0, BOOK_ANIM_SPEED);
 		counter++;
 		if(counter % BOOK_ANIM_SPEED == 0)
 		{
-			counter = 0;
 			animeNumber++;
 		}
 	}
@@ -314,13 +310,13 @@ void Title::fadeout(void)
 		titleWork = Next;		//メニューセレクトへ
 	}
 
-	if(size >= BOOK_MAX_SIZE)
+	if(bookSize <= BOOK_MAX_SIZE)
 	{
-		size = BOOK_MAX_SIZE;
+		bookSize += BOOK_SIZE_ADD;
 	}
 	else
 	{
-		size += BOOK_SIZE_ADD;
+		bookSize = BOOK_MAX_SIZE;
 	}
 }
 

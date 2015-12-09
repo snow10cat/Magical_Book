@@ -11,8 +11,6 @@ using namespace std;
 using namespace CatGameLib;
 using namespace MagicalBook;
 
-
-static ResourceManager* instance = ResourceManager::getInstance();
 static StageConfig* stageConfig = StageConfig::getInstance();
 
 
@@ -48,27 +46,27 @@ void EditSelect::init(void)
 {
 	input = LibInput::getInstance();
 
-	selectBgm = instance -> getSound("selectbgm");
-	menuSelect = instance -> getSound("menuSelect");
+	selectBgm = ResourceManager::getInstance() -> getSound("selectbgm");
+	menuSelect = ResourceManager::getInstance() -> getSound("menuSelect");
 
-	floor = instance ->getSprite("floor");
-	books = instance -> getSprites("books");
-	frame = instance -> getSprite("frame");
-	back = instance -> getSprite("back");
+	floor = ResourceManager::getInstance() ->getSprite("floor");
+	books = ResourceManager::getInstance() -> getSprites("books");
+	frame = ResourceManager::getInstance() -> getSprite("frame");
+	back = ResourceManager::getInstance() -> getSprite("back");
 
 	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
 		string bgName = "game_bg" + to_string(i);
-		bgTextures.push_back(instance -> getSprite(bgName.c_str()));
+		bgTextures.push_back(ResourceManager::getInstance() -> getSprite(bgName.c_str()));
 	}
 
 	volume = 0;
 	volumeFlag = true;
 
+	setUpWork = StageSize;			//サイズ選択から
 	sizeCounter = EditSize::Size_S;
 	bgCounter = EditBg::BG_Castle;
 	bgmCounter = EditBgm::Bgm_1;
-	flag = 0;
 	animeNumber = BOOK_ANM_MIN;
 	animeCounter = 0;
 
@@ -76,34 +74,35 @@ void EditSelect::init(void)
 	selectBgm -> setVolume(0.0f);
 	selectBgm -> setLoop(true);
 
-	menuSelect -> setVolume(1.0f);
+	menuSelect -> setVolume(MAX_VOLUME);
 
 	//画像
-	books -> setPosition(sWHeaf - 320, sHHeaf);
-	books -> setScale(1.5f);
+	books -> setPosition(sWHeaf - EDIT_SEL_BOOK_POS_X, sHHeaf);
+	books -> setScale(BOOK_SIZE);
 
-	for(int i = 0; i <= ResourceManager::Size_Count - 1; i++)
-	{
-		sizeLogo[i] -> setAlpha(0.0f);
-	}
+	
 
-	//大きさ
+	//大きさロゴ
 	sizeSection -> setPosition(sWHeaf - 100, sHHeaf + 300);
-	sizeSection -> setScale(0.8f);
+	sizeSection -> setScale(SELECT_LOGO_SIZE);
 	sizeSection -> setAlpha(0.0f);
 
 	sizeLogo[ResourceManager::Size_S] -> setPosition(sWHeaf - 100, sHHeaf + 200);
-	sizeLogo[ResourceManager::Size_S] -> setScale(0.35f);
 
 	sizeLogo[ResourceManager::Size_M] -> setPosition(sWHeaf + 50, sHHeaf + 200);
-	sizeLogo[ResourceManager::Size_M] -> setScale(0.25f);
 
 	sizeLogo[ResourceManager::Size_L] -> setPosition(sWHeaf + 200, sHHeaf + 200);
-	sizeLogo[ResourceManager::Size_L] -> setScale(0.25f);
 
-	//背景
+	for(int i = 0; i <= ResourceManager::Size_Count - 1; i++)
+	{
+		sizeLogo[i] -> setScale(DESELECT_SIZE);
+		sizeLogo[i] -> setAlpha(0.0f);
+	}
+	sizeLogo[0] -> setScale(SELECT_SIZE);
+
+	//背景ロゴ
 	bgSection -> setPosition(sWHeaf - 100, sHHeaf + 80);
-	bgSection -> setScale(0.7f);
+	bgSection -> setScale(LOGO_SIZE);
 	bgSection -> setAlpha(0.0f);
 
 	bgTextures[ResourceManager::BG_Castle] -> setPosition(sWHeaf - 100, sHHeaf - 30);
@@ -118,13 +117,13 @@ void EditSelect::init(void)
 	
 	for(int i = 0; i <= ResourceManager::BG_Count - 1; i++)
 	{
-		bgTextures[i] -> setScale(0.1f);
+		bgTextures[i] -> setScale(DESELECT_BG_SIZE);
 		bgTextures[i] -> setAlpha(0.0f);
 	}
 
-	//!< 音楽
+	//音楽ロゴ
 	musicSection -> setPosition(sWHeaf - 100, sHHeaf - 140);
-	musicSection -> setScale(0.7f);
+	musicSection -> setScale(LOGO_SIZE);
 	musicSection -> setAlpha(0.0f);
 	
 	bgmLogos[ResourceManager::BGM_1] -> setPosition(sWHeaf - 100, sHHeaf - 220);
@@ -135,16 +134,16 @@ void EditSelect::init(void)
 	
 	for(int i = 0; i <= ResourceManager::BGM_Count - 1; i++)
 	{
-		bgmLogos[i] -> setScale(0.25f);
+		bgmLogos[i] -> setScale(DESELECT_SIZE);
 		bgmLogos[i] -> setAlpha(0.0f);
 	}
 
 	frame -> setPosition(sWHeaf - 100, sHHeaf + 200);
-	frame -> setScale(0.15f);
+	frame -> setScale(FRAME_SIZE);
 	frame -> setAlpha(0.0f);
 
 	back -> setPosition(sWHeaf - 500, sHHeaf - 280);
-	back -> setScale(0.7f);
+	back -> setScale(LOGO_SIZE);
 	back -> setAlpha(0.0f);
 
 	//フェードインから
@@ -202,13 +201,13 @@ void EditSelect::playSound(void)
 	if(volumeFlag == false)
 	{
 		//フェードアウト
-		volume -= 0.02f;
+		volume -= BGM_FADE;
 		selectBgm -> setVolume(volume);
 	}
-	else if(volume <= 1.0 && volumeFlag == true)
+	else if(volume <= MAX_VOLUME && volumeFlag == true)
 	{
 		//フェードイン
-		volume += 0.02f;
+		volume += BGM_FADE;
 		selectBgm -> setVolume(volume);
 	}
 }
@@ -240,6 +239,28 @@ void EditSelect::editSetUpDraw(void)
 			bgTextures[i] -> draw();
 		}
 
+		//選択されているやつは一番前に描画
+		if(bgCounter % EditBg::BG_Count == EditBg::BG_Castle)
+		{
+			bgTextures[ResourceManager::BG_Castle] -> draw();
+		}
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Table)
+		{
+			bgTextures[ResourceManager::BG_Table] -> draw();
+		}
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Gate)
+		{
+			bgTextures[ResourceManager::BG_Gate] -> draw();
+		}
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Window)
+		{
+			bgTextures[ResourceManager::BG_Window] -> draw();
+		}
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Throne)
+		{
+			bgTextures[ResourceManager::BG_Throne] -> draw();
+		}
+
 		musicSection -> draw();
 		
 		for(int i = 0; i < ResourceManager::BGM_Count; i++)
@@ -262,7 +283,7 @@ void EditSelect::logoFadein(void)
 {
 	if(sizeSection -> getAlpha() < 255)
 	{
-		sizeSection -> setAlpha(sizeSection -> getAlpha() + 5);
+		sizeSection -> setAlpha(sizeSection -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -273,7 +294,7 @@ void EditSelect::logoFadein(void)
 	{
 		if(sizeLogo[i] -> getAlpha() < 255)
 		{
-			sizeLogo[i] -> setAlpha(sizeLogo[i] -> getAlpha() + 5);
+			sizeLogo[i] -> setAlpha(sizeLogo[i] -> getAlpha() + FADE);
 		}
 		else
 		{
@@ -283,7 +304,7 @@ void EditSelect::logoFadein(void)
 
 	if(bgSection -> getAlpha() < 255)
 	{
-		bgSection -> setAlpha(bgSection -> getAlpha() + 5);
+		bgSection -> setAlpha(bgSection -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -294,7 +315,7 @@ void EditSelect::logoFadein(void)
 	{
 		if(bgTextures[i] -> getAlpha() < 255)
 		{
-			bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + 5);
+			bgTextures[i] -> setAlpha(bgTextures[i] -> getAlpha() + FADE);
 		}
 		else
 		{
@@ -304,7 +325,7 @@ void EditSelect::logoFadein(void)
 
 	if(musicSection -> getAlpha() < 255)
 	{
-		musicSection -> setAlpha(musicSection -> getAlpha() + 5);
+		musicSection -> setAlpha(musicSection -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -314,7 +335,7 @@ void EditSelect::logoFadein(void)
 	{
 		if(bgmLogos[i] -> getAlpha() < 255)
 		{
-			bgmLogos[i] -> setAlpha(bgmLogos[i] -> getAlpha() + 5);
+			bgmLogos[i] -> setAlpha(bgmLogos[i] -> getAlpha() + FADE);
 		}
 		else
 		{
@@ -324,7 +345,7 @@ void EditSelect::logoFadein(void)
 
 	if(back -> getAlpha() < 255)
 	{
-		back -> setAlpha(back -> getAlpha() + 5);
+		back -> setAlpha(back -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -333,7 +354,7 @@ void EditSelect::logoFadein(void)
 
 	if(frame -> getAlpha() < 255)
 	{
-		frame -> setAlpha(frame -> getAlpha() + 5);
+		frame -> setAlpha(frame -> getAlpha() + FADE);
 	}
 	else
 	{
@@ -350,7 +371,7 @@ void EditSelect::logoFadein(void)
  */
 void EditSelect::editSetUp(void)
 {
-	switch(flag)
+	switch(setUpWork)
 	{
 	case StageSize:
 		sizeSelect();
@@ -375,20 +396,20 @@ void EditSelect::editSetUp(void)
  */
 void EditSelect::sizeSelect(void)
 {
-	sizeCounter = CatGameLib::LibBasicFunc::wrap(sizeCounter, 0, 4);
+	sizeCounter = CatGameLib::LibBasicFunc::wrap(sizeCounter, 0, EditSize::Size_Count);
 
 	//全てのスケール設定
 	auto sizeSizeFunc = [&](void)
 	{
-		sizeSection -> setScale(0.8f);
+		sizeSection -> setScale(SELECT_LOGO_SIZE);
 
 		for(int i = 0; i < ResourceManager::Size_Count; i++)
 		{
-			sizeLogo[i] -> setScale(0.25f);
+			sizeLogo[i] -> setScale(DESELECT_SIZE);
 		}
 		
-		back -> setScale(0.7f);
-		frame -> setScale(0.15f);
+		back -> setScale(LOGO_SIZE);
+		frame -> setScale(FRAME_SIZE);
 	};
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
@@ -405,10 +426,10 @@ void EditSelect::sizeSelect(void)
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 	{
-		if(sizeCounter % 4 != BACK)
+		if(sizeCounter % EditSize::Size_Count != BACK)
 		{
-			sizeSection -> setScale(0.7f);
-			flag = StageBG;		//背景選択へ
+			sizeSection -> setScale(LOGO_SIZE);
+			setUpWork = StageBG;		//背景選択へ
 		}
 		else
 		{
@@ -416,41 +437,42 @@ void EditSelect::sizeSelect(void)
 		}
 	}
 
-	if(flag == StageSize)
+	//選択されているサイズロゴのサイズ変更
+	if(setUpWork == StageSize)
 	{
-		if(sizeCounter % 4 == Size_S)
+		if(sizeCounter % EditSize::Size_Count == EditSize::Size_S)
 		{
 			sizeSizeFunc();
-			sizeLogo[ResourceManager::Size_S] -> setScale(0.35f);
+			sizeLogo[ResourceManager::Size_S] -> setScale(SELECT_SIZE);
 			stageConfig -> setSizeNumber(StageConfig::Size_S);
 
-			frame -> setPosition(sWHeaf - 100, sHHeaf + 200);
+			frame -> setPosition(sizeLogo[ResourceManager::Size_S] -> getPosition());
 		}
-		else if(sizeCounter % 4 == Size_M)
+		else if(sizeCounter % EditSize::Size_Count == Size_M)
 		{
 			sizeSizeFunc();
-			sizeLogo[ResourceManager::Size_M] -> setScale(0.35f);
+			sizeLogo[ResourceManager::Size_M] -> setScale(SELECT_SIZE);
 			stageConfig -> setSizeNumber(StageConfig::Size_M);
 			
-			frame -> setPosition(sWHeaf + 50, sHHeaf + 200);
+			frame -> setPosition(sizeLogo[ResourceManager::Size_M] -> getPosition());
 		}
-		else if(sizeCounter % 4 == Size_L)
+		else if(sizeCounter % EditSize::Size_Count == Size_L)
 		{
 			sizeSizeFunc();
-			sizeLogo[ResourceManager::Size_L] -> setScale(0.35f);
+			sizeLogo[ResourceManager::Size_L] -> setScale(SELECT_SIZE);
 			stageConfig -> setSizeNumber(StageConfig::Size_L);
 			
-			frame -> setPosition(sWHeaf + 200, sHHeaf + 200);
+			frame -> setPosition(sizeLogo[ResourceManager::Size_L] -> getPosition());
 		}
-		else if(sizeCounter % 4 == BACK)
+		else if(sizeCounter % EditSize::Size_Count == BACK)
 		{
 			sizeSizeFunc();
-			sizeSection -> setScale(0.7f);
+			sizeSection -> setScale(LOGO_SIZE);
 
-			back -> setScale(0.9f);
-			frame ->setScaleX(0.3f);
-			frame ->setScaleY(0.1f);
-			frame -> setPosition(sWHeaf - 500, sHHeaf - 280);
+			back -> setScale(SELECT_LOGO_SIZE);
+			frame ->setScaleX(FRAME_SIZE_X);
+			frame ->setScaleY(FRAME_SIZE_Y);
+			frame -> setPosition(back -> getPosition());
 		}
 	}
 }
@@ -463,20 +485,20 @@ void EditSelect::sizeSelect(void)
  */
 void EditSelect::bgSelect(void)
 {
-	bgCounter = CatGameLib::LibBasicFunc::wrap(bgCounter, 0, 6);
+	bgCounter = CatGameLib::LibBasicFunc::wrap(bgCounter, 0, EditBg::BG_Count);
 	
 	//全てのスケール設定
 	auto sizebgFunc = [&](void)
 	{
-		bgSection -> setScale(0.8f);
+		bgSection -> setScale(SELECT_LOGO_SIZE);
 	
 		for(int i = 0; i < ResourceManager::BG_Count; i++)
 		{
-			bgTextures[i] -> setScale(0.1f);
+			bgTextures[i] -> setScale(DESELECT_BG_SIZE);
 		}
 
-		back -> setScale(0.7f);
-		frame -> setScale(0.2f);
+		back -> setScale(LOGO_SIZE);
+		frame -> setScale(BG_FRAME_SIZE);
 	};
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
@@ -491,10 +513,10 @@ void EditSelect::bgSelect(void)
 	}
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 	{
-		if(bgCounter % 6 != BACK)
+		if(bgCounter % EditBg::BG_Count != BACK)
 		{
-			bgSection -> setScale(0.7f);
-			flag = StageBGM;		//BGM選択へ
+			bgSection -> setScale(LOGO_SIZE);
+			setUpWork = StageBGM;		//BGM選択へ
 		}
 		else
 		{
@@ -504,67 +526,63 @@ void EditSelect::bgSelect(void)
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
 	{
 		sizebgFunc();
-		bgSection -> setScale(0.7f);
-		flag = StageSize;		//サイズ選択へ
+		bgSection -> setScale(LOGO_SIZE);
+		setUpWork = StageSize;		//サイズ選択へ
 	}
-
-	if(flag == StageBG)
+	
+	//選択されている背景のサイズ変更
+	if(setUpWork == StageBG)
 	{
-		if(bgCounter % 6 == BG_Castle)
+		if(bgCounter % EditBg::BG_Count == EditBg::BG_Castle)
 		{
 			sizebgFunc();
-			bgTextures[ResourceManager::BG_Castle] -> setScale(0.2f);
-			bgTextures[ResourceManager::BG_Castle] -> draw();
-			frame -> setPosition(sWHeaf - 100, sHHeaf - 30);
+			bgTextures[ResourceManager::BG_Castle] -> setScale(SELECT_BG_SIZE);
+			frame -> setPosition(bgTextures[ResourceManager::BG_Castle] -> getPosition());
 
 			stageConfig -> setBgNumber(StageConfig::BG_Castle);
 		}
-		else if(bgCounter % 6 == BG_Table)
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Table)
 		{
 			sizebgFunc();
-			bgTextures[ResourceManager::BG_Table] -> setScale(0.2f);
-			bgTextures[ResourceManager::BG_Table] -> draw();
-			frame -> setPosition(sWHeaf - 25, sHHeaf - 30);
+			bgTextures[ResourceManager::BG_Table] -> setScale(SELECT_BG_SIZE);
+			frame -> setPosition(bgTextures[ResourceManager::BG_Table] -> getPosition());
 
 			stageConfig -> setBgNumber(StageConfig::BG_Table);
 		}
-		else if(bgCounter % 6 == BG_Gate)
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Gate)
 		{
 			sizebgFunc();
-			bgTextures[ResourceManager::BG_Gate] -> setScale(0.2f);
-			bgTextures[ResourceManager::BG_Gate] -> draw();
-			frame -> setPosition(sWHeaf + 50, sHHeaf - 30);
+			bgTextures[ResourceManager::BG_Gate] -> setScale(SELECT_BG_SIZE);
+			frame -> setPosition(bgTextures[ResourceManager::BG_Gate] -> getPosition());
 			
 			stageConfig -> setBgNumber(StageConfig::BG_Gate);
 		}
-		else if(bgCounter % 6 == BG_Window)
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Window)
 		{
 			sizebgFunc();
-			bgTextures[ResourceManager::BG_Window] -> setScale(0.2f);
-			bgTextures[ResourceManager::BG_Window] -> draw();
-			frame -> setPosition(sWHeaf + 125, sHHeaf - 30);
+			bgTextures[ResourceManager::BG_Window] -> setScale(SELECT_BG_SIZE);
+			frame -> setPosition(bgTextures[ResourceManager::BG_Window] -> getPosition());
 			
 			stageConfig -> setBgNumber(StageConfig::BG_Window);
 		}
-		else if(bgCounter % 6 == BG_Throne)
+		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Throne)
 		{
 			sizebgFunc();
-			bgTextures[ResourceManager::BG_Throne] -> setScale(0.2f);
-			bgTextures[ResourceManager::BG_Throne] -> draw();
-			frame -> setPosition(sWHeaf + 200, sHHeaf - 30);
+			bgTextures[ResourceManager::BG_Throne] -> setScale(SELECT_BG_SIZE);
+			frame -> setPosition(bgTextures[ResourceManager::BG_Throne] -> getPosition());
 			
 			stageConfig -> setBgNumber(StageConfig::BG_Throne);
 		}
-		else if(bgCounter % 6 == BACK)
+		else if(bgCounter % EditBg::BG_Count == BACK)
 		{
 			sizebgFunc();
 			
-			bgSection -> setScale(0.7f);
+			bgSection -> setScale(LOGO_SIZE);
 
-			back -> setScale(0.9f);
-			frame ->setScaleX(0.3f);
-			frame ->setScaleY(0.1f);
-			frame -> setPosition(sWHeaf - 500, sHHeaf - 280);
+			back -> setScale(SELECT_LOGO_SIZE);
+			frame ->setScaleX(FRAME_SIZE_X);
+			frame ->setScaleY(FRAME_SIZE_Y);
+			frame -> setPosition(back -> getPosition());
 		}
 	}
 }
@@ -577,20 +595,20 @@ void EditSelect::bgSelect(void)
  */
 void EditSelect::bgmSelect(void)
 {
-	bgmCounter = CatGameLib::LibBasicFunc::wrap(bgmCounter, 0, 4);
+	bgmCounter = CatGameLib::LibBasicFunc::wrap(bgmCounter, 0, EditBgm::Bgm_Count);
 	
 	//全てのスケール設定
 	auto sizeBgmFunc = [&](void)
 	{
-		musicSection -> setScale(0.8f);
+		musicSection -> setScale(SELECT_LOGO_SIZE);
 
-		for(int i = 0; i <= 2; i++)
+		for(int i = 0; i < ResourceManager::BGM_Count; i++)
 		{
-			bgmLogos[i] -> setScale(0.25f);
+			bgmLogos[i] -> setScale(DESELECT_SIZE);
 		}
 		
-		back -> setScale(0.7f);
-		frame -> setScale(0.15f);
+		back -> setScale(LOGO_SIZE);
+		frame -> setScale(FRAME_SIZE);
 	};
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
@@ -606,9 +624,9 @@ void EditSelect::bgmSelect(void)
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 	{
-		if(bgmCounter % 4 !=BACK)
+		if(bgmCounter % EditBgm::Bgm_Count !=BACK)
 		{
-			musicSection -> setScale(0.7f);
+			musicSection -> setScale(LOGO_SIZE);
 			editSetWork = Animation;		//アニメーションへ
 		}
 		else
@@ -619,76 +637,56 @@ void EditSelect::bgmSelect(void)
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
 	{
 		sizeBgmFunc();
-		musicSection -> setScale(0.7f);
-		flag = StageBG;		//背景選択へ
-	}
-
-	if(bgCounter % 6 == BG_Castle)
-	{
-		bgTextures[ResourceManager::BG_Castle] -> draw();
-	}
-	else if(bgCounter % 6 == BG_Table)
-	{
-		bgTextures[ResourceManager::BG_Table] -> draw();
-	}
-	else if(bgCounter % 6 == BG_Gate)
-	{
-		bgTextures[ResourceManager::BG_Gate] -> draw();
-	}
-	else if(bgCounter % 6 == BG_Window)
-	{
-		bgTextures[ResourceManager::BG_Window] -> draw();
-	}
-	else if(bgCounter % 6 == BG_Throne)
-	{
-		bgTextures[ResourceManager::BG_Throne] -> draw();
+		musicSection -> setScale(LOGO_SIZE);
+		setUpWork = StageBG;		//背景選択へ
 	}
 	
-	if(flag == StageBGM)
+	//選択されているBGMロゴのサイズ変更
+	if(setUpWork == StageBGM)
 	{
-		if(bgmCounter % 4 == Bgm_1)
+		if(bgmCounter % EditBgm::Bgm_Count == EditBgm::Bgm_1)
 		{
 			sizeBgmFunc();
-			bgmLogos[ResourceManager::BGM_1] -> setScale(0.35f);
+			bgmLogos[ResourceManager::BGM_1] -> setScale(SELECT_SIZE);
 			
-			frame -> setPosition(sWHeaf - 100, sHHeaf - 220);
+			frame -> setPosition(bgmLogos[ResourceManager::BGM_1] -> getPosition());
 			
 			stageConfig -> setMusicNumber(StageConfig::BGM_1);
 		}
-		else if(bgmCounter % 4 == 2)
+		else if(bgmCounter % EditBgm::Bgm_Count == EditBgm::Bgm_2)
 		{
 			sizeBgmFunc();
-			bgmLogos[ResourceManager::BGM_2] -> setScale(0.35f);
+			bgmLogos[ResourceManager::BGM_2] -> setScale(SELECT_SIZE);
 			
-			frame -> setPosition(sWHeaf + 50, sHHeaf - 220);
+			frame -> setPosition(bgmLogos[ResourceManager::BGM_2] -> getPosition());
 			
 			stageConfig -> setMusicNumber(StageConfig::BGM_2);
 		}
-		else if(bgmCounter % 4 == 3)
+		else if(bgmCounter % EditBgm::Bgm_Count == EditBgm::Bgm_3)
 		{
 			sizeBgmFunc();
-			bgmLogos[ResourceManager::BGM_3] -> setScale(0.35f);
+			bgmLogos[ResourceManager::BGM_3] -> setScale(SELECT_SIZE);
 			
-			frame -> setPosition(sWHeaf + 200, sHHeaf - 220);
+			frame -> setPosition(bgmLogos[ResourceManager::BGM_3] -> getPosition());
 			
 			stageConfig -> setMusicNumber(StageConfig::BGM_3);
 		}
-		else if(bgmCounter % 4 == BACK)
+		else if(bgmCounter % EditBgm::Bgm_Count == BACK)
 		{
 			sizeBgmFunc();
-			musicSection -> setScale(0.7f);
+			musicSection -> setScale(LOGO_SIZE);
 
-			back -> setScale(0.9f);
-			frame ->setScaleX(0.3f);
-			frame ->setScaleY(0.1f);
-			frame -> setPosition(sWHeaf - 500, sHHeaf - 280);
+			back -> setScale(SELECT_LOGO_SIZE);
+			frame ->setScaleX(FRAME_SIZE_X);
+			frame ->setScaleY(FRAME_SIZE_Y);
+			frame -> setPosition(back -> getPosition());
 		}
 	}
 }
 
 
 /**
- *	@brief 本を移動させるアニメーション
+ *	@brief 本を(1つ前にのシーンに)移動させるアニメーション
  *
  *	@author	Tatsuya Maeda
  */
@@ -696,14 +694,14 @@ void EditSelect::backAnimation(void)
 {
 	volumeFlag = false;
 
-	if (books -> getPositionX() < sWHeaf + 300)
+	if (books -> getPositionX() < sWHeaf + BOOK_POS_X)
 	{
-		books -> setPositionX(books -> getPositionX() + 10);
+		books -> setPositionX(books -> getPositionX() + MOVEMENT_BOOK);
 	}
 	else
 	{
-		books -> setPositionX(sWHeaf + 300);
-		editSetWork = Next;
+		books -> setPositionX(sWHeaf + BOOK_POS_X);
+		editSetWork = Next;			//メニューセレクトへ
 	}
 }
 
@@ -719,9 +717,9 @@ void EditSelect::bookAnimation(void)
 
 	if(animeNumber < BOOK_ANM_MAX)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, 7);
+		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
-		if(animeCounter % 7 == 0)
+		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{
 			animeCounter = 0;
 			animeNumber++;
@@ -732,15 +730,15 @@ void EditSelect::bookAnimation(void)
 		animeNumber = BOOK_ANM_MIN;
 	}
 
-	if (books -> getPositionX() < sWHeaf + 200)
+	if (books -> getPositionX() < sWHeaf + EDIT_BOOK_POS_X)
 	{
-		books -> setPositionX(books -> getPositionX() + 10);
+		books -> setPositionX(books -> getPositionX() + MOVEMENT_BOOK);
 	}
 	else
 	{
 		if(animeNumber == BOOK_ANM_MIN)
 		{
-			books -> setPositionX(sWHeaf + 200);
+			books -> setPositionX(sWHeaf + EDIT_BOOK_POS_X);
 			editSetWork = Next;		//エディット画面へ
 		}
 	}
@@ -748,7 +746,7 @@ void EditSelect::bookAnimation(void)
 
 
 /**
- *	@brief flagがBACKならメニューセレクトへ、それ以外ならエディットへ
+ *	@brief 各CounterがBACKならメニューセレクトへ、それ以外ならエディットへ
  *
  *	@author	Tatsuya Maeda
  */
@@ -758,10 +756,12 @@ void EditSelect::next(void)
 
 	if(sizeCounter == BACK || bgCounter == BACK || bgmCounter == BACK)
 	{
+		//メニューセレクトへ
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::MenuSelect);
 	}
 	else
 	{
+		//エディットへ
 		SceneManager::getInstance() -> createScene(SceneManager::SceneNumber::Edit);
 	}
 }

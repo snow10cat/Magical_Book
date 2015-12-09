@@ -5,13 +5,15 @@
 #include "Scene.h"
 #include "CatGameLib.h"
 
-#define LOGO_ANIM_SPEED 3
-#define LOGO_MAX_SIZE 1.3f
-#define LOGO_MIN_SIZE 0.8f
-#define LOGO_SIZE_ADD 0.01f
 
-#define BOOK_SIZE 1.5f
-#define BOOK_SIZE_ADD 0.01f
+#define LOGO_MAX_SIZE 1.1f		//!< ロゴの最大サイズ
+#define LOGO_MIN_SIZE 0.9f		//!< ロゴの最小サイズ
+#define LOGO_ANIM_SPEED 3		//!< ロゴのアニメーション速度
+#define LOGO_SIZE_ADD 0.01f		//!< ロゴのサイズ加算値
+
+#define BOOK_SIZE 1.5f			//!< 本のサイズ
+#define BOOK_SIZE_ADD 0.1f		//!< 本のサイズ加算度
+
 
 namespace MagicalBook
 {
@@ -29,11 +31,11 @@ public:
 	{
 		Fadein,			//!< フェードイン
 		ModeSelect,		//!< モード選択
+		BackAnimation,	//!< 前に戻るアニメーション
 		Animation,		//!< アニメーション
 		Fadeout,		//!< フェードアウト
 		Next,			//!< 次へ
 	};
-
 private:
 	
 	float volume;		//!< 音量
@@ -48,6 +50,7 @@ private:
 	int animeCounter;	//!< アニメーション用カウンター
 	int selectWork;		//!< 選択シーン
 	float size;			//!< ロゴサイズ
+	float bookSize;		//!< 本サイズ
 
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;		//!< 横画面中心
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;		//!< 縦画面中心
@@ -72,6 +75,7 @@ private:
 	void modeSelect(void);
 	void logoAnimation(void);
 	void animation(void);
+	void backAnimation(void);
 	void bookAnimation(void);
 	void closeAnimation(void);
 	void fadeout(void);

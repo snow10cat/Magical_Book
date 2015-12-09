@@ -1,3 +1,4 @@
+//TODO コメントの追加、ソースの整理 
 
 #include "CatGameLib.h"
 #include "FileManager.h"

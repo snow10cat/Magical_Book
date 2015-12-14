@@ -26,6 +26,10 @@ public:
 		Next,			//!< 次へ
 	};
 	
+	
+
+private:
+
 	enum StageSize
 	{
 		Small	= 14,		//!< Sサイズ(マップチップ14個分)
@@ -34,13 +38,21 @@ public:
 		SizeNum = 3,		
 	};
 
+	enum MaterialNum
+	{
+		Chip,
+		Player,
+		Enemy,
+		Door,
+		Gimmick,
+		MaterialCount,
+	};
+
 	enum EditSelect
 	{
 		MaterialSelect,
 		MaterialSet,
 	};
-
-private:
 
 	float volume;		//!< 音量
 	int volumeFlag;		//!< 再生フラグ
@@ -97,16 +109,12 @@ private:
 	
 	CatGameLib::LibSprites* setMaterials[5];	//!< 配置した素材
 
-	CatGameLib::LibSprites* chip;
+	CatGameLib::LibSprites* chip;/*
 	CatGameLib::LibSprites* player;
 	CatGameLib::LibSprites* enemy;
 	CatGameLib::LibSprites* gimmick;
-	CatGameLib::LibSprites* door;
+	CatGameLib::LibSprites* door;*/
 	CatGameLib::LibSprite* music_num[3];
-	CatGameLib::LibSprites* materialPlayer;
-	CatGameLib::LibSprites* materialEnemy;
-	CatGameLib::LibSprites* materialGimmick;
-	CatGameLib::LibSprites* materialDoor;
 	
 	CatGameLib::LibVector2 chipSize;
 	CatGameLib::LibVector2 screenSize;

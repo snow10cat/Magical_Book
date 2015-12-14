@@ -20,10 +20,6 @@ static StageConfig* stageConfig = StageConfig::getInstance();
 Edit::Edit() : editBgm(nullptr),
 			   materialLogo(nullptr),
 			   chipTable(nullptr),
-			   materialPlayer(nullptr),
-			   materialEnemy(nullptr),
-			   materialGimmick(nullptr),
-			   materialDoor(nullptr),
 			   save(nullptr),
 			   redo(nullptr),
 			   undo(nullptr),
@@ -55,11 +51,12 @@ void Edit::init(void)
 
 	books = ResourceManager::getInstance() -> getSprites("books");
 
+	//‘fÞ
 	materials[0] = ResourceManager::getInstance() -> getSprites("mapchip");
 	materials[1] = ResourceManager::getInstance() -> getSprites("player");
 	materials[2] = ResourceManager::getInstance() -> getSprites("enemy");
-	materials[3] = ResourceManager::getInstance() -> getSprites("gimmick");
-	materials[4] = ResourceManager::getInstance() -> getSprites("door");
+	materials[3] = ResourceManager::getInstance() -> getSprites("door");
+	materials[4] = ResourceManager::getInstance() -> getSprites("gimmick");
 	
 	chip = ResourceManager::getInstance() -> getSprites("mapchip");
 
@@ -92,6 +89,18 @@ void Edit::init(void)
 		bgTextures[i - 1] -> setAlpha(0.0f);
 	}
 
+	materials[MaterialNum::Chip] -> setPosition(sWHeaf + 350, sHHeaf + 200);
+	materials[MaterialNum::Player] -> setPosition(sWHeaf + 350, sHHeaf + 68);
+	materials[MaterialNum::Enemy] -> setPosition(sWHeaf + 400, sHHeaf + 68);
+	materials[MaterialNum::Door] -> setPosition(sWHeaf + 450, sHHeaf + 68);
+	materials[MaterialNum::Gimmick] -> setPosition(sWHeaf + 500, sHHeaf + 68);
+
+	for(int i = 0; i < MaterialNum::MaterialCount; i++)
+	{
+		materials[i] -> setScale(1.0f);
+		materials[i] -> setAlpha(0.0f);
+	}
+
 	materialLogo -> setPosition(sWHeaf +450, sHHeaf + 300);
 	materialLogo -> setScale(1.5f);
 	materialLogo -> setAlpha(0.0f);
@@ -108,37 +117,25 @@ void Edit::init(void)
 	chip -> setScale(1.0f);
 	chip -> setAlpha(0.0f);
 
-	player -> setPosition(sWHeaf + 350, sHHeaf + 68);
+	/*player -> setPosition(sWHeaf + 350, sHHeaf + 68);
 	player -> setScale(1.0f);
 	player -> setAlpha(0.0f);
 
-	materialPlayer -> setPosition(sWHeaf + 350, sHHeaf + 68);
-	materialPlayer -> setScale(1.0f);
-	materialPlayer -> setAlpha(255.0f);
 
 	enemy -> setPosition(sWHeaf + 400, sHHeaf + 68);
 	enemy -> setScale(1.0f);
 	enemy -> setAlpha(0.0f);
 
-	materialEnemy -> setPosition(sWHeaf + 400, sHHeaf + 68);
-	materialEnemy -> setScale(1.0f);
-	materialEnemy -> setAlpha(255.0f);
 
 	door -> setPosition(sWHeaf + 450, sHHeaf + 68);
 	door -> setScale(1.0f);
 	door -> setAlpha(0.0f);
 
-	materialDoor -> setPosition(sWHeaf + 450, sHHeaf + 68);
-	materialDoor -> setScale(1.0f);
-	materialDoor -> setAlpha(255.0f);
 
 	gimmick -> setPosition(sWHeaf + 500, sHHeaf + 68);
 	gimmick -> setScale(1.0f);
-	gimmick -> setAlpha(0.0f);
+	gimmick -> setAlpha(0.0f);*/
 
-	materialGimmick -> setPosition(sWHeaf + 500, sHHeaf + 68);
-	materialGimmick -> setScale(1.0f);
-	materialGimmick -> setAlpha(255.0f);
 
 	save -> setPosition(sWHeaf + 550, sHHeaf - 200);
 	save -> setScale(0.7f);
@@ -206,6 +203,9 @@ void Edit::update(void)
 	playSound();
 	
 	editDraw();
+
+	materialDraw();
+
 
 	switch (edit_work)
 	{
@@ -293,12 +293,21 @@ void Edit::pictFade(void)
 		pointer -> setAlpha(pointer -> getAlpha() + 5);
 	}
 	
-	if(chip -> getAlpha() < 255)
+	//‘fÞ
+	for(int i = 0; i < MaterialNum::MaterialCount; i++)
 	{
-		chip -> setAlpha(chip -> getAlpha() + 5);
+		if (materials[i] -> getAlpha() < 255)
+		{
+			materials[i] -> setAlpha(materials[i] -> getAlpha() + FADE);
+		}
+		else
+		{
+			materials[i] -> setAlpha(255);
+		}
 	}
 
-	if(player -> getAlpha() < 255)
+
+	/*if(player -> getAlpha() < 255)
 	{
 		player -> setAlpha(player -> getAlpha() + 5);
 	}
@@ -316,7 +325,7 @@ void Edit::pictFade(void)
 	if(gimmick -> getAlpha() < 255)
 	{
 		gimmick -> setAlpha(gimmick -> getAlpha() + 5);
-	}
+	}*/
 
 	if(save -> getAlpha() < 255)
 	{
@@ -580,7 +589,7 @@ void Edit::materialSelect(void)
 	}
 	else if(chipHave == 2)
 	{
-		if(materialCol == 1)
+		/*if(materialCol == 1)
 		{
 			player -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
@@ -595,7 +604,7 @@ void Edit::materialSelect(void)
 		else if(materialCol == 4)
 		{
 			gimmick -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
-		}
+		}*/
 	}
 }
 
@@ -712,7 +721,7 @@ void Edit::materialSet(void)
 	}
 	else if(chipHave == 2)
 	{
-		if(chipState == 1)
+		/*if(chipState == 1)
 		{
 			player -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
 		}
@@ -727,7 +736,7 @@ void Edit::materialSet(void)
 		else if(chipState == 4)
 		{
 			gimmick -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+34);
-		}
+		}*/
 	}
 
 	if(stageConfig -> getSizeNumber() == 0)
@@ -840,7 +849,7 @@ void Edit::editDraw(void)
 	}
 	else if(chipHave == 2)
 	{
-		if(chipState == 1)
+		/*if(chipState == 1)
 		{
 			player -> draw(0);
 		}
@@ -855,13 +864,13 @@ void Edit::editDraw(void)
 		else if(chipState == 4)
 		{
 			gimmick -> draw(0);
-		}
+		}*/
 	}
 
 	materialLogo -> draw();
 	chipTable -> draw();
 	
-	for(int i = 1; i <= 36; i += 4)
+	/*for(int i = 1; i <= 36; i += 4)
 	{
 		chipCounter = CatGameLib::LibBasicFunc::wrap(chipCounter, 0, 5);
 
@@ -876,13 +885,8 @@ void Edit::editDraw(void)
 		chipCounter++;
 		
 		chip -> draw(i);
-	}
+	}*/
 	chipCounter = 0;
-
-	materialPlayer -> draw(0);
-	materialEnemy -> draw(0);
-	materialDoor -> draw(0);
-	materialGimmick -> draw(0);
 
 	save -> draw();
 
@@ -894,10 +898,27 @@ void Edit::editDraw(void)
 
 void Edit::materialDraw(void)
 {
-	materialPlayer -> draw(0);
-	materialEnemy -> draw(0);
-	materialDoor -> draw(0);
-	materialGimmick -> draw(0);
+	for(int i = 1; i <= 36; i += 4)
+	{
+		chipCounter = CatGameLib::LibBasicFunc::wrap(chipCounter, 0, 5);
+
+		if(i <= 5 * 4)
+		{
+			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 200);
+		}
+		else if(i > 5 * 4 && i <= 36)
+		{
+			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 140);
+		}
+		chipCounter++;
+		
+		materials[MaterialNum::Chip] -> draw(i);
+	}
+
+	for(int i = 1; i < MaterialNum::MaterialCount; i++)
+	{
+		materials[i] -> draw(0);
+	}
 }
 
 void Edit::editChipSetDraw(void)

@@ -25,10 +25,10 @@ void SceneManager::createScene(SceneNumber number)
 {
 	oldSceneNumber = sceneNumber;
 	sceneNumber = number;
-	// 今のシーンを消す
+	//今のシーンを消す
 	delete scene;
 
-	// 次のシーンを作る
+	//次のシーンを作る
 	switch(sceneNumber)
 	{
 	case Title:

@@ -20,7 +20,7 @@ Player::~Player()
 
 void Player::init(void)
 {
-	const int firstPosX = 620;	// ステージファイルからとってくる
+	const int firstPosX = 620;	//ステージファイルからとってくる
 	const int firstPosY = 300;
 
 	sprites	= LibSprites::create("player/player.png", 34, 68);
@@ -58,10 +58,10 @@ void Player::update(Stage* stage)
 			direction = true;
 		}
 
-		// 移動
+		//移動
 		move(stage);
 
-		// 回転
+		//回転
 		sprites -> setRotation(0);
 	}
 	else
@@ -111,7 +111,7 @@ void Player::update(Stage* stage)
 		sprites -> setScaleX(1.0f);
 	}
 
-	// 描画位置設定
+	//描画位置設定
 	sprites -> setPosition(position);
 	damageSprites -> setPosition(position);
 	
@@ -158,11 +158,11 @@ void Player::draw(void)
 
 void Player::move(Stage* stage)
 {
-	// 重力
+	//重力
 	velocity.y = GRAVITY_POWER;
 	position.y += velocity.y;
 
-	// あたり判定の大きさ
+	//あたり判定の大きさ
 	const int collisionSizeX = sprites -> getTextureSizeX() * sprites -> getAnchorPointX() * 0.9f;
 	const int collisionSizeY = sprites -> getTextureSizeY() * sprites -> getAnchorPointY();
 
@@ -177,13 +177,13 @@ void Player::move(Stage* stage)
 		state = NoMove;
 	}
 
-	// 頭上
+	//頭上
 	if(stage -> getChipNumber(position.x, position.y + collisionSizeY + 20) > 0)
 	{
 		state = NoMove;
 	}
 
-	// 足元
+	//足元
 	if(downLeftChipNum > 0 || downRightChipNum > 0)
 	{
 		int pos = (int)(position.y / collisionSizeY) * collisionSizeY;
@@ -215,7 +215,7 @@ void Player::move(Stage* stage)
 	
 	position.x += velocity.x;
 
-	// 胴体
+	//胴体
 	if(leftChipNum > 0 || rightChipNum > 0 )
 	{
 		if(velocity.x == 0)

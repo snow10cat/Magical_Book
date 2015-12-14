@@ -14,9 +14,9 @@ class LibMain
 {
 public:
 	/**
-	 * ライブラリインスタンス取得
+	 * @brief ライブラリインスタンス取得
 	 *
-	 * @author	minaka1412
+	 * @author	Tatsuya Maeda
 	 * @return  インスタンスへのポインタ
 	 */
 	static LibMain* getInstance(void)
@@ -35,16 +35,16 @@ public:
 	};
 
 	/**
-	 *	ライブラリ初期化
+	 *	@brief ライブラリ初期化
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 */
 	void initLib(void);
 
 	/**
-	 *	背景色を指定
+	 *	@brief 背景色を指定
 	 *
-	 *	@author	minaka1412
+	 *	@author	Tatsuya Maeda
 	 *	@param	red		0 ~ 255の範囲の値
 	 *	@param	blue	0 ~ 255の範囲の値
 	 *	@param	green	0 ~ 255の範囲の値
@@ -53,64 +53,64 @@ public:
 	void setClearColor(float red, float blue, float green, float alpha);
 
 	/**
-	 *	スクリーンサイズの指定 (モニターサイズか否か)
+	 *	@brief スクリーンサイズの指定 (モニターサイズか否か)
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	isMonitorSize	true モニターサイズで描画 / false 指定サイズで描画
 	 */
 	void setScreenSize(bool isMonitorSize);
 
 	/**
-	 *	スクリーンサイズ指定
+	 *	@brief スクリーンサイズ指定
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	width	スクリーンの横幅
 	 *	@param	height	スクリーンの縦幅
 	 */
 	void setScreenSize(int width, int height);
 
 	/**
-	 *	スクリーンモード指定
+	 *	@brief スクリーンモード指定
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	mode	FullScreem  or  Window
 	 */
 	void setScreenMode(ScreenMode mode);
 
 	/**
-	 *	ウィンドウタイトルを指定
+	 *	@brief ウィンドウタイトルを指定
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	title	タイトル文字列
 	 */
 	void setWindowTitle(const char* title);
 
 	/**
-	 *	ウィンドウの状態を取得
+	 *	@brief ウィンドウの状態を取得
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@return	true 正常 / false 異常発生
 	 */
 	bool checkWindowState(void);
 
 	/**
-	 *	画面消去
+	 *	@brief 画面消去
 	 *
-	 *	@author	minaka1412
+	 *	@author	Tatsuya Maeda
 	 */
 	void clear(void);
 
 	/**
-	 *	描画
+	 *	@brief 描画
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 */
 	void draw(void);
 
 	/**
-	 *	シェーダーファイルを読み込む
+	 *	@brief シェーダーファイルを読み込む
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@return	シェーダープログラムを識別する番号
 	 *	@param	vertFileName 頂点シェーダーファイル名
 	 *	@param	flagFileName ピクセルシェーダーファイル名
@@ -118,17 +118,17 @@ public:
 	LibShader* loadShaderProgram(const char* vertFileName, const char* flagFileName);
 
 	/**
-	 *	シェーダーファイルを利用する
+	 *	@brief シェーダーファイルを利用する
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	shaderNumber	シェーダープログラムを識別する番号
 	 */
 	void startShaderProgram(LibShader* shaderNumber);
 	
 	/**
-	 *	シェーダーファイルを利用する
+	 *	@brief シェーダーファイルを利用する
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	shaderNumber	シェーダープログラムを識別する番号
 	 */
 	LibShader* getNowShader(void);
@@ -139,16 +139,16 @@ public:
 
 private:
 	/**
-	 * 	コンストラクタ
+	 * 	@brief コンストラクタ
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 */
 	LibMain();
 
 	/**
-	 * 	デストラクタ
+	 * 	@brief デストラクタ
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 */
 	~LibMain();
 

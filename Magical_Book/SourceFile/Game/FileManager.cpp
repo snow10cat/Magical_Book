@@ -70,7 +70,7 @@ StageFile* FileManager::loadFile(const char* fileName)
 		int y;
 		switch(i)
 		{
-		case 0: // ステージサイズ
+		case 0: //ステージサイズ
 			getline(str, temp, ',');
 			x = atoi(temp.c_str());
 			getline(str, temp);
@@ -78,12 +78,12 @@ StageFile* FileManager::loadFile(const char* fileName)
 			file -> setStageSize(LibVector2(x, y));
 			break;
 
-		case 1: // 背景
+		case 1: //背景
 			getline(str, temp);
 			file -> setBGNumber((ResourceManager::BgName)atoi(temp.c_str()));
 			break;
 
-		case 2: // BGM
+		case 2: //BGM
 			getline(str, temp);
 			file -> setMusicNumber((ResourceManager::BgmNum)atoi(temp.c_str()));
 			break;

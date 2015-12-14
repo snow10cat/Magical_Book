@@ -218,7 +218,7 @@ LibVector2 LibSprite::getTextureSize(void)
 
 void LibSprite::draw(void)
 {
-	// 描画フラグチェック
+	//描画フラグチェック
 	if(!isDraw) { return; }
 
 	drawTexture(textureID);
@@ -228,26 +228,26 @@ void LibSprite::loadTexture(const char* fileName)
 {
 	glGenTextures(1, &textureID);
 			
-	// 未使用のテクスチャ番号を指定
+	//未使用のテクスチャ番号を指定
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	textureIDs[loadCount] = textureID;
 
-	// カウント更新
+	//カウント更新
 	loadCount++;
 
-	// ファイルパス作成
+	//ファイルパス作成
 	string filePass = "ResourceFile/Graph/";
 	filePass += fileName;
 			
-	// png読み込み
+	//png読み込み
 	png::image<png::rgba_pixel> image(filePass);
 
-	// 画像サイズ設定
+	//画像サイズ設定
 	sizeX = image.get_width();
 	sizeY = image.get_height();
 
-	// バッファ確保
+	//バッファ確保
 	unsigned char* textureBuf = new unsigned char[sizeX * sizeY * 4];
 
 	for(int i = 0; i < sizeY; i++)
@@ -255,16 +255,16 @@ void LibSprite::loadTexture(const char* fileName)
 		memcpy(&textureBuf[sizeX * i * 4], &image[i][0], sizeX * 4);
 	}
 
-	// VRAMに転送
+	//VRAMに転送
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sizeX, sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureBuf);
 			
-	// 転送したテクスチャの設定
+	//転送したテクスチャの設定
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	// バッファ解放
+	//バッファ解放
 	delete[] textureBuf;
 	textureBuf = nullptr;
 }
@@ -273,7 +273,7 @@ void LibSprite::drawTexture(int number)
 {
 	LibMain* libMain = LibMain::getInstance();
 
-	// 画像サイズとアンカーポイントから4点を生成
+	//画像サイズとアンカーポイントから4点を生成
 	float w = sizeX * anchor.x;
 	float h = sizeY * anchor.y;
 	GLfloat pos[] = {
@@ -288,31 +288,31 @@ void LibSprite::drawTexture(int number)
 	float screenWidth = libMain -> getScreenSize().x;
 	float screenHeight = libMain -> getScreenSize().y;
 
-	// 4頂点のxy文で8回ループ
+	//4頂点のxy文で8回ループ
 	for(int i = 0; i < 8; i += 2)
 	{
 		float dx = pos[i];
 		float dy = pos[i + 1];
 
-		// 回転
+		//回転
 		pos[i]		= dx * cos_f - dy * sin_f;
 		pos[i + 1]	= dx * sin_f + dy * cos_f;
 
-		// 移動
+		//移動
 		pos[i]		+= (position.x - screenWidth * 0.5f) / scale.x;
 		pos[i + 1]	+= (position.y - screenHeight * 0.5f) / scale.y;
 
-		// 拡縮
+		//拡縮
 		pos[i]		*= scale.x * 2;
 		pos[i + 1]	*= scale.y * 2;
 
-		// ワールド変換
+		//ワールド変換
 		pos[i]		= pos[i] / screenWidth;
 		pos[i + 1]	= pos[i + 1] / screenHeight;
 
 	}
 
-	// UV座標
+	//UV座標
 	const GLfloat uv[] = {
 		0, 0,
 		0, 1,
@@ -320,25 +320,25 @@ void LibSprite::drawTexture(int number)
 		1, 1,
 	};
 
-	// テクスチャ設定
+	//テクスチャ設定
 	glBindTexture(GL_TEXTURE_2D, number);
 	
-	// アルファブレンドON
+	//アルファブレンドON
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	// シェーダーのUniformにアルファ値を転送
+	//シェーダーのUniformにアルファ値を転送
 	glUniform1f(LibMain::getInstance() -> getNowShader() -> getUniformHandle("alpha"), alpha / 255.0f);
 
-	// シェーダーに画像の座標を転送
+	//シェーダーに画像の座標を転送
 	glVertexAttribPointer(LibMain::getInstance() -> getNowShader() -> getAttributePosition(), 2, GL_FLOAT, false, 0, pos);
 	
-	// シェーダーにUV座標を転送
+	//シェーダーにUV座標を転送
 	glVertexAttribPointer(LibMain::getInstance() -> getNowShader() -> getAttributeUV(), 2, GL_FLOAT, false, 0, uv);
 	
-	// 描画
+	//描画
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
-	// アルファブレンドOFF
+	//アルファブレンドOFF
 	glDisable(GL_BLEND);
 }

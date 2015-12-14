@@ -24,18 +24,10 @@ public:
 		ColorNum,
 	};
 
-	/**
-	 * 	ライブラリ終了処理
-	 *
-	 * 	@author	minaka1412
-	 */
+	//ライブラリ終了処理
 	static void endLib(void);
 
-	/**
-	 * 	コンストラクタ
-	 *
-	 * 	@author	minaka1412
-	 */
+	//コンストラクタ
 	Private();
 
 	bool			isLibInit;
@@ -74,7 +66,7 @@ static LibMain* instance = LibMain::getInstance();
 
 LibMain::LibMain() : p(new Private())
 {
-	// GLFW初期化
+	//GLFW初期化
 	if(glfwInit() == GL_FALSE)
 	{
 		LibDebug::errorMessageBox("Can't initialize GLFW");
@@ -84,7 +76,7 @@ LibMain::LibMain() : p(new Private())
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 
-	// ALURE初期化
+	//ALURE初期化
 	if(!alureInitDevice(NULL, NULL)) 
 	{
 		LibDebug::errorMessageBox("Can't initialize ALURE!");
@@ -117,10 +109,10 @@ void LibMain::initLib(void)
 
 	atexit(Private::endLib);
 
-	// ウィンドウ作成
+	//ウィンドウ作成
 	p -> windowHandle = glfwCreateWindow(p -> screenWidth, p -> screenHeight, p -> windowTitle.c_str(), monitor, nullptr);
 
-	// ウィンドウ位置設定 (モニターの中心)
+	//ウィンドウ位置設定 (モニターの中心)
 	glfwSetWindowPos(p -> windowHandle, (videoMode -> width - p -> screenWidth) / 2,
 										 (videoMode -> height - p -> screenHeight) / 2);
 
@@ -143,27 +135,27 @@ void LibMain::initLib(void)
 		LibDebug::errorMessageBox("Can't initialize GLEW");
 	}
 
-	// デフォルトシェーダーの読み込みと設定
+	//デフォルトシェーダーの読み込みと設定
 	startShaderProgram(loadShaderProgram("Basic.vsh", "Basic.fsh"));
 	getNowShader() -> setAttributePosition("attr_pos");
 	getNowShader() -> setAttributeUV("attr_uv");
 	getNowShader() -> setUniformTexture("texture");
 	getNowShader() -> setUniformHandle("alpha");
 
-	// 入力コールバック関数の登録
+	//入力コールバック関数の登録
 	glfwSetMouseButtonCallback(p -> windowHandle, LibInput::MouseButtonPushCallback);
 	glfwSetCursorPosCallback (p -> windowHandle, LibInput::MouseCursorMoveCallback);
 	glfwSetCursorEnterCallback (p -> windowHandle, LibInput::MouseCursorWindowInCallback);
 	glfwSetScrollCallback (p -> windowHandle, LibInput::MouseWheelMoveCallback);
 
-	// 入力取得モジュールを初期化
+	//入力取得モジュールを初期化
 	LibInput::getInstance() -> setWindow(p -> windowHandle);
 	LibInput::getInstance() -> initSystem();
 
-	// デバッグ文字列表示初期化
+	//デバッグ文字列表示初期化
 	LibString::loadTexture();
 
-	// FPS表示用メッセージ作成
+	//FPS表示用メッセージ作成
 	p -> fpsMessage = LibString::create("");
 	p -> fpsMessage -> setPosition(0 + 16, p -> screenHeight - 16);
 	p -> fpsMessage -> setScale(0.5f);
@@ -299,9 +291,9 @@ LibMain::Private::Private() : isLibInit(false),
 
 void LibMain::Private::endLib(void)
 {
-	// GLFWの終了処理
+	//GLFWの終了処理
 	glfwTerminate();
 	
-	// ALUREの終了処理
+	//ALUREの終了処理
 	alureShutdownDevice();
 }

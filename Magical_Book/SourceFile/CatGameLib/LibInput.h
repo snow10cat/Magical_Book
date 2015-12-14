@@ -166,13 +166,13 @@ public:
 private:
 	class LibGamePad;
 	
-	const int specialKeyNum = 17;	// Spaceキー等の数
+	const int specialKeyNum = 17;	//Spaceキー等の数
 	const std::pair<bool,bool> initPair;
 
 	bool isMouseWheelMove;
 	int connectGamePadCount;
 
-	GLFWwindow* window;				// 処理対象のウィンドウ
+	GLFWwindow* window;				//処理対象のウィンドウ
 
 	LibVector2 mouseWheel;
 	LibVector2 mousePosition;

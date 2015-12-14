@@ -117,7 +117,7 @@ void LibShader::loadShaderFile(const char* fileName)
 		LibDebug::errorMessageBox(errorMessage.c_str());
 	}
 
-	// ファイルパスから拡張子を抽出
+	//ファイルパスから拡張子を抽出
 	filePass.erase(0, filePass.find(".", 0));
 
 	if(filePass == ".vsh")
@@ -135,34 +135,34 @@ void LibShader::loadShaderFile(const char* fileName)
 		LibDebug::errorMessageBox(errorMessage.c_str());
 	}
 
-	// ファイルの終端に移動
+	//ファイルの終端に移動
 	file.seekg(0, ifstream::end);
 
-	// ファイルサイズ取得
+	//ファイルサイズ取得
 	int fileSize = file.tellg();
 
-	// ファイルサイズ分のメモリを確保
+	//ファイルサイズ分のメモリを確保
 	GLchar* fileData = new GLchar[fileSize + 1];
 
-	// ファイル先頭へ移動
+	//ファイル先頭へ移動
 	file.seekg(0, ifstream::beg);
 
-	// ファイル読み込み
+	//ファイル読み込み
 	file.read(fileData, fileSize);
 
-	// ファイルを閉じる
+	//ファイルを閉じる
 	file.close();
 
-	// シェーダー読み込み
+	//シェーダー読み込み
 	glShaderSource(shader, 1, &fileData, &fileSize);
 
-	// シェーダーコンパイル
+	//シェーダーコンパイル
 	shaderCompile(shader, fileName);
 
-	// シェーダーをメインプログラムに接続
+	//シェーダーをメインプログラムに接続
 	glAttachShader(program, shader);
 
-	// 不要となったシェーダーを削除
+	//不要となったシェーダーを削除
 	glDeleteShader(shader);
 }
 
@@ -175,38 +175,38 @@ void LibShader::shaderCompile(unsigned int shaderID, const char* fileName)
 
 	errorMessage += " Compile Error";
 
-	// シェーダーコンパイル
+	//シェーダーコンパイル
 	glCompileShader(shaderID);
 
-	// ログの情報を取得
+	//ログの情報を取得
 	glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &logSize);
 		
 	if(logSize > 1)
 	{
-		// ログ格納用メモリを確保
+		//ログ格納用メモリを確保
 		logString = new GLchar[logSize];
 
-		// ログ読み込み
+		//ログ読み込み
 		glGetShaderInfoLog(shaderID, logSize, nullptr, logString);
 
-		// エラーメッセージにログ文字列を接続
+		//エラーメッセージにログ文字列を接続
 		errorMessage += "\n";
 		errorMessage += logString;
 
-		// ログを出力
+		//ログを出力
 		LibDebug::debugMessageLog(logString);
 
-		// メモリ解放
+		//メモリ解放
 		delete[] logString;
 		logString = nullptr;
 	}
 
-	// シェーダーの情報を取得
+	//シェーダーの情報を取得
 	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
 
 	if(status == GL_FALSE)
 	{
-		// メッセージ出力
+		//メッセージ出力
 		LibDebug::errorMessageBox(errorMessage.c_str());
 	}
 }
@@ -218,33 +218,33 @@ void LibShader::shaderLink(const char* fileName)
 	GLsizei logSize = 0;
 	string	errorMessage = fileName;
 
-	// シェーダーをリンク
+	//シェーダーをリンク
 	glLinkProgram(program);
 
-	// ログの情報を取得
+	//ログの情報を取得
 	glGetShaderiv(program, GL_INFO_LOG_LENGTH, &logSize);
 		
 	if(logSize > 1)
 	{
-		// ログ格納用メモリを確保
+		//ログ格納用メモリを確保
 		logString = new GLchar[logSize];
 
-		// ログ読み込み
+		//ログ読み込み
 		glGetShaderInfoLog(program, logSize, nullptr, logString);
 
-		// エラーメッセージにログ文字列を接続
+		//エラーメッセージにログ文字列を接続
 		errorMessage += "\n";
 		errorMessage += logString;
 
-		// ログを出力
+		//ログを出力
 		LibDebug::debugMessageLog(logString);
 
-		// メモリ解放
+		//メモリ解放
 		delete[] logString;
 		logString = nullptr;
 	}
 
-	// シェーダーの情報を取得
+	//シェーダーの情報を取得
 	glGetShaderiv(program, GL_LINK_STATUS, &status);
 
 	if(status == GL_FALSE)

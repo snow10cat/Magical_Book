@@ -12,9 +12,9 @@ class LibDebug
 {
 public:
 	/**
-	 *	エラーメッセージ出力 (メッセージボックス)
+	 *	@brief エラーメッセージ出力 (メッセージボックス)
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 * 	@param	message		出力したい文字列
 	 */
 	static void errorMessageBox(const char* message)
@@ -24,9 +24,9 @@ public:
 	}
 
 	/**
-	 *	エラーメッセージ出力 (コンソール)
+	 *	@brief エラーメッセージ出力 (コンソール)
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 * 	@param	message		出力したい文字列
 	 */
 	static void debugMessageLog(const char* message)
@@ -37,9 +37,9 @@ public:
 	}
 
 	/**
-	 *	エラーメッセージ出力 (コンソール)
+	 *	@brief エラーメッセージ出力 (コンソール)
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 * 	@param	message		出力したい文字列
 	 */
 	static void debugMessageLog(int message)

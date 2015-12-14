@@ -106,10 +106,10 @@ void LibSound::loadFile(const char* fileName)
 	string filePass = "ResourceFile/Sound/";
 	filePass += fileName;
 
-	// ソース作成
+	//ソース作成
 	alGenSources(1, &sourceIDs[loadCount]);
 
-	// バッファ作成
+	//バッファ作成
 	bufferIDs[loadCount] = alureCreateBufferFromFile(filePass.c_str());
 	if(bufferIDs[loadCount] == AL_NONE) 
 	{
@@ -118,17 +118,17 @@ void LibSound::loadFile(const char* fileName)
 		LibDebug::errorMessageBox(message.c_str());
 	}
 
-	// 指定した番号を保存
+	//指定した番号を保存
 	sourceID = loadCount;
 	bufferID = loadCount;
 
-	// カウント更新
+	//カウント更新
 	loadCount++;
 
-	// バッファを音源に設定
+	//バッファを音源に設定
 	alSourcei(sourceIDs[sourceID], AL_BUFFER, bufferIDs[bufferID]);
 
-	// 音量を半分に
+	//音量を半分に
 	alSourcef(sourceIDs[sourceID], AL_GAIN, 0.5f);
 }
 	

@@ -12,23 +12,25 @@ class LibShader
 {
 public:
 	/**
-	 *	シェーダー停止
+	 *	@brief シェーダー停止
+	 *
+	 *	@author	Tatsuya Maeda
 	 */
 	static void shaderOff(void);
 
 	/**
-	 *	コンストラクタ
+	 *	@brief コンストラクタ
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	vertFileName 頂点シェーダーファイル名
 	 *	@param	vertFileName ピクセルシェーダーファイル名
 	 */
 	LibShader(const char* vertFileName, const char* flagFileName);
 
 	/**
-	 *	デストラクタ
+	 *	@brief デストラクタ
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 */
 	~LibShader();
 
@@ -37,9 +39,9 @@ public:
 	const  LibShader& operator = (const LibShader&) = delete;
 
 	/**
-	 *	シェーダープログラムのハンドルを取得
+	 *	@brief シェーダープログラムのハンドルを取得
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 */
 	int getProgramHandle(void);
 
@@ -55,47 +57,48 @@ public:
 	unsigned int getUniformTexture(void);
 
 	/**
-	 *	頂点シェーダーのAttribute変数のハンドルを取得
+	 *	@brief 頂点シェーダーのAttribute変数のハンドルを取得
 	 *
-	 *	@author
+	 *	@author Tatsuya Maeda
 	 *	@return	シェーダーの変数位置
 	 */
 	unsigned int getAttributeHandle(const char* valueName);
 	
 	/**
-	 *	頂点シェーダーのUniform変数のハンドルを取得
+	 *	@brief 頂点シェーダーのUniform変数のハンドルを取得
 	 *
+	 *	@author	Tatsuya Maeda
 	 *	@return	シェーダーの変数位置
 	 */
 	unsigned int getUniformHandle(const char* valueName);
 
 private:
 	/**
-	 *	シェーダー読み込み
+	 *	@brief シェーダー読み込み
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	fileName シェーダーファイル名
 	 */
 	void loadShaderFile(const char* fileName);
 
 	/**
-	 *	シェーダーコンパイル
+	 *	@brief シェーダーコンパイル
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	shaderID シェーダー識別ID
 	 *	@param	fileName シェーダーファイル名
 	 */
 	void shaderCompile(unsigned int shaderID, const char* fileName);
 
 	/**
-	 *	シェーダー読み込み
+	 *	@brief シェーダー読み込み
 	 *
-	 * 	@author	minaka1412
+	 * 	@author	Tatsuya Maeda
 	 *	@param	fileName シェーダーファイル名
 	 */
 	void shaderLink(const char* fileName);
 
-	// シェーダープログラム識別ID
+	//シェーダープログラム識別ID
 	unsigned int program;
 
 	std::string attrPosName;

@@ -41,6 +41,10 @@ public:
 	};
 
 private:
+
+	float volume;		//!< 音量
+	int volumeFlag;		//!< 再生フラグ
+
 	int chipCount;
 	int chipNum;
 	int chipState;
@@ -69,34 +73,36 @@ private:
 	int edit_work;
 	int edit_set_work;
 
-	float Volume;
-	int volumeFlag;
-
 	const int sWHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().x / 2;
 	const int sHHeaf = CatGameLib::LibMain::getInstance() -> getScreenSize().y / 2;
 
 	CatGameLib::LibInput* input;
-
-	CatGameLib::LibSound* edit_bgm;
 	
-	CatGameLib::LibSprite* material_logo;
-	CatGameLib::LibSprite* chipTable;
-	CatGameLib::LibSprite* save;
-	CatGameLib::LibSprite* redo;
-	CatGameLib::LibSprite* undo;
-	CatGameLib::LibSprite* pointer;
-	CatGameLib::LibSprite* back;
+	CatGameLib::LibSound* editBgm;
 
-	CatGameLib::LibSprite* grid_size[3];
-	CatGameLib::LibSprite* music_num[3];
+	CatGameLib::LibSprite* floor;				//!< 床
+	CatGameLib::LibSprites* books;				//!< 本
 	
-	CatGameLib::LibSprites* books;
+	CatGameLib::LibSprite* materialLogo;		//!< 素材ロゴ
+	CatGameLib::LibSprite* chipTable;			//!< 素材を置くフレーム
+	CatGameLib::LibSprite* save;				//!< 保存
+	CatGameLib::LibSprite* redo;				//!< 1つ進む
+	CatGameLib::LibSprite* undo;				//!< 1つ戻る
+	CatGameLib::LibSprite* pointer;				//!< カーソル
+	CatGameLib::LibSprite* back;				//!< 戻るロゴ
+
+	CatGameLib::LibSprites* materials[5];		//!< 素材
+
+	CatGameLib::LibSprite* gridSize[3];			//!< グリッド線
+	
+	CatGameLib::LibSprites* setMaterials[5];	//!< 配置した素材
+
 	CatGameLib::LibSprites* chip;
 	CatGameLib::LibSprites* player;
 	CatGameLib::LibSprites* enemy;
 	CatGameLib::LibSprites* gimmick;
 	CatGameLib::LibSprites* door;
-	
+	CatGameLib::LibSprite* music_num[3];
 	CatGameLib::LibSprites* materialPlayer;
 	CatGameLib::LibSprites* materialEnemy;
 	CatGameLib::LibSprites* materialGimmick;
@@ -121,6 +127,7 @@ private:
 	void materialSet(void);
 	
 	void editDraw(void);
+	void materialDraw(void);
 	void editChipSetDraw(void);
 	
 	void backAnimation(void);

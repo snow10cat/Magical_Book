@@ -17,8 +17,8 @@ using namespace MagicalBook;
 static StageConfig* stageConfig = StageConfig::getInstance();
 
 
-Edit::Edit() : edit_bgm(nullptr),
-			   material_logo(nullptr),
+Edit::Edit() : editBgm(nullptr),
+			   materialLogo(nullptr),
 			   chipTable(nullptr),
 			   materialPlayer(nullptr),
 			   materialEnemy(nullptr),
@@ -30,21 +30,16 @@ Edit::Edit() : edit_bgm(nullptr),
 			   pointer(nullptr)
 {
 
-	edit_bgm = LibSound::create("bgm/edit.wav");
+	editBgm = LibSound::create("bgm/edit.wav");
 
-	material_logo = CatGameLib::LibSprite::create("logo/material.png");
+	materialLogo = CatGameLib::LibSprite::create("logo/material.png");
 
-	grid_size[0] = CatGameLib::LibSprite::create("background/grid14.png");
-	grid_size[1] = CatGameLib::LibSprite::create("background/grid16.png");
-	grid_size[2] = CatGameLib::LibSprite::create("background/grid18.png");
+	gridSize[0] = CatGameLib::LibSprite::create("background/grid14.png");
+	gridSize[1] = CatGameLib::LibSprite::create("background/grid16.png");
+	gridSize[2] = CatGameLib::LibSprite::create("background/grid18.png");
 
 	chipTable = CatGameLib::LibSprite::create("background/chipTable.png");
 	
-	materialPlayer = CatGameLib::LibSprites::create("player/player.png", 34, 68);
-	materialEnemy = CatGameLib::LibSprites::create("enemy/crayon_red.png", 34, 68);
-	materialGimmick = CatGameLib::LibSprites::create("gimmick/gimmick_up.png", 34, 68);
-	materialDoor = CatGameLib::LibSprites::create("gimmick/door_up.png", 42, 68);
-
 	save = CatGameLib::LibSprite::create("logo/save.png");
 
 	pointer = CatGameLib::LibSprite::create("logo/pointer.png");
@@ -59,16 +54,23 @@ void Edit::init(void)
 	input = LibInput::getInstance();
 
 	books = ResourceManager::getInstance() -> getSprites("books");
+
+	materials[0] = ResourceManager::getInstance() -> getSprites("mapchip");
+	materials[1] = ResourceManager::getInstance() -> getSprites("player");
+	materials[2] = ResourceManager::getInstance() -> getSprites("enemy");
+	materials[3] = ResourceManager::getInstance() -> getSprites("gimmick");
+	materials[4] = ResourceManager::getInstance() -> getSprites("door");
+	
 	chip = ResourceManager::getInstance() -> getSprites("mapchip");
-	player = ResourceManager::getInstance() -> getSprites("player");
-	enemy = ResourceManager::getInstance() -> getSprites("enemy");
-	gimmick = ResourceManager::getInstance() -> getSprites("gimmick");
-	door = ResourceManager::getInstance() -> getSprites("door");
 
 	back = ResourceManager::getInstance() -> getSprite("back");
 
-	edit_bgm -> setVolume(0.0f);
-	edit_bgm -> setLoop(true);
+	volume = 0;
+	volumeFlag = true;
+
+	//音声
+	editBgm -> setVolume(0.0f);
+	editBgm -> setLoop(true);
 
 
 	books -> setPosition(sWHeaf + 200, sHHeaf);
@@ -77,9 +79,9 @@ void Edit::init(void)
 	stageConfig -> setBgNumber(stageConfig -> getBgNumber());
 	stageConfig -> setMusicNumber(stageConfig -> getMusicNumber());
 
-	grid_size[stageConfig -> getSizeNumber()] -> setPosition(sWHeaf - 170, sHHeaf);
-	grid_size[stageConfig -> getSizeNumber()] -> setScale(1.0f);
-	grid_size[stageConfig -> getSizeNumber()] -> setAlpha(0.0f);
+	gridSize[stageConfig -> getSizeNumber()] -> setPosition(sWHeaf - 170, sHHeaf);
+	gridSize[stageConfig -> getSizeNumber()] -> setScale(1.0f);
+	gridSize[stageConfig -> getSizeNumber()] -> setAlpha(0.0f);
 
 	for(int i = 1; i <= ResourceManager::BG_Count; i++)
 	{
@@ -90,9 +92,9 @@ void Edit::init(void)
 		bgTextures[i - 1] -> setAlpha(0.0f);
 	}
 
-	material_logo -> setPosition(sWHeaf +450, sHHeaf + 300);
-	material_logo -> setScale(1.5f);
-	material_logo -> setAlpha(0.0f);
+	materialLogo -> setPosition(sWHeaf +450, sHHeaf + 300);
+	materialLogo -> setScale(1.5f);
+	materialLogo -> setAlpha(0.0f);
 
 	chipTable -> setPosition(sWHeaf + 450, sHHeaf);
 	chipTable -> setScale(1.0f);
@@ -193,8 +195,6 @@ void Edit::init(void)
 	materialSetRow = 1;
 	materialSetCol = 1;
 
-	Volume = 0;
-	volumeFlag = 0;
 	anime_number = BOOK_ANM_MIN;
 
 	edit_work = Fadein;
@@ -205,6 +205,8 @@ void Edit::update(void)
 {
 	playSound();
 	
+	editDraw();
+
 	switch (edit_work)
 	{
 	case Fadein:
@@ -227,8 +229,6 @@ void Edit::update(void)
 		assert(!"不正な状態");
 		break;
 	}
-
-	editDraw();
 	
 	//あとで消す
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_X))
@@ -240,23 +240,27 @@ void Edit::update(void)
 }
 
 
-//BGM再生
+/**
+ *	@brief 音声再生
+ *
+ *	@author	Tatsuya Maeda
+ */
 void Edit::playSound(void)
 {
-	if (edit_bgm -> getState() != LibSound::Play)
+	if (editBgm -> getState() != LibSound::Play)
 	{
-		edit_bgm -> play();
+		editBgm -> play();
 	}
 
-	if (volumeFlag == 1)
+	if (volumeFlag == false)
 	{
-		Volume -= 0.02f;
-		edit_bgm -> setVolume(Volume);
+		volume -= BGM_FADE;
+		editBgm -> setVolume(volume);
 	}
-	else if (Volume <= 1.0 && volumeFlag == 0)
+	else if(volume <= MAX_VOLUME && volumeFlag == true)
 	{
-		Volume += 0.01f;
-		edit_bgm -> setVolume(Volume);
+		volume += BGM_FADE;
+		editBgm -> setVolume(volume);
 	}
 }
 
@@ -264,9 +268,9 @@ void Edit::playSound(void)
 //フェードイン
 void Edit::pictFade(void)
 {
-	if(grid_size[stageConfig -> getSizeNumber()] -> getAlpha() < 255)
+	if(gridSize[stageConfig -> getSizeNumber()] -> getAlpha() < 255)
 	{
-		grid_size[stageConfig -> getSizeNumber()] -> setAlpha(grid_size[stageConfig -> getSizeNumber()] -> getAlpha() + 5);
+		gridSize[stageConfig -> getSizeNumber()] -> setAlpha(gridSize[stageConfig -> getSizeNumber()] -> getAlpha() + 5);
 	}
 
 	if(bgTextures[stageConfig -> getBgNumber()] -> getAlpha() < 255)
@@ -274,9 +278,9 @@ void Edit::pictFade(void)
 		bgTextures[stageConfig -> getBgNumber()] -> setAlpha(bgTextures[stageConfig -> getBgNumber()] -> getAlpha() + 5);
 	}
 
-	if (material_logo -> getAlpha() < 255)
+	if (materialLogo -> getAlpha() < 255)
 	{
-		material_logo -> setAlpha(material_logo -> getAlpha() + 5);
+		materialLogo -> setAlpha(materialLogo -> getAlpha() + 5);
 	}
 
 	if (chipTable -> getAlpha() < 255)
@@ -828,7 +832,7 @@ void Edit::editDraw(void)
 	ResourceManager::getInstance() -> getSprite("floor") -> draw();
 	books -> draw(anime_number);
 	bgTextures[stageConfig -> getBgNumber()] -> draw();
-	grid_size[stageConfig -> getSizeNumber()] -> draw();
+	gridSize[stageConfig -> getSizeNumber()] -> draw();
 
 	if(chipHave == 1)
 	{
@@ -854,7 +858,7 @@ void Edit::editDraw(void)
 		}
 	}
 
-	material_logo -> draw();
+	materialLogo -> draw();
 	chipTable -> draw();
 	
 	for(int i = 1; i <= 36; i += 4)
@@ -888,9 +892,17 @@ void Edit::editDraw(void)
 }
 
 
+void Edit::materialDraw(void)
+{
+	materialPlayer -> draw(0);
+	materialEnemy -> draw(0);
+	materialDoor -> draw(0);
+	materialGimmick -> draw(0);
+}
+
 void Edit::editChipSetDraw(void)
 {
-	material_logo -> draw();
+	materialLogo -> draw();
 	chipTable -> draw();
 
 	for(int i = 1; i <= 36; i += 4)

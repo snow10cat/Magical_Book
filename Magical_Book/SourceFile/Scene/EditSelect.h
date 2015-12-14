@@ -86,6 +86,7 @@ private:
 
 	float volume;			//!< 音量
 	bool volumeFlag;		//!< 再生フラグ
+	int bgmCount;			//!< BGMカウント
 
 	int setUpWork;			//!< 設定シーン
 	int sizeCounter;		//!< 大きさのカウンター
@@ -102,6 +103,7 @@ private:
 	CatGameLib::LibInput* input;
 	
 	CatGameLib::LibSound* selectBgm;		//!< ステージ選択画面BGM
+	CatGameLib::LibSound* stageBgm[3];		//!< ステージBGM
 	CatGameLib::LibSound* menuSelect;		//!< 選択SE
 
 	CatGameLib::LibSprite* floor;			//!< 床

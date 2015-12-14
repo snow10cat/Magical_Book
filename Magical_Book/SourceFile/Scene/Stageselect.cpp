@@ -156,14 +156,13 @@ void StageSelect::playSound(void)
 	{
 		//フェードアウト
 		volume -= BGM_FADE;
-		selectBgm -> setVolume(volume);
 	}
 	else if(volume <= MAX_VOLUME && volumeFlag == true)
 	{
 		//フェードイン
 		volume += BGM_FADE;
-		selectBgm -> setVolume(volume);
 	}
+	selectBgm -> setVolume(volume);
 }
 
 

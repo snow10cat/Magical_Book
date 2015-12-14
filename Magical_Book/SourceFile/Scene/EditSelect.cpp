@@ -17,18 +17,23 @@ static StageConfig* stageConfig = StageConfig::getInstance();
 EditSelect::EditSelect() : sizeSection(nullptr),
 						   bgSection(nullptr),
 						   musicSection(nullptr)
-{
-	sizeSection = CatGameLib::LibSprite::create("logo/size_section.png");
-	bgSection = CatGameLib::LibSprite::create("logo/bg_section.png");
-	musicSection = CatGameLib::LibSprite::create("logo/music_section.png");
+{	
+	stageBgm[ResourceManager::BGM_1] = LibSound::create("bgm/stage1.wav");
+	stageBgm[ResourceManager::BGM_2] = LibSound::create("bgm/stage2.wav");
+	stageBgm[ResourceManager::BGM_3] = LibSound::create("bgm/stage3.wav");
 
+	sizeSection = CatGameLib::LibSprite::create("logo/size_section.png");
+	sizeLogo[ResourceManager::Size_S] = CatGameLib::LibSprite::create("logo/S.png");
+	sizeLogo[ResourceManager::Size_M] = CatGameLib::LibSprite::create("logo/M.png");
+	sizeLogo[ResourceManager::Size_L] = CatGameLib::LibSprite::create("logo/L.png");
+
+	bgSection = CatGameLib::LibSprite::create("logo/bg_section.png");
+	
+	musicSection = CatGameLib::LibSprite::create("logo/music_section.png");
 	bgmLogos[ResourceManager::BGM_1] = CatGameLib::LibSprite::create("logo/bgm1.png");
 	bgmLogos[ResourceManager::BGM_2] = CatGameLib::LibSprite::create("logo/bgm2.png");
 	bgmLogos[ResourceManager::BGM_3] = CatGameLib::LibSprite::create("logo/bgm3.png");;
 
-	sizeLogo[ResourceManager::Size_S] = CatGameLib::LibSprite::create("logo/S.png");
-	sizeLogo[ResourceManager::Size_M] = CatGameLib::LibSprite::create("logo/M.png");
-	sizeLogo[ResourceManager::Size_L] = CatGameLib::LibSprite::create("logo/L.png");
 }
 
 
@@ -62,11 +67,12 @@ void EditSelect::init(void)
 
 	volume = 0;
 	volumeFlag = true;
+	bgmCount = 0;
 
 	setUpWork = StageSize;			//サイズ選択から
 	sizeCounter = EditSize::Size_S;
 	bgCounter = EditBg::BG_Castle;
-	bgmCounter = EditBgm::Bgm_1;
+	bgmCounter = BACK;
 	animeNumber = BOOK_ANM_MIN;
 	animeCounter = 0;
 
@@ -74,13 +80,18 @@ void EditSelect::init(void)
 	selectBgm -> setVolume(0.0f);
 	selectBgm -> setLoop(true);
 
+	for(int i = 0; i < ResourceManager::BGM_Count; i++)
+	{
+		stageBgm[i] -> setVolume(0.0f);
+		stageBgm[i] -> setLoop(true);
+	}
+
 	menuSelect -> setVolume(MAX_VOLUME);
 
 	//画像
 	books -> setPosition(sWHeaf - EDIT_SEL_BOOK_POS_X, sHHeaf);
 	books -> setScale(BOOK_SIZE);
 
-	
 
 	//大きさロゴ
 	sizeSection -> setPosition(sWHeaf - 100, sHHeaf + 300);
@@ -193,23 +204,31 @@ void EditSelect::update(void)
  */
 void EditSelect::playSound(void)
 {
-	if(selectBgm -> getState() != LibSound::Play)
+	bgmCount = (bgmCounter - 1) % ResourceManager::BGM_Count;
+	const int bgmNum = CatGameLib::LibBasicFunc::wrap(bgmCount, 0, 3);
+	if(bgmCounter == BACK)
 	{
+		stageBgm[bgmNum] -> stop();
 		selectBgm -> play();
+	}
+	else if(bgmCounter > BACK)
+	{
+		selectBgm -> stop();
+		stageBgm[bgmNum] -> play();
 	}
 
 	if(volumeFlag == false)
 	{
 		//フェードアウト
 		volume -= BGM_FADE;
-		selectBgm -> setVolume(volume);
 	}
 	else if(volume <= MAX_VOLUME && volumeFlag == true)
 	{
 		//フェードイン
 		volume += BGM_FADE;
-		selectBgm -> setVolume(volume);
 	}
+	selectBgm -> setVolume(volume);
+	stageBgm[bgmNum] -> setVolume(volume);
 }
 
 
@@ -240,25 +259,10 @@ void EditSelect::editSetUpDraw(void)
 		}
 
 		//選択されているやつは一番前に描画
-		if(bgCounter % EditBg::BG_Count == EditBg::BG_Castle)
+		if(bgCounter > 0)
 		{
-			bgTextures[ResourceManager::BG_Castle] -> draw();
-		}
-		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Table)
-		{
-			bgTextures[ResourceManager::BG_Table] -> draw();
-		}
-		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Gate)
-		{
-			bgTextures[ResourceManager::BG_Gate] -> draw();
-		}
-		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Window)
-		{
-			bgTextures[ResourceManager::BG_Window] -> draw();
-		}
-		else if(bgCounter % EditBg::BG_Count == EditBg::BG_Throne)
-		{
-			bgTextures[ResourceManager::BG_Throne] -> draw();
+			const int count = (bgCounter - 1) % ResourceManager::BG_Count;
+			bgTextures[count] -> draw();
 		}
 
 		musicSection -> draw();
@@ -492,7 +496,7 @@ void EditSelect::bgSelect(void)
 	{
 		bgSection -> setScale(SELECT_LOGO_SIZE);
 	
-		for(int i = 0; i < ResourceManager::BG_Count; i++)
+		for(int i = ResourceManager::BG_Castle; i < ResourceManager::BG_Count; i++)
 		{
 			bgTextures[i] -> setScale(DESELECT_BG_SIZE);
 		}
@@ -516,6 +520,8 @@ void EditSelect::bgSelect(void)
 		if(bgCounter % EditBg::BG_Count != BACK)
 		{
 			bgSection -> setScale(LOGO_SIZE);
+			bgmCounter = EditBgm::Bgm_1;
+			volumeFlag = false;
 			setUpWork = StageBGM;		//BGM選択へ
 		}
 		else
@@ -611,15 +617,22 @@ void EditSelect::bgmSelect(void)
 		frame -> setScale(FRAME_SIZE);
 	};
 
+	if(volume == 0 && volumeFlag == false)
+	{
+		volumeFlag = true;
+	}
+
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Left))
 	{
 		menuSelect -> play();
 		bgmCounter--;
+		volumeFlag = false;
 	}
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Right))
 	{
 		menuSelect -> play();
 		bgmCounter++;
+		volumeFlag = false;
 	}
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))

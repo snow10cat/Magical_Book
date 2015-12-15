@@ -52,13 +52,13 @@ void Edit::init(void)
 	books = ResourceManager::getInstance() -> getSprites("books");
 
 	//‘fÞ
-	materials[0] = ResourceManager::getInstance() -> getSprites("mapchip");
-	materials[1] = ResourceManager::getInstance() -> getSprites("player");
-	materials[2] = ResourceManager::getInstance() -> getSprites("enemy");
-	materials[3] = ResourceManager::getInstance() -> getSprites("door");
-	materials[4] = ResourceManager::getInstance() -> getSprites("gimmick");
+	materials[MaterialNum::Chip] = ResourceManager::getInstance() -> getSprites("mapchip");
+	materials[MaterialNum::Player] = ResourceManager::getInstance() -> getSprites("player");
+	materials[MaterialNum::Enemy] = ResourceManager::getInstance() -> getSprites("enemy");
+	materials[MaterialNum::Door] = ResourceManager::getInstance() -> getSprites("door");
+	materials[MaterialNum::Gimmick] = ResourceManager::getInstance() -> getSprites("gimmick");
 	
-	chip = ResourceManager::getInstance() -> getSprites("mapchip");
+//	chip = ResourceManager::getInstance() -> getSprites("mapchip");
 
 	back = ResourceManager::getInstance() -> getSprite("back");
 
@@ -89,6 +89,7 @@ void Edit::init(void)
 		bgTextures[i - 1] -> setAlpha(0.0f);
 	}
 
+	//‘fÞ
 	materials[MaterialNum::Chip] -> setPosition(sWHeaf + 350, sHHeaf + 200);
 	materials[MaterialNum::Player] -> setPosition(sWHeaf + 350, sHHeaf + 68);
 	materials[MaterialNum::Enemy] -> setPosition(sWHeaf + 400, sHHeaf + 68);
@@ -113,30 +114,6 @@ void Edit::init(void)
 	pointer -> setScale(1.0f);
 	pointer -> setAlpha(0.0f);
 
-	chip -> setPosition(sWHeaf + 350, sHHeaf + 200);
-	chip -> setScale(1.0f);
-	chip -> setAlpha(0.0f);
-
-	/*player -> setPosition(sWHeaf + 350, sHHeaf + 68);
-	player -> setScale(1.0f);
-	player -> setAlpha(0.0f);
-
-
-	enemy -> setPosition(sWHeaf + 400, sHHeaf + 68);
-	enemy -> setScale(1.0f);
-	enemy -> setAlpha(0.0f);
-
-
-	door -> setPosition(sWHeaf + 450, sHHeaf + 68);
-	door -> setScale(1.0f);
-	door -> setAlpha(0.0f);
-
-
-	gimmick -> setPosition(sWHeaf + 500, sHHeaf + 68);
-	gimmick -> setScale(1.0f);
-	gimmick -> setAlpha(0.0f);*/
-
-
 	save -> setPosition(sWHeaf + 550, sHHeaf - 200);
 	save -> setScale(0.7f);
 	save -> setAlpha(0.0f);
@@ -146,7 +123,7 @@ void Edit::init(void)
 	back -> setAlpha(0.0f);
 
 	screenSize = LibMain::getInstance() -> getScreenSize();
-	chipSize = chip -> getTextureSizeX();
+//	chipSize = chip -> getTextureSizeX();
 	
 	if(stageConfig -> getSizeNumber() == 0)
 	{
@@ -161,8 +138,8 @@ void Edit::init(void)
 		stageSize = Large;
 	}
 
-	drawStartingPos.x = (screenSize.x / 2) - ((stageSize.x / 2) * chipSize.x) + chipSize.x * chip -> getAnchorPointX();
-	drawStartingPos.y = (screenSize.y / 2) - ((stageSize.y / 2) * chipSize.y) + chipSize.y * chip -> getAnchorPointY();
+//	drawStartingPos.x = (screenSize.x / 2) - ((stageSize.x / 2) * chipSize.x) + chipSize.x * chip -> getAnchorPointX();
+//	drawStartingPos.y = (screenSize.y / 2) - ((stageSize.y / 2) * chipSize.y) + chipSize.y * chip -> getAnchorPointY();
 
 	chipCount = stageSize.x * stageSize.y;
 
@@ -278,12 +255,12 @@ void Edit::pictFade(void)
 		bgTextures[stageConfig -> getBgNumber()] -> setAlpha(bgTextures[stageConfig -> getBgNumber()] -> getAlpha() + 5);
 	}
 
-	if (materialLogo -> getAlpha() < 255)
+	if(materialLogo -> getAlpha() < 255)
 	{
 		materialLogo -> setAlpha(materialLogo -> getAlpha() + 5);
 	}
 
-	if (chipTable -> getAlpha() < 255)
+	if(chipTable -> getAlpha() < 255)
 	{
 		chipTable -> setAlpha(chipTable -> getAlpha() + 5);
 	}
@@ -332,7 +309,7 @@ void Edit::pictFade(void)
 		save -> setAlpha(save -> getAlpha() + 5);
 	}
 
-	if (back -> getAlpha() < 255)
+	if(back -> getAlpha() < 255)
 	{
 		back -> setAlpha(back -> getAlpha() + 5);
 	}
@@ -585,7 +562,7 @@ void Edit::materialSelect(void)
 	}
 	else if(chipHave == 1)
 	{
-		chip -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+17);
+//		chip -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+17);
 	}
 	else if(chipHave == 2)
 	{
@@ -614,8 +591,7 @@ void Edit::materialSet(void)
 {
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Z))
 	{
-		chip -> setPosition(chip -> getPosition());
-		chip -> draw(chipNum);
+//		chip -> setPosition(chip -> getPosition());
 	}
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
@@ -717,7 +693,7 @@ void Edit::materialSet(void)
 
 	if(chipHave == 1)
 	{
-		chip -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+17);
+//		chip -> setPosition(pointer -> getPositionX()-17, pointer -> getPositionY()+17);
 	}
 	else if(chipHave == 2)
 	{
@@ -845,7 +821,7 @@ void Edit::editDraw(void)
 
 	if(chipHave == 1)
 	{
-		chip -> draw(chipNum);
+//		chip -> draw(chipNum);
 	}
 	else if(chipHave == 2)
 	{
@@ -904,11 +880,11 @@ void Edit::materialDraw(void)
 
 		if(i <= 5 * 4)
 		{
-			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 200);
+			materials[MaterialNum::Chip] -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 200);
 		}
 		else if(i > 5 * 4 && i <= 36)
 		{
-			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 140);
+			materials[MaterialNum::Chip] -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 140);
 		}
 		chipCounter++;
 		
@@ -921,6 +897,7 @@ void Edit::materialDraw(void)
 	}
 }
 
+/*
 void Edit::editChipSetDraw(void)
 {
 	materialLogo -> draw();
@@ -950,4 +927,4 @@ void Edit::editChipSetDraw(void)
 	ResourceManager::getInstance() -> getSprites("gimmick") -> draw(0);
 	
 	back -> draw();
-}
+}*/

@@ -5,6 +5,12 @@
 #include "Scene.h"
 #include "CatGameLib.h"
 
+
+#define CHIP_NUM_MAX 36			//!< マップチップ数
+#define CHIP_COL_MAX 5			//!< 横の並び数
+#define CHIP_NEXT 4				//!< 次のチップまで
+
+
 namespace MagicalBook
 {
 
@@ -100,7 +106,7 @@ private:
 	CatGameLib::LibSprite* save;				//!< 保存
 	CatGameLib::LibSprite* redo;				//!< 1つ進む
 	CatGameLib::LibSprite* undo;				//!< 1つ戻る
-	CatGameLib::LibSprite* pointer;				//!< カーソル
+	CatGameLib::LibSprite* pointer;				//!< ポインター(マウスカーソル)
 	CatGameLib::LibSprite* back;				//!< 戻るロゴ
 
 	CatGameLib::LibSprites* materials[5];		//!< 素材
@@ -109,8 +115,8 @@ private:
 	
 	CatGameLib::LibSprites* setMaterials[5];	//!< 配置した素材
 
-	CatGameLib::LibSprites* chip;/*
-	CatGameLib::LibSprites* player;
+//	CatGameLib::LibSprites* chip;
+/*	CatGameLib::LibSprites* player;
 	CatGameLib::LibSprites* enemy;
 	CatGameLib::LibSprites* gimmick;
 	CatGameLib::LibSprites* door;*/

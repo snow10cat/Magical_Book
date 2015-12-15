@@ -21,6 +21,11 @@ ResourceManager::~ResourceManager()
 }
 
 
+/**
+ *	@brief 全体で使う音楽、画像をインストール
+ *
+ *	@author	Tatsuya Maeda
+ */
 void ResourceManager::loadResource(void)
 {
 	//音声

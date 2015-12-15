@@ -474,8 +474,8 @@ void EditSelect::sizeSelect(void)
 			sizeSection -> setScale(LOGO_SIZE);
 
 			back -> setScale(SELECT_LOGO_SIZE);
-			frame ->setScaleX(FRAME_SIZE_X);
-			frame ->setScaleY(FRAME_SIZE_Y);
+			frame -> setScaleX(FRAME_SIZE_X);
+			frame -> setScaleY(FRAME_SIZE_Y);
 			frame -> setPosition(back -> getPosition());
 		}
 	}

@@ -264,7 +264,7 @@ void StageSelect::bgFadein(void)
  */
 void StageSelect::stageSelect(void)
 {
-	cangeSize();
+	changeSize();
 
 	if(frame -> getAlpha() == 255)
 	{
@@ -376,7 +376,7 @@ void StageSelect::selectActions(void)
  *
  *	@author	Tatsuya Maeda
  */
-void StageSelect::cangeSize(void)
+void StageSelect::changeSize(void)
 {
 	//全てのスケール設定
 	auto sizeResetFunc = [&](void)

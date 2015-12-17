@@ -167,7 +167,7 @@ void Title::titleDraw(void)
  */
 void Title::select(void)
 {
-	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 2);
+	counter = LibBasicFunc::wrap(counter, 0, 2);
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up) || input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Down))
 	{
@@ -217,7 +217,7 @@ void Title::select(void)
  */
 void Title::logoAnimation(void)
 {
-	timer = CatGameLib::LibBasicFunc::wrap(timer, 0, 3);
+	timer = LibBasicFunc::wrap(timer, 0, 3);
 
 	timer++;
 
@@ -269,7 +269,7 @@ void Title::bookAnimation(void)
 {
 	if(animeNumber < BOOK_ANM_MAX)
 	{
-		counter = CatGameLib::LibBasicFunc::wrap(counter, 0, BOOK_ANIM_SPEED);
+		counter = LibBasicFunc::wrap(counter, 0, BOOK_ANIM_SPEED);
 		counter++;
 		if(counter % BOOK_ANIM_SPEED == 0)
 		{

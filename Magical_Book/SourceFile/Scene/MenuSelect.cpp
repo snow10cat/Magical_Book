@@ -260,7 +260,7 @@ void MenuSelect::logoFadein(void)
  */
 void MenuSelect::modeSelect(void)
 {
-	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 3);
+	counter = LibBasicFunc::wrap(counter, 0, 3);
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_Up))
 	{
@@ -337,7 +337,7 @@ void MenuSelect::modeSelect(void)
  */
 void MenuSelect::logoAnimation(void)
 {
-	timer = CatGameLib::LibBasicFunc::wrap(timer, 0, LOGO_ANIM_SPEED);
+	timer = LibBasicFunc::wrap(timer, 0, LOGO_ANIM_SPEED);
 
 	timer++;
 
@@ -445,7 +445,7 @@ void MenuSelect::bookAnimation(void)
 {
 	if(animeNumber < BOOK_ANM_MAX)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
+		animeCounter = LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
 		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{
@@ -468,7 +468,7 @@ void MenuSelect::closeAnimation(void)
 {
 	if(animeNumber > BOOK_ANM_MIN)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
+		animeCounter = LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
 		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{

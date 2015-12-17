@@ -22,17 +22,17 @@ EditSelect::EditSelect() : sizeSection(nullptr),
 	stageBgm[ResourceManager::BGM_2] = LibSound::create("bgm/stage2.wav");
 	stageBgm[ResourceManager::BGM_3] = LibSound::create("bgm/stage3.wav");
 
-	sizeSection = CatGameLib::LibSprite::create("logo/size_section.png");
-	sizeLogo[ResourceManager::Size_S] = CatGameLib::LibSprite::create("logo/S.png");
-	sizeLogo[ResourceManager::Size_M] = CatGameLib::LibSprite::create("logo/M.png");
-	sizeLogo[ResourceManager::Size_L] = CatGameLib::LibSprite::create("logo/L.png");
+	sizeSection = LibSprite::create("logo/size_section.png");
+	sizeLogo[ResourceManager::Size_S] = LibSprite::create("logo/S.png");
+	sizeLogo[ResourceManager::Size_M] = LibSprite::create("logo/M.png");
+	sizeLogo[ResourceManager::Size_L] = LibSprite::create("logo/L.png");
 
-	bgSection = CatGameLib::LibSprite::create("logo/bg_section.png");
+	bgSection = LibSprite::create("logo/bg_section.png");
 	
-	musicSection = CatGameLib::LibSprite::create("logo/music_section.png");
-	bgmLogos[ResourceManager::BGM_1] = CatGameLib::LibSprite::create("logo/bgm1.png");
-	bgmLogos[ResourceManager::BGM_2] = CatGameLib::LibSprite::create("logo/bgm2.png");
-	bgmLogos[ResourceManager::BGM_3] = CatGameLib::LibSprite::create("logo/bgm3.png");;
+	musicSection = LibSprite::create("logo/music_section.png");
+	bgmLogos[ResourceManager::BGM_1] = LibSprite::create("logo/bgm1.png");
+	bgmLogos[ResourceManager::BGM_2] = LibSprite::create("logo/bgm2.png");
+	bgmLogos[ResourceManager::BGM_3] = LibSprite::create("logo/bgm3.png");;
 
 }
 
@@ -205,7 +205,7 @@ void EditSelect::update(void)
 void EditSelect::playSound(void)
 {
 	bgmCount = (bgmCounter - 1) % ResourceManager::BGM_Count;
-	const int bgmNum = CatGameLib::LibBasicFunc::wrap(bgmCount, 0, 3);
+	const int bgmNum = LibBasicFunc::wrap(bgmCount, 0, 3);
 	if(bgmCounter == BACK)
 	{
 		stageBgm[bgmNum] -> stop();
@@ -400,7 +400,7 @@ void EditSelect::editSetUp(void)
  */
 void EditSelect::sizeSelect(void)
 {
-	sizeCounter = CatGameLib::LibBasicFunc::wrap(sizeCounter, 0, EditSize::Size_Count);
+	sizeCounter = LibBasicFunc::wrap(sizeCounter, 0, EditSize::Size_Count);
 
 	//全てのスケール設定
 	auto sizeSizeFunc = [&](void)
@@ -489,7 +489,7 @@ void EditSelect::sizeSelect(void)
  */
 void EditSelect::bgSelect(void)
 {
-	bgCounter = CatGameLib::LibBasicFunc::wrap(bgCounter, 0, EditBg::BG_Count);
+	bgCounter = LibBasicFunc::wrap(bgCounter, 0, EditBg::BG_Count);
 	
 	//全てのスケール設定
 	auto sizebgFunc = [&](void)
@@ -601,7 +601,7 @@ void EditSelect::bgSelect(void)
  */
 void EditSelect::bgmSelect(void)
 {
-	bgmCounter = CatGameLib::LibBasicFunc::wrap(bgmCounter, 0, EditBgm::Bgm_Count);
+	bgmCounter = LibBasicFunc::wrap(bgmCounter, 0, EditBgm::Bgm_Count);
 	
 	//全てのスケール設定
 	auto sizeBgmFunc = [&](void)
@@ -730,7 +730,7 @@ void EditSelect::bookAnimation(void)
 
 	if(animeNumber < BOOK_ANM_MAX)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
+		animeCounter = LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
 		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{

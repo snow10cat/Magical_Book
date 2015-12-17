@@ -280,9 +280,9 @@ void StageSelect::stageSelect(void)
  */
 void StageSelect::selectActions(void)
 {
-	const int counterNumber = CatGameLib::LibBasicFunc::wrap(counter, 0, 6);
+	const int counterNumber = LibBasicFunc::wrap(counter, 0, 6);
 
-	counter = CatGameLib::LibBasicFunc::wrap(counter, 0, 6);
+	counter = LibBasicFunc::wrap(counter, 0, 6);
 
 	if(selectFlag != BackLogo)
 	{
@@ -466,7 +466,7 @@ void StageSelect::backAnimation(void)
 
 	if(animeNumber > BOOK_ANM_MIN)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
+		animeCounter = LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
 		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{
@@ -492,7 +492,7 @@ void StageSelect::bookAnimation(void)
 
 	if(animeNumber < BOOK_ANM_MAX)
 	{
-		animeCounter = CatGameLib::LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
+		animeCounter = LibBasicFunc::wrap(animeCounter, 0, BOOK_ANIM_SPEED);
 		animeCounter++;
 		if(animeCounter % BOOK_ANIM_SPEED == 0)
 		{

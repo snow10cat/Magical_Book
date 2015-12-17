@@ -30,12 +30,19 @@ Edit::Edit() : editBgm(nullptr),
 
 	materialLogo = CatGameLib::LibSprite::create("logo/material.png");
 
-	gridSize[0] = CatGameLib::LibSprite::create("background/grid14.png");
-	gridSize[1] = CatGameLib::LibSprite::create("background/grid16.png");
-	gridSize[2] = CatGameLib::LibSprite::create("background/grid18.png");
+	gridSize[Grid::S] = CatGameLib::LibSprite::create("background/grid14.png");
+	gridSize[Grid::M] = CatGameLib::LibSprite::create("background/grid16.png");
+	gridSize[Grid::L] = CatGameLib::LibSprite::create("background/grid18.png");
 
 	chipTable = CatGameLib::LibSprite::create("background/chipTable.png");
 	
+	//‘fÞ
+	materials[MaterialNum::Chip] = LibSprites::create("mapchip/mapchip.png", 34, 34);
+	materials[MaterialNum::Player] = LibSprites::create("player/player.png", 34, 68);
+	materials[MaterialNum::Enemy] = LibSprites::create("enemy/crayon_red.png", 34, 68);
+	materials[MaterialNum::Door] = LibSprites::create("gimmick/door_up.png", 42, 68);
+	materials[MaterialNum::Gimmick] = LibSprites::create("gimmick/gimmick_up.png", 34, 68);
+
 	save = CatGameLib::LibSprite::create("logo/save.png");
 
 	pointer = CatGameLib::LibSprite::create("logo/pointer.png");
@@ -51,16 +58,8 @@ void Edit::init(void)
 
 	books = ResourceManager::getInstance() -> getSprites("books");
 
-	//‘fÞ
-	materials[MaterialNum::Chip] = ResourceManager::getInstance() -> getSprites("mapchip");
-	materials[MaterialNum::Player] = ResourceManager::getInstance() -> getSprites("player");
-	materials[MaterialNum::Enemy] = ResourceManager::getInstance() -> getSprites("enemy");
-	materials[MaterialNum::Door] = ResourceManager::getInstance() -> getSprites("door");
-	materials[MaterialNum::Gimmick] = ResourceManager::getInstance() -> getSprites("gimmick");
-	
-//	chip = ResourceManager::getInstance() -> getSprites("mapchip");
-
 	back = ResourceManager::getInstance() -> getSprite("back");
+
 
 	volume = 0;
 	volumeFlag = true;
@@ -123,7 +122,6 @@ void Edit::init(void)
 	back -> setAlpha(0.0f);
 
 	screenSize = LibMain::getInstance() -> getScreenSize();
-//	chipSize = chip -> getTextureSizeX();
 	
 	if(stageConfig -> getSizeNumber() == 0)
 	{
@@ -137,9 +135,6 @@ void Edit::init(void)
 	{
 		stageSize = Large;
 	}
-
-//	drawStartingPos.x = (screenSize.x / 2) - ((stageSize.x / 2) * chipSize.x) + chipSize.x * chip -> getAnchorPointX();
-//	drawStartingPos.y = (screenSize.y / 2) - ((stageSize.y / 2) * chipSize.y) + chipSize.y * chip -> getAnchorPointY();
 
 	chipCount = stageSize.x * stageSize.y;
 
@@ -282,27 +277,6 @@ void Edit::pictFade(void)
 			materials[i] -> setAlpha(255);
 		}
 	}
-
-
-	/*if(player -> getAlpha() < 255)
-	{
-		player -> setAlpha(player -> getAlpha() + 5);
-	}
-
-	if(enemy -> getAlpha() < 255)
-	{
-		enemy -> setAlpha(enemy -> getAlpha() + 5);
-	}
-
-	if(door -> getAlpha() < 255)
-	{
-		door -> setAlpha(door -> getAlpha() + 5);
-	}
-	
-	if(gimmick -> getAlpha() < 255)
-	{
-		gimmick -> setAlpha(gimmick -> getAlpha() + 5);
-	}*/
 
 	if(save -> getAlpha() < 255)
 	{
@@ -495,14 +469,14 @@ void Edit::materialSelect(void)
 	}
 	
 
-	materialRow = CatGameLib::LibBasicFunc::wrap(materialRow, 0, 4);
+	materialRow = LibBasicFunc::wrap(materialRow, 0, 4);
 	if(materialRow == 1)
 	{
-		materialCol = CatGameLib::LibBasicFunc::wrap(materialCol, 0, 6);
+		materialCol = LibBasicFunc::wrap(materialCol, 0, 6);
 	}
 	else
 	{
-		materialCol = CatGameLib::LibBasicFunc::wrap(materialCol, 0, 5);
+		materialCol = LibBasicFunc::wrap(materialCol, 0, 5);
 	}
 
 	if(materialRow % 4 == 0)
@@ -662,7 +636,7 @@ void Edit::materialSet(void)
 		counter = 0;
 	}
 	
-	chipDirection = CatGameLib::LibBasicFunc::wrap(chipDirection, 0, 4);
+	chipDirection = LibBasicFunc::wrap(chipDirection, 0, 4);
 
 	if (input -> getKeyboardDownState(LibInput::KeyBoardNumber::Key_D))
 	{
@@ -846,22 +820,6 @@ void Edit::editDraw(void)
 	materialLogo -> draw();
 	chipTable -> draw();
 	
-	/*for(int i = 1; i <= 36; i += 4)
-	{
-		chipCounter = CatGameLib::LibBasicFunc::wrap(chipCounter, 0, 5);
-
-		if(i <= 5 * 4)
-		{
-			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 200);
-		}
-		else if(i > 5 * 4 && i <= 36)
-		{
-			chip -> setPosition(sWHeaf + 350 + chipCounter * 50, sHHeaf + 140);
-		}
-		chipCounter++;
-		
-		chip -> draw(i);
-	}*/
 	chipCounter = 0;
 
 	save -> draw();

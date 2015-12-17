@@ -17,11 +17,12 @@ namespace MagicalBook
 class Edit : public Scene
 {
 public:
-	Edit ();
-	~Edit ();
+	Edit();
+	~Edit();
 
 	void init(void) override;
 	void update(void) override;
+
 
 	enum EditNumber
 	{
@@ -42,6 +43,13 @@ private:
 		Medium	= 16,		//!< Mサイズ(マップチップ16個分)
 		Large	= 18,		//!< Lサイズ(マップチップ18個分)
 		SizeNum = 3,		
+	};
+
+	enum Grid
+	{
+		S,		//!< Sサイズ(マップチップ14個分)
+		M,		//!< Mサイズ(マップチップ16個分)
+		L,		//!< Lサイズ(マップチップ18個分)
 	};
 
 	enum MaterialNum
@@ -115,11 +123,6 @@ private:
 	
 	CatGameLib::LibSprites* setMaterials[5];	//!< 配置した素材
 
-//	CatGameLib::LibSprites* chip;
-/*	CatGameLib::LibSprites* player;
-	CatGameLib::LibSprites* enemy;
-	CatGameLib::LibSprites* gimmick;
-	CatGameLib::LibSprites* door;*/
 	CatGameLib::LibSprite* music_num[3];
 	
 	CatGameLib::LibVector2 chipSize;

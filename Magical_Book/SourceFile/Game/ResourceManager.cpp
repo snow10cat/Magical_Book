@@ -22,7 +22,7 @@ ResourceManager::~ResourceManager()
 
 
 /**
- *	@brief 全体で使う音楽、画像をインストール
+ *	@brief 全体で使う音楽、画像をロード
  *
  *	@author	Tatsuya Maeda
  */
@@ -44,14 +44,14 @@ void ResourceManager::loadResource(void)
 	
 	spriteArray["back"] = LibSprite::create("logo/back.png");
 
-	spritesArray["books"] = CatGameLib::LibSprites::create("background/books.png", 1000, 500);
-	spritesArray["openBook"] = CatGameLib::LibSprites::create("background/open.png", 1000, 500);
-	spritesArray["closeBook"] = CatGameLib::LibSprites::create("background/close.png", 1000, 500);
-	spritesArray["mapchip"] = CatGameLib::LibSprites::create("mapchip/mapchip.png", 34, 34);
-	spritesArray["player"] = CatGameLib::LibSprites::create("player/player.png", 34, 68);
-	spritesArray["enemy"] = CatGameLib::LibSprites::create("enemy/crayon_red.png", 34, 68);
-	spritesArray["gimmick"] = CatGameLib::LibSprites::create("gimmick/gimmick_up.png", 34, 68);
-	spritesArray["door"] = CatGameLib::LibSprites::create("gimmick/door_up.png", 42, 68);
+	spritesArray["books"] = LibSprites::create("background/books.png", 1000, 500);
+	spritesArray["openBook"] = LibSprites::create("background/open.png", 1000, 500);
+	spritesArray["closeBook"] = LibSprites::create("background/close.png", 1000, 500);
+	spritesArray["mapchip"] = LibSprites::create("mapchip/mapchip.png", 34, 34);
+	spritesArray["player"] = LibSprites::create("player/player.png", 34, 68);
+	spritesArray["enemy"] = LibSprites::create("enemy/crayon_red.png", 34, 68);
+	spritesArray["gimmick"] = LibSprites::create("gimmick/gimmick_up.png", 34, 68);
+	spritesArray["door"] = LibSprites::create("gimmick/door_up.png", 42, 68);
 
 	for(int i = 1; i <= BG_Count; i++)
 	{
